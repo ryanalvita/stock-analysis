@@ -50,9 +50,12 @@ class TradingViewScraper:
         # Create dataframe
         df = pd.read_html(self.driver.page_source)[1]
         
-        # Separate stock code and company name
-        df["Stock Code"] = df["Ticker"].apply(lambda x: x[:4])
-        df["Company Name"] = df["Ticker"].apply(lambda x: x[4:])
+        # Get Stock Code and Company Name
+        elements_stock_code = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tbody/tr/td/span/a')
+        elements_company_name = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tbody/tr/td/span/sup')
+        for i in range(0, len(df)):
+            df.loc[i, "Stock Code"] = elements_stock_code[i].text
+            df.loc[i, "Company Name"] = elements_company_name[i].text
 
         # Rename and reorder columns
         df = df.drop("Ticker", axis=1)
