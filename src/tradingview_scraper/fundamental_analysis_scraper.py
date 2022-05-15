@@ -120,9 +120,16 @@ class TradingViewScraper:
         # Create directory
         directory = f'./results/'
         create_directory(directory)
+
+        # Get stocks
+        if stock_filter:
+            stocks = stock_filter
+        else:
+            overview = pd.read_csv(f'{directory}/Overview.csv', index_col=0)
+            stocks = overview["Stock Code"].to_list()
         
-        with alive_bar(len(stock_filter), force_tty=True) as bar:
-            for stock in stock_filter:
+        with alive_bar(len(stocks), force_tty=True) as bar:
+            for stock in stocks:
                 json_structure = {}
                 income_statement = pd.DataFrame()
                 balance_sheet = pd.DataFrame()
