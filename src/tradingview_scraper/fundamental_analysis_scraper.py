@@ -23,7 +23,11 @@ ALL = ["BVIC","BWPT","BYAN","CAKK","CAMP","CANI","CARE","CARS","CASA","CASH","CA
 class TradingViewScraper:
     def __init__(self,
                  target_url='https://www.tradingview.com/'):
-        self.driver = webdriver.Chrome(ChromeDriverManager().install())
+        chrome_options = webdriver.ChromeOptions()
+        prefs = {"profile.managed_default_content_settings.images": 2}
+        chrome_options.add_experimental_option("prefs", prefs)
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+
         self.target_url = target_url
         self.driver.get(self.target_url)
 
