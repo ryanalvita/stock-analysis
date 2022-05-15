@@ -27,6 +27,72 @@ class TradingViewScraper:
         self.target_url = target_url
         self.driver.get(self.target_url)
 
+    def get_all_stock_code(
+        self,
+    ):
+        # Define url
+        url = f"https://www.tradingview.com/markets/stocks-indonesia/market-movers-all-stocks/"
+        
+        # Go to url
+        self.driver.get(url)
+        self.driver.maximize_window()
+        sleep(2)
+
+        # Load all data
+        while len(self.driver.find_elements(By.CLASS_NAME, 'loadButton-59hnCnPW')) != 0:
+            self.driver.find_elements(By.CLASS_NAME, 'loadButton-59hnCnPW')[0].click()
+            sleep(1)
+        
+        # Create dataframe
+        df = pd.read_html(self.driver.page_source)[1]
+        
+        # Separate stock code and company name
+        df["Stock Code"] = df["Ticker"].apply(lambda x: x[:4])
+        df["Company Name"] = df["Ticker"].apply(lambda x: x[4:])
+
+        # Rename and reorder columns
+        df = df.drop("Ticker", axis=1)
+        rename_columns = {
+            "Stock Code": "Stock Code",
+            "Company Name": "Company Name",
+            "Sector": "Sector",
+            "Last": "Last",
+            "Chg": "Change",
+            "Chg %": "Change [%]",
+            "Technical Rating": "Technical Rating",
+            "Vol": "Vol",
+            "Volume*Price": "Volume*Price",
+            "Mkt Cap": "Market Cap",
+            "P/E": "PE Ratio",
+            "EPS (TTM)": "EPS (TTM)",
+            "EMPLOYEES": "Employees",
+        }
+        df = df.rename(columns=rename_columns)
+        df = df[list(rename_columns.values())]
+
+        # Clean dataframe
+        # Remove IDR
+        df["Last"] = df["Last"].apply(lambda x: x.replace('IDR', ''))
+        df["Change"] = df["Change"].apply(lambda x: x.replace('IDR', ''))
+        df["EPS (TTM)"] = df["EPS (TTM)"].apply(lambda x: x.replace('IDR', ''))
+        df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('IDR', ''))
+        
+        # Remove percentage
+        df["Change [%]"] = df["Change [%]"].apply(lambda x: x.replace('%', ''))
+
+        # Convert T, B, M, K
+        df["Vol"] = df["Vol"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
+        df["Volume*Price"] = df["Volume*Price"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
+        df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
+        df["Employees"] = df["Employees"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
+        
+        # Create directory
+        directory = f'./results/'
+        create_directory(directory)
+
+        # Save overview companies data as csv
+        df.to_csv('./results/Overview.csv')
+
     def get_fundamental_data(
         self,
         stock_filter: Optional[list] = None,
@@ -218,5 +284,8 @@ if __name__ == '__main__':
 
     tv_scraper = TradingViewScraper()
 
+    # Get all companies data
+    tv_scraper.get_all_stock_code()
+
     # Get fundamental data
-    tv_scraper.get_fundamental_data(stock_filter=ALL)
+    tv_scraper.get_fundamental_data()
