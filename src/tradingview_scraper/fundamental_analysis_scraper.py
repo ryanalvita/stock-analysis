@@ -91,11 +91,11 @@ class TradingViewScraper:
         df["Employees"] = df["Employees"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
         
         # Create directory
-        directory = f'./results/'
+        directory = f'./results'
         create_directory(directory)
 
         # Save overview companies data as csv
-        df.to_csv('./results/Overview.csv')
+        df.to_csv(f'{directory}/Overview.csv')
 
     def get_fundamental_data(
         self,
@@ -267,14 +267,14 @@ class TradingViewScraper:
                     json_structure.update({"ratios": json.loads(ratios.to_json(orient='split', indent=4))})
 
                     # Save the data in json
-                    with open(f'./results/{stock}.json', 'w') as f:
+                    with open(f'{directory}/{stock}.json', 'w') as f:
                         f.write(json.dumps(json_structure, ensure_ascii=False, indent=4))
                 else:
                     print(f"No fundamental data available for stock: {stock}")
 
                 bar()
         
-        print("All fundamental data is downloaded and stored in: 'results/'")
+        print(f"All fundamental data is downloaded and stored in: {directory} directory")
 
 def create_directory(directory):
     # Check whether the specified path exists or not
