@@ -23,9 +23,82 @@ ALL = ["BVIC","BWPT","BYAN","CAKK","CAMP","CANI","CARE","CARS","CASA","CASH","CA
 class TradingViewScraper:
     def __init__(self,
                  target_url='https://www.tradingview.com/'):
-        self.driver = webdriver.Chrome(ChromeDriverManager().install())
+        chrome_options = webdriver.ChromeOptions()
+        prefs = {"profile.managed_default_content_settings.images": 2}
+        chrome_options.add_experimental_option("prefs", prefs)
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+
         self.target_url = target_url
         self.driver.get(self.target_url)
+
+    def get_all_stock_code(
+        self,
+    ):
+        # Define url
+        url = f"https://www.tradingview.com/markets/stocks-indonesia/market-movers-all-stocks/"
+        
+        # Go to url
+        self.driver.get(url)
+        self.driver.maximize_window()
+        sleep(2)
+
+        # Load all data
+        while len(self.driver.find_elements(By.CLASS_NAME, 'loadButton-59hnCnPW')) != 0:
+            self.driver.find_elements(By.CLASS_NAME, 'loadButton-59hnCnPW')[0].click()
+            sleep(1)
+        
+        # Create dataframe
+        df = pd.read_html(self.driver.page_source)[1]
+        
+        # Get Stock Code and Company Name
+        elements_stock_code = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tbody/tr/td/span/a')
+        elements_company_name = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tbody/tr/td/span/sup')
+        for i in range(0, len(df)):
+            df.loc[i, "Stock Code"] = elements_stock_code[i].text
+            df.loc[i, "Company Name"] = elements_company_name[i].text
+
+        # Rename and reorder columns
+        df = df.drop("Ticker", axis=1)
+        rename_columns = {
+            "Stock Code": "Stock Code",
+            "Company Name": "Company Name",
+            "Sector": "Sector",
+            "Last": "Last",
+            "Chg": "Change",
+            "Chg %": "Change [%]",
+            "Technical Rating": "Technical Rating",
+            "Vol": "Vol",
+            "Volume*Price": "Volume*Price",
+            "Mkt Cap": "Market Cap",
+            "P/E": "PE Ratio",
+            "EPS (TTM)": "EPS (TTM)",
+            "EMPLOYEES": "Employees",
+        }
+        df = df.rename(columns=rename_columns)
+        df = df[list(rename_columns.values())]
+
+        # Clean dataframe
+        # Remove IDR
+        df["Last"] = df["Last"].apply(lambda x: x.replace('IDR', ''))
+        df["Change"] = df["Change"].apply(lambda x: x.replace('IDR', ''))
+        df["EPS (TTM)"] = df["EPS (TTM)"].apply(lambda x: x.replace('IDR', ''))
+        df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('IDR', ''))
+        
+        # Remove percentage
+        df["Change [%]"] = df["Change [%]"].apply(lambda x: x.replace('%', ''))
+
+        # Convert T, B, M, K
+        df["Vol"] = df["Vol"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
+        df["Volume*Price"] = df["Volume*Price"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
+        df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
+        df["Employees"] = df["Employees"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
+        
+        # Create directory
+        directory = f'./results'
+        create_directory(directory)
+
+        # Save overview companies data as csv
+        df.to_csv(f'{directory}/Overview.csv')
 
     def get_fundamental_data(
         self,
@@ -50,9 +123,16 @@ class TradingViewScraper:
         # Create directory
         directory = f'./results/'
         create_directory(directory)
+
+        # Get stocks
+        if stock_filter:
+            stocks = stock_filter
+        else:
+            overview = pd.read_csv(f'{directory}/Overview.csv', index_col=0)
+            stocks = overview["Stock Code"].to_list()
         
-        with alive_bar(len(stock_filter), force_tty=True) as bar:
-            for stock in stock_filter:
+        with alive_bar(len(stocks), force_tty=True) as bar:
+            for stock in stocks:
                 json_structure = {}
                 income_statement = pd.DataFrame()
                 balance_sheet = pd.DataFrame()
@@ -197,14 +277,14 @@ class TradingViewScraper:
                     json_structure.update({"ratios": json.loads(ratios.to_json(orient='split', indent=4))})
 
                     # Save the data in json
-                    with open(f'./results/{stock}.json', 'w') as f:
+                    with open(f'{directory}/{stock}.json', 'w') as f:
                         f.write(json.dumps(json_structure, ensure_ascii=False, indent=4))
                 else:
                     print(f"No fundamental data available for stock: {stock}")
 
                 bar()
         
-        print("All fundamental data is downloaded and stored in: 'results/'")
+        print(f"All fundamental data is downloaded and stored in: {directory} directory")
 
 def create_directory(directory):
     # Check whether the specified path exists or not
@@ -218,5 +298,8 @@ if __name__ == '__main__':
 
     tv_scraper = TradingViewScraper()
 
+    # Get all companies data
+    tv_scraper.get_all_stock_code()
+
     # Get fundamental data
-    tv_scraper.get_fundamental_data(stock_filter=ALL)
+    tv_scraper.get_fundamental_data()
