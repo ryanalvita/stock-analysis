@@ -1,5 +1,8 @@
-name: Schedule
+name: Cronjob to scrape data from Trading View webiste
 on:
+  push:
+    branches:
+      - master
   schedule:
     - cron: '0 8 * * *'
 jobs:
