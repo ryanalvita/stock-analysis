@@ -24,8 +24,13 @@ class TradingViewScraper:
     def __init__(self,
                  target_url='https://www.tradingview.com/'):
         chrome_options = webdriver.ChromeOptions()
-        prefs = {"profile.managed_default_content_settings.images": 2}
-        chrome_options.add_experimental_option("prefs", prefs)
+        chrome_options.add_argument("start-maximized"); # open Browser in maximized mode
+        chrome_options.add_argument("disable-infobars"); # disabling infobars
+        chrome_options.add_argument("--disable-dev-shm-usage"); # overcome limited resource problems
+        chrome_options.add_argument("--disable-extensions"); # disabling extensions
+        chrome_options.add_argument("--disable-gpu"); # applicable to windows os only
+        chrome_options.add_argument("--no-sandbox"); # bypass OS security model
+        chrome_options.add_argument("--headless"); # bypass OS security model
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
 
         self.target_url = target_url
@@ -293,9 +298,8 @@ def create_directory(directory):
     if not directory_exist:
         os.makedirs(directory, exist_ok = True)
 
-
-if __name__ == '__main__':
-
+def main():
+    """Run fundamental analysis scraper"""
     tv_scraper = TradingViewScraper()
 
     # Get all companies data
@@ -303,3 +307,6 @@ if __name__ == '__main__':
 
     # Get fundamental data
     tv_scraper.get_fundamental_data()
+
+if __name__ == '__main__':
+    main()
