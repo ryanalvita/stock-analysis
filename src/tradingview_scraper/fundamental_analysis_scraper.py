@@ -293,9 +293,8 @@ def create_directory(directory):
     if not directory_exist:
         os.makedirs(directory, exist_ok = True)
 
-
-if __name__ == '__main__':
-
+def main():
+    """Run fundamental analysis scraper"""
     tv_scraper = TradingViewScraper()
 
     # Get all companies data
@@ -303,3 +302,6 @@ if __name__ == '__main__':
 
     # Get fundamental data
     tv_scraper.get_fundamental_data()
+
+if __name__ == '__main__':
+    main()
