@@ -18,3 +18,8 @@ jobs:
     - name: Scrape fundamental data from Trading View website
       run: |
         python src/tradingview_scraper/fundamental_data_scraper.py
+    - name: Upload data as artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: fundamental-data
+        path: ./results
