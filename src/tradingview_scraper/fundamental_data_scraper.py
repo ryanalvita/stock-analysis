@@ -39,7 +39,7 @@ class TradingViewScraper:
         
         # Go to url
         self.driver.get(url)
-        sleep(2)
+        sleep(1)
 
         # Load all data
         while len(self.driver.find_elements(By.CLASS_NAME, 'loadButton-59hnCnPW')) != 0:
