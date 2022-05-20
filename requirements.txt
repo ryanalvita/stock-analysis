@@ -37,6 +37,8 @@ idna==3.3
     #   requests
     #   trio
     #   urllib3
+lxml==4.8.0
+    # via tradingview-scraper (setup.py)
 numpy==1.22.3
     # via
     #   pandas
