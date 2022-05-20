@@ -43,7 +43,8 @@ class TradingViewScraper:
 
         # Load all data
         while len(self.driver.find_elements(By.CLASS_NAME, 'loadButton-59hnCnPW')) != 0:
-            self.driver.find_elements(By.CLASS_NAME, 'loadButton-59hnCnPW')[0].click()
+            load_more_click = self.driver.find_elements(By.CLASS_NAME, 'loadButton-59hnCnPW')[0]
+            self.driver.execute_script("arguments[0].click();", load_more_click)
             sleep(1)
         
         # Create dataframe
@@ -150,12 +151,13 @@ class TradingViewScraper:
                         try:
                             # Go to url
                             self.driver.get(url)
-                            sleep(1)
 
                             if period_type == 'yearly':
-                                self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div/button')[0].click()
+                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div/button')[0]
+                                self.driver.execute_script("arguments[0].click();", period_click)
                             elif period_type == 'quarterly':
-                                self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div/button')[1].click()
+                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div/button')[1]
+                                self.driver.execute_script("arguments[0].click();", period_click)
 
                             # Get all elements
                             elements = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[3]/div[2]/div/div')
