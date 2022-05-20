@@ -26,11 +26,6 @@ class TradingViewScraper:
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("start-maximized"); # open Browser in maximized mode
         chrome_options.add_argument("disable-infobars"); # disabling infobars
-        chrome_options.add_argument("--disable-dev-shm-usage"); # overcome limited resource problems
-        chrome_options.add_argument("--disable-extensions"); # disabling extensions
-        chrome_options.add_argument("--disable-gpu"); # applicable to windows os only
-        chrome_options.add_argument("--no-sandbox"); # bypass OS security model
-        chrome_options.add_argument("--headless"); # bypass OS security model
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
 
         self.target_url = target_url
@@ -44,7 +39,6 @@ class TradingViewScraper:
         
         # Go to url
         self.driver.get(url)
-        self.driver.maximize_window()
         sleep(2)
 
         # Load all data
@@ -103,7 +97,7 @@ class TradingViewScraper:
         create_directory(directory)
 
         # Save overview companies data as csv
-        df.to_csv(f'{directory}/Overview.csv')
+        df.to_csv(f'{directory}/overview.csv')
 
     def get_fundamental_data(
         self,
@@ -125,9 +119,11 @@ class TradingViewScraper:
         # Define financial types
         financial_types = ["income-statement", "balance-sheet", "cash-flow", "statistics-and-ratios"]
 
+        # Define period types
+        period_types = ["yearly", "quarterly"]
+
         # Create directory
-        directory = f'./results/'
-        create_directory(directory)
+        directory = f'./results'
 
         # Get stocks
         if stock_filter:
@@ -138,154 +134,162 @@ class TradingViewScraper:
         
         with alive_bar(len(stocks), force_tty=True) as bar:
             for stock in stocks:
-                json_structure = {}
-                income_statement = pd.DataFrame()
-                balance_sheet = pd.DataFrame()
-                cash_flow = pd.DataFrame()
-                ratios = pd.DataFrame()
-                for financial_type in financial_types:
-                    
-                    # Define url
-                    url = f"https://www.tradingview.com/symbols/IDX-{stock}/financials-{financial_type}/"
-                    
-                    try:
-                        # Go to url
-                        self.driver.get(url)
-                        sleep(1)
+                for period_type in period_types:
+                    json_structure = {}
+                    income_statement = pd.DataFrame()
+                    balance_sheet = pd.DataFrame()
+                    cash_flow = pd.DataFrame()
+                    ratios = pd.DataFrame()
+                    for financial_type in financial_types: 
+                        directory = f'./results/{period_type}'
+                        create_directory(directory)
 
-                        # Get all elements
-                        elements = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[3]/div[2]/div/div')
-                        sleep(1)
-                    except:
-                        print(f"Cannot access fundamental data for stock: {stock}")
-                        break
-                    
-                    # Define empty list for columns
-                    columns = []
+                        # Define url
+                        url = f"https://www.tradingview.com/symbols/IDX-{stock}/financials-{financial_type}/"
+                        
+                        try:
+                            # Go to url
+                            self.driver.get(url)
+                            sleep(1)
 
-                    # Define double data every financial type
-                    # Double data means that in the website, it has percentage for the differnce
-                    # We will exclude those data since those data can be also determined post-scraping
-                    doubles_income_statement = [
-                        "Gross profit", 
-                        "Total revenue",
-                        "Operating income", 
-                        "Pretax income", 
-                        "Net income", 
-                        "Basic earnings per share (Basic EPS)", 
-                        "Diluted earnings per share (Diluted EPS)", 
-                        "EBITDA", 
-                        "EBIT",
-                    ]
-                    doubles_balance_sheet = [
-                        "Total assets",
-                        "Total liabilities",
-                        "Total equity",
-                    ]
-                    doubles_cash_flow = [
-                        "Cash from operating activities",
-                        "Cash from investing activities",
-                        "Cash from financing activities",
-                        "Free cash flow",
-                    ]
-                    skip_ratios = [
-                        "Valuation ratios",
-                        "Key stats",
-                        "Profitability ratios",
-                        "Liquidity ratios",
-                        "Solvency ratios",
-                    ]
+                            if period_type == 'yearly':
+                                self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div/button')[0].click()
+                            elif period_type == 'quarterly':
+                                self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div/button')[1].click()
 
-                    # Get all data from all elements
-                    for element in elements:
-                        text = element.text
-                        data = pd.Series([x.replace("−","-") for x in text.replace('\n','#').replace('\u202c','#').replace('\u202a','#').replace('###','#').replace('##','#').split('#')])
-                        if data[0] == "Currency: IDR":
-                            # Define columns
-                            for ix, row in data.items():
-                                if ix == 0:
-                                    pass
-                                else:
-                                    columns.append(row)
-                        elif financial_type == 'income-statement':
-                            for i in range (0, len(columns)):
-                                if data[0] in doubles_income_statement:
-                                    try:
-                                        if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                            income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
-                                        else:
-                                            income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
-                                    except:
-                                        income_statement.loc[data[0], columns[i]] = data[2*i+1]
-                                else:
-                                    try:
-                                        if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                            income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
-                                        else:
-                                            income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
-                                    except:
-                                        income_statement.loc[data[0], columns[i]] = data[i+1]
-                        elif financial_type == 'balance-sheet':
-                            for i in range (0, len(columns)):
-                                if data[0] in doubles_balance_sheet:
-                                    try:
-                                        if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                            balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
-                                        else:
-                                            balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
-                                    except:
-                                        balance_sheet.loc[data[0], columns[i]] = data[2*i+1]
-                                else:
-                                    try:
-                                        if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                            balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
-                                        else:
-                                            balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
-                                    except:
-                                        balance_sheet.loc[data[0], columns[i]] = data[i+1]
-                        elif financial_type == 'cash-flow':
-                            for i in range (0, len(columns)):
-                                if data[0] in doubles_cash_flow:
-                                    try:
-                                        if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                            cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
-                                        else:
-                                            cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
-                                    except:
-                                        cash_flow.loc[data[0], columns[i]] = data[2*i+1]
-                                else:
-                                    try:
-                                        if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                            cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
-                                        else:
-                                            cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
-                                    except:
-                                        cash_flow.loc[data[0], columns[i]] = data[i+1]
-                        elif financial_type == 'statistics-and-ratios':
-                            for i in range (0, len(columns)):
-                                if data[0] in skip_ratios:
-                                    break
-                                else:
-                                    try:
-                                        if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                            ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
-                                        else:
-                                            ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
-                                    except:
-                                        ratios.loc[data[0], columns[i]] = data[i+1]
+                            # Get all elements
+                            elements = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[3]/div[2]/div/div')
+                            sleep(1)
+                        except:
+                            print(f"Cannot access fundamental data for stock: {stock}")
+                            break
+                        
+                        # Define empty list for columns
+                        columns = []
 
-                # Structurized the json
-                if len(income_statement.columns) >= 1 and len(balance_sheet.columns) >= 1 and len(cash_flow.columns) >= 1 and len(ratios.columns) >= 1:
-                    json_structure.update({"income_statement": json.loads(income_statement.to_json(orient='split', indent=4))})
-                    json_structure.update({"balance_sheet": json.loads(balance_sheet.to_json(orient='split', indent=4))})
-                    json_structure.update({"cash_flow": json.loads(cash_flow.to_json(orient='split', indent=4))})
-                    json_structure.update({"ratios": json.loads(ratios.to_json(orient='split', indent=4))})
+                        # Define double data every financial type
+                        # Double data means that in the website, it has percentage for the differnce
+                        # We will exclude those data since those data can be also determined post-scraping
+                        doubles_income_statement = [
+                            "Gross profit", 
+                            "Total revenue",
+                            "Operating income", 
+                            "Pretax income", 
+                            "Net income", 
+                            "Basic earnings per share (Basic EPS)", 
+                            "Diluted earnings per share (Diluted EPS)", 
+                            "EBITDA", 
+                            "EBIT",
+                        ]
+                        doubles_balance_sheet = [
+                            "Total assets",
+                            "Total liabilities",
+                            "Total equity",
+                        ]
+                        doubles_cash_flow = [
+                            "Cash from operating activities",
+                            "Cash from investing activities",
+                            "Cash from financing activities",
+                            "Free cash flow",
+                        ]
+                        skip_ratios = [
+                            "Valuation ratios",
+                            "Key stats",
+                            "Profitability ratios",
+                            "Liquidity ratios",
+                            "Solvency ratios",
+                        ]
 
-                    # Save the data in json
-                    with open(f'{directory}/{stock}.json', 'w') as f:
-                        f.write(json.dumps(json_structure, ensure_ascii=False, indent=4))
-                else:
-                    print(f"No fundamental data available for stock: {stock}")
+                        # Get all data from all elements
+                        for element in elements:
+                            text = element.text
+                            data = pd.Series([x.replace("−","-") for x in text.replace('\n','#').replace('\u202c','#').replace('\u202a','#').replace('###','#').replace('##','#').split('#')])
+                            if data[0] == "Currency: IDR":
+                                # Define columns
+                                for ix, row in data.items():
+                                    if ix == 0:
+                                        pass
+                                    else:
+                                        columns.append(row)
+                            elif financial_type == 'income-statement':
+                                for i in range (0, len(columns)):
+                                    if data[0] in doubles_income_statement:
+                                        try:
+                                            if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
+                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                            else:
+                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                        except:
+                                            income_statement.loc[data[0], columns[i]] = data[2*i+1]
+                                    else:
+                                        try:
+                                            if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
+                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                            else:
+                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                        except:
+                                            income_statement.loc[data[0], columns[i]] = data[i+1]
+                            elif financial_type == 'balance-sheet':
+                                for i in range (0, len(columns)):
+                                    if data[0] in doubles_balance_sheet:
+                                        try:
+                                            if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                            else:
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                        except:
+                                            balance_sheet.loc[data[0], columns[i]] = data[2*i+1]
+                                    else:
+                                        try:
+                                            if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                            else:
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                        except:
+                                            balance_sheet.loc[data[0], columns[i]] = data[i+1]
+                            elif financial_type == 'cash-flow':
+                                for i in range (0, len(columns)):
+                                    if data[0] in doubles_cash_flow:
+                                        try:
+                                            if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
+                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                            else:
+                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                        except:
+                                            cash_flow.loc[data[0], columns[i]] = data[2*i+1]
+                                    else:
+                                        try:
+                                            if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
+                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                            else:
+                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                        except:
+                                            cash_flow.loc[data[0], columns[i]] = data[i+1]
+                            elif financial_type == 'statistics-and-ratios':
+                                for i in range (0, len(columns)):
+                                    if data[0] in skip_ratios:
+                                        break
+                                    else:
+                                        try:
+                                            if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
+                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                            else:
+                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                        except:
+                                            ratios.loc[data[0], columns[i]] = data[i+1]
+
+                    # Structurized the json
+                    if len(income_statement.columns) >= 1 and len(balance_sheet.columns) >= 1 and len(cash_flow.columns) >= 1 and len(ratios.columns) >= 1:
+                        json_structure.update({"income_statement": json.loads(income_statement.to_json(orient='split', indent=4))})
+                        json_structure.update({"balance_sheet": json.loads(balance_sheet.to_json(orient='split', indent=4))})
+                        json_structure.update({"cash_flow": json.loads(cash_flow.to_json(orient='split', indent=4))})
+                        json_structure.update({"ratios": json.loads(ratios.to_json(orient='split', indent=4))})
+
+                        # Save the data in json
+                        with open(f'{directory}/{stock}.json', 'w') as f:
+                            f.write(json.dumps(json_structure, ensure_ascii=False, indent=4))
+                    else:
+                        print(f"No fundamental data available for stock: {stock}")
 
                 bar()
         
@@ -306,7 +310,7 @@ def main():
     tv_scraper.get_all_stock_code()
 
     # Get fundamental data
-    tv_scraper.get_fundamental_data(stock_filter=['UNVR'])
+    tv_scraper.get_fundamental_data()
 
 if __name__ == '__main__':
     main()

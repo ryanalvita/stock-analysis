@@ -2,7 +2,7 @@ name: Cronjob to scrape data from Trading View webiste
 on:
   push:
     branches:
-      - "**"
+      - main
   schedule:
     - cron: '0 8 * * *'
 jobs:
