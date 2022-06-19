@@ -7,7 +7,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload, MediaFileUpload
   
-class DriveAPI:
+class GoogleDriveAPI:
     def __init__(self):
         
         # Determine credentials
@@ -31,14 +31,16 @@ class DriveAPI:
   
     def file_list(self):
         page_token = None
+        files = []
         while True:
             response = self.service.files().list(spaces='drive', fields='nextPageToken, files(id, name)', pageToken=page_token).execute()
             for file in response.get('files', []):
-                # Process change
-                print (f"Found file: {file.get('name')} ({file.get('id')})")
+                files.append(file)
             page_token = response.get('nextPageToken', None)
             if page_token is None:
                 break
+
+        return files
     
     def file_download(self, file_id, file_name):
         """Download a file.
