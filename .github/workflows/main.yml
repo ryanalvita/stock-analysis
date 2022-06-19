@@ -1,10 +1,10 @@
-name: Cronjob to scrape data from Trading View webiste
+name: Cronjob to scrape data from Trading View website
 on:
   push:
     branches:
       - main
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '0 8 * * 1'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,9 +17,4 @@ jobs:
         pip install -e .
     - name: Scrape fundamental data from Trading View website
       run: |
-        python src/tradingview_scraper/fundamental_data_scraper.py
-    - name: Upload data as artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: fundamental-data
-        path: ./results
+        python src/stock_analysis/tradingview_data_scraper.py
