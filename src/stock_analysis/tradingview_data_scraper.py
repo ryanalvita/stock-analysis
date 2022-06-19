@@ -4,15 +4,14 @@ import json
 import numpy as np
 import pandas as pd
 
-from time import sleep
-
+from alive_progress import alive_bar
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from time import sleep
+from typing import Optional
 from webdriver_manager.chrome import ChromeDriverManager
 
-from alive_progress import alive_bar
-
-from typing import Optional
+from stock_analysis.google_drive_api import GoogleDriveAPI
 
 IDX_30 = ["ADRO","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BMRI","BRPT","BUKA","CPIN","EMTK","EXCL","ICBP","INCO","INDF","INKP","KLBF","MDKA","MIKA","PGAS","PTBA","SMGR","TBIG","TINS","TLKM","TOWR","UNTR","UNVR","WSKT"]
 LQ_45 = ["ADRO","AMRT","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BFIN","BMRI","BRPT","BUKA","CPIN","EMTK","ERAA","EXCL","GGRM","HMSP","HRUM","ICBP","INCO","INDF","INKP","INTP","ITMG","JPFA","KLBF","MDKA","MEDC","MIKA","MNCN","PGAS","PTBA","PTPP","SMGR","TBIG","TINS","TKIM","TLKM","TOWR","TPIA","UNTR","UNVR","WIKA","WSKT"]
@@ -34,6 +33,9 @@ class TradingViewScraper:
     def get_all_stock_code(
         self,
     ):
+        # Initialize google drive api
+        gdrive_api = GoogleDriveAPI()
+
         # Define url
         url = f"https://www.tradingview.com/markets/stocks-indonesia/market-movers-all-stocks/"
         
@@ -100,12 +102,19 @@ class TradingViewScraper:
         # Save overview companies data as csv
         df.to_csv(f'{directory}/overview.csv')
 
+        # Upload to google drive
+        folder_id = os.environ["GDRIVE_FOLDER_ID_TRADINGVIEW"]
+        gdrive_api.file_upload(f'{directory}/overview.csv', folder_id)
+
     def get_fundamental_data(
         self,
         stock_filter: Optional[list] = None,
         year_filter: Optional[list] = None,
         period_filter: Optional[list] = None):
 
+        # Initiate google drive api
+        gdrive_api = GoogleDriveAPI()
+        
         # Filter
         if stock_filter:
             if isinstance(stock_filter, str):
@@ -130,6 +139,14 @@ class TradingViewScraper:
         if stock_filter:
             stocks = stock_filter
         else:
+            # Find overview file on google drive
+            file_list = gdrive_api.file_list()
+            for file in file_list:
+                if file["name"].lower() == "overview.csv":
+                    file_id = file["id"]
+                    break
+            file = gdrive_api.file_download(file_id, f'{directory}/Overview.csv')
+
             overview = pd.read_csv(f'{directory}/Overview.csv', index_col=0)
             stocks = overview["Stock Code"].to_list()
         
@@ -141,6 +158,13 @@ class TradingViewScraper:
                     balance_sheet = pd.DataFrame()
                     cash_flow = pd.DataFrame()
                     ratios = pd.DataFrame()
+
+                    # Define folder id for uploading to google drive
+                    if period_type == 'quarterly':
+                        folder_id = os.environ["GDRIVE_FOLDER_ID_TRADINGVIEW_QUARTERLY"]
+                    elif period_type == 'yearly':
+                        folder_id = os.environ["GDRIVE_FOLDER_ID_TRADINGVIEW_YEARLY"]
+
                     for financial_type in financial_types: 
                         directory = f'./results/{period_type}'
                         create_directory(directory)
@@ -290,6 +314,10 @@ class TradingViewScraper:
                         # Save the data in json
                         with open(f'{directory}/{stock}.json', 'w') as f:
                             f.write(json.dumps(json_structure, ensure_ascii=False, indent=4))
+
+                        # Upload to google drive
+                        gdrive_api.file_upload(f'{directory}/{stock}.json', folder_id)
+
                     else:
                         print(f"No fundamental data available for stock: {stock}")
 
