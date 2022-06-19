@@ -1,10 +1,10 @@
-name: Cronjob to scrape data from Trading View webiste
+name: Cronjob to scrape data from Trading View website
 on:
   push:
     branches:
       - main
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '0 8 * * 1'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,10 +16,19 @@ jobs:
         pip install -r requirements.txt
         pip install -e .
     - name: Scrape fundamental data from Trading View website
+      env:
+        GOOGLECREDENTIALS_TYPE: ${{ secrets.GOOGLECREDENTIALS_TYPE }}
+        GOOGLECREDENTIALS_PROJECT_ID: ${{ secrets.GOOGLECREDENTIALS_PROJECT_ID }}
+        GOOGLECREDENTIALS_PRIVATE_KEY_ID: ${{ secrets.GOOGLECREDENTIALS_PRIVATE_KEY_ID }}
+        GOOGLECREDENTIALS_PRIVATE_KEY: ${{ secrets.GOOGLECREDENTIALS_PRIVATE_KEY }}
+        GOOGLECREDENTIALS_CLIENT_EMAIL: ${{ secrets.GOOGLECREDENTIALS_CLIENT_EMAIL }}
+        GOOGLECREDENTIALS_CLIENT_ID: ${{ secrets.GOOGLECREDENTIALS_CLIENT_ID }}
+        GOOGLECREDENTIALS_AUTH_URI: ${{ secrets.GOOGLECREDENTIALS_AUTH_URI }}
+        GOOGLECREDENTIALS_TOKEN_URI: ${{ secrets.GOOGLECREDENTIALS_TOKEN_URI }}
+        GOOGLECREDENTIALS_AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.GOOGLECREDENTIALS_AUTH_PROVIDER_X509_CERT_URL }}
+        GOOGLECREDENTIALS_CLIENT_X509_CERT_URL: ${{ secrets.GOOGLECREDENTIALS_CLIENT_X509_CERT_URL }}
+        GDRIVE_FOLDER_ID_TRADINGVIEW: ${{ secrets.GDRIVE_FOLDER_ID_TRADINGVIEW }}
+        GDRIVE_FOLDER_ID_TRADINGVIEW_QUARTERLY: ${{ secrets.GDRIVE_FOLDER_ID_TRADINGVIEW_QUARTERLY }}
+        GDRIVE_FOLDER_ID_TRADINGVIEW_YEARLY: ${{ secrets.GDRIVE_FOLDER_ID_TRADINGVIEW_YEARLY }}
       run: |
-        python src/tradingview_scraper/fundamental_data_scraper.py
-    - name: Upload data as artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: fundamental-data
-        path: ./results
+        python src/stock_analysis/tradingview_data_scraper.py
