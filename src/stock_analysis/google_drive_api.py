@@ -1,22 +1,11 @@
 # import the required libraries
-from __future__ import print_function
 import os
 import io
 import shutil
-from apiclient import errors
 from mimetypes import MimeTypes
-from googleapiclient.discovery import build
 from google.oauth2 import service_account
-from google.oauth2.credentials import Credentials
-from googleapiclient.http import MediaIoBaseDownload, MediaFileUpload
-
-import os.path
-
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+from googleapiclient.http import MediaIoBaseDownload, MediaFileUpload
   
 class DriveAPI:
     def __init__(self):
