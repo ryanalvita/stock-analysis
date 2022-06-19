@@ -340,7 +340,7 @@ def main():
     tv_scraper.get_all_stock_code()
 
     # Get fundamental data
-    tv_scraper.get_fundamental_data()
+    tv_scraper.get_fundamental_data(stock_filter=ALL)
 
 if __name__ == '__main__':
     main()
