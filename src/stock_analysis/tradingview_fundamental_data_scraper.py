@@ -18,7 +18,7 @@ IDX_30 = ["ADRO","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BMRI","BRPT","BUKA",
 LQ_45 = ["ADRO","AMRT","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BFIN","BMRI","BRPT","BUKA","CPIN","EMTK","ERAA","EXCL","GGRM","HMSP","HRUM","ICBP","INCO","INDF","INKP","INTP","ITMG","JPFA","KLBF","MDKA","MEDC","MIKA","MNCN","PGAS","PTBA","PTPP","SMGR","TBIG","TINS","TKIM","TLKM","TOWR","TPIA","UNTR","UNVR","WIKA","WSKT"]
 IDX_80 = ["AALI","ACES","ADRO","AGII","AKRA","AMRT","ANTM","ASII","ASRI","ASSA","BBCA","BBNI","BBRI","BBTN","BFIN","BJBR","BJTM","BMRI","BMTR","BRPT","BSDE","BTPS","BUKA","CPIN","CTRA","DGNS","DMAS","DOID","DSNG","ELSA","EMTK","ERAA","ESSA","EXCL","GGRM","HEAL","HMSP","HOKI","HRUM","ICBP","INCO","INDF","INKP","INTP","ISAT","ITMG","JPFA","JSMR","KAEF","KLBF","LPKR","LPPF","LSIP","MAPI","MDKA","MEDC","MIKA","MNCN","MYOR","PGAS","PTBA","PTPP","PWON","SCMA","SIDO","SMGR","SMRA","SRTG","TAPG","TBIG","TINS","TKIM","TLKM","TOWR","TPIA","UNTR","UNVR","WIKA","WMUU","WSKT"]
 
-ALL = ["BVIC","BWPT","BYAN","CAKK","CAMP","CANI","CARE","CARS","CASA","CASH","CASS","CBMF","CCSI","CEKA","CENT","CFIN","CINT","CITA","CITY","CLAY","CLEO","CLPI","CMNP","CMNT","CMPP","CMRY","CNKO","CNTB","CNTX","COCO","COWL","CPIN","CPRI","CPRO","CSAP","CSIS","CSMI","CSRA","CTBN","CTRA","CTTH","DADA","DART","DAYA","DCII","DEAL","DEFI","DEPO","DEWA","DFAM","DGIK","DGNS","DIGI","DILD","DIVA","DKFT","DLTA","DMAS","DMMX","DMND","DNAR","DNET","DOID","DPNS","DPUM","DRMA","DSFI","DSNG","DSSA","DUCK","DUTI","DVLA","DWGL","DYAN","EAST","ECII","EDGE","EKAD","ELSA","ELTY","EMDE","EMTK","ENAK","ENRG","ENVY","ENZO","EPAC","EPMT","ERAA","ERTX","ESIP","ESSA","ESTA","ESTI","ETWA","EXCL","FAPA","FAST","FASW","FILM","FIMP","FIRE","FISH","FITT","FLMC","FMII","FOOD","FORU","FORZ","FPNI","FREN","FUJI","GAMA","GDST","GDYR","GEMA","GEMS","GGRM","GGRP","GHON","GIAA","GJTL","GLOB","GLVA","GMFI","GMTD","GOLD","GOLL","GOOD","GPRA","GPSO","GSMF","GTBO","GTSI","GWSA","GZCO","HADE","HAIS","HDFA","HDIT","HDTX","HEAL","HELI","HERO","HEXA","HITS","HKMU","HMSP","HOKI","HOME","HOMI","HOPE","HOTL","HRME","HRTA","HRUM","IATA","IBFN","IBST","ICBP","ICON","IDEA","IDPR","IFII","IFSH","IGAR","IIKP","IKAI","IKAN","IKBI","IMAS","IMJS","IMPC","INAF","INAI","INCF","INCI","INCO","INDF","INDO","INDR","INDS","INDX","INDY","INKP","INOV","INPC","INPP","INPS","INRU","INTA","INTD","INTP","IPAC","IPCC","IPCM","IPOL","IPPE","IPTV","IRRA","ISAT","ISSP","ITIC","ITMA","ITMG","JAST","JAWA","JAYA","JECC","JGLE","JIHD","JKON","JKSW","JMAS","JPFA","JRPT","JSKY","JSMR","JSPT","JTPE","KAEF","KARW","KAYU","KBAG","KBLI","KBLM","KBLV","KBRI","KDSI","KEEN","KEJU","KIAS","KICI","KIJA","KINO","KIOS","KJEN","KKGI","KLBF","KMDS","KMTR","KOBX","KOIN","KONI","KOPI","KOTA","KPAL","KPAS","KPIG","KRAH","KRAS","KREN","KUAS","LABA","LAND","LAPD","LCGP","LCKM","LEAD","LFLO","LIFE","LINK","LION","LMAS","LMPI","LMSH","LPCK","LPGI","LPIN","LPKR","LPLI","LPPF","LPPS","LRNA","LSIP","LTLS","LUCK","LUCY","MABA","MAGP","MAIN","MAMI","MAMI","MAPA","MAPB","MAPI","MARI","MARK","MASA","MASB","MAYA","MBAP","MBSS","MBTO","MCAS","MCOL","MCOR","MDIA","MDKA","MDKI","MDLN","MDRN","MEDC","MEGA","MERK","META","MFIN","MFMI","MGLV","MGNA","MGRO","MICE","MIDI","MIKA","MINA","MIRA","MITI","MKNT","MKPI","MLBI","MLIA","MLPL","MLPT","MMLP","MNCN","MOLI","MPMX","MPOW","MPPA","MPRO","MRAT","MREI","MSIN","MSKY","MTDL","MTEL","MTFN","MTLA","MTPS","MTRA","MTSM","MTWI","MYOH","MYOR","MYRX","MYRX","MYTX","NASA","NASI","NATO","NELY","NETV","NFCX","NICK","NICL","NIKL","NIPS","NIRO","NISP","NOBU","NPGF","NRCA","NTBK","NUSA","NZIA","OASA","OBMD","OCAP","OILS","OKAS","OMRE","OPMS","PADI","PALM","PAMG","PANI","PANR","PANS","PBID","PBRX","PBSA","PCAR","PDES","PEGE","PEHA","PGAS","PGJO","PGLI","PGUN","PICO","PJAA","PKPK","PLAN","PLAS","PLIN","PMJS","PMMP","PNBN","PNBS","PNGO","PNIN","PNLF","PNSE","POLA","POLI","POLL","POLU","POLY","POOL","PORT","POSA","POWR","PPGL","PPRE","PPRO","PRAS","PRDA","PRIM","PSAB","PSDN","PSGO","PSKT","PSSI","PTBA","PTDU","PTIS","PTPP","PTPW","PTRO","PTSN","PTSP","PUDP","PURA","PURE","PURI","PWON","PYFA","PZZA","RAJA","RALS","RANC","RBMS","RDTX","REAL","RELI","RICY","RIGS","RIMO","RISE","RMBA","RMKE","ROCK","RODA","RONY","ROTI","RSGK","RUIS","RUNS","SAFE","SAME","SAMF","SAPX","SATU","SBAT","SBMA","SCCO","SCMA","SCNP","SCPI","SDMU","SDPC","SDRA","SEMA","SFAN","SGER","SGRO","SHID","SHIP","SIDO","SILO","SIMA","SIMP","SINI","SIPD","SKBM","SKLT","SKRN","SKYB","SLIS","SMAR","SMBR","SMCB","SMDM","SMDR","SMGR","SMKL","SMMA","SMMT","SMRA","SMRU","SMSM","SNLK","SOCI","SOFA","SOHO","SONA","SOSS","SOTS","SPMA","SPTO","SQMI","SRAJ","SRIL","SRSN","SRTG","SSIA","SSMS","SSTM","STAR","STTP","SUGI","SULI","SUPR","SURE","SWAT","TALF","TAMA","TAMU","TAPG","TARA","TAXI","TAYS","TBIG","TBLA","TBMS","TCID","TCPI","TDPM","TEBE","TECH","TELE","TFAS","TFCO","TGKA","TGRA","TIFA","TINS","TIRA","TIRT","TKIM","TLKM","TMAS","TMPO","TNCA","TOBA","TOPS","TOTL","TOTO","TOWR","TOYS","TPIA","TPMA","TRAM","TRIL","TRIM","TRIN","TRIO","TRIS","TRJA","TRST","TRUE","TRUK","TRUS","TSPC","TUGU","TURI","UANG","UCID","UFOE","ULTJ","UNIC","UNIQ","UNIT","UNSP","UNTR","UNVR","URBN","UVCR","VICI","VICO","VINS","VIVA","VOKS","VRNA","WAPO","WEGE","WEHA","WGSH","WICO","WIFI","WIIM","WIKA","WINS","WMPP","WMUU","WOMF","WOOD","WOWS","WSBP","WSKT","WTON","YELO","YPAS","YULE","ZBRA","ZINC","ZONE","ZYRX"]
+ALL = ["AALI","ABBA","ABDA","ABMM","ACES","ACST","ADES","ADHI","ADMF","ADMG","ADMR","ADRO","AGAR","AGII","AGRO","AGRS","AHAP","AIMS","AISA","AKKU","AKPI","AKRA","AKSI","ALDO","ALKA","ALMI","ALTO","AMAG","AMAN","AMAR","AMFG","AMIN","AMOR","AMRT","ANDI","ANJT","ANTM","APEX","APIC","APII","APLI","APLN","ARCI","ARGO","ARII","ARKA","ARMY","ARNA","ARTA","ARTI","ARTO","ASBI","ASDM","ASGR","ASII","ASJT","ASLC","ASMI","ASPI","ASRI","ASRM","ASSA","ATAP","ATIC","AUTO","AVIA","AYLS","BABP","BACA","BAJA","BALI","BANK","BAPA","BAPI","BATA","BAUT","BAYU","BBCA","BBHI","BBKP","BBLD","BBMD","BBNI","BBRI","BBRM","BBSI","BBSS","BBTN","BBYB","BCAP","BCIC","BCIP","BDMN","BEBS","BEEF","BEKS","BELL","BESS","BEST","BFIN","BGTG","BHAT","BHIT","BIKA","BIMA","BINA","BINO","BIPI","BIPP","BIRD","BISI","BJBR","BJTM","BKDP","BKSL","BKSW","BLTA","BLTZ","BLUE","BMAS","BMHS","BMRI","BMSR","BMTR","BNBA","BNBR","BNGA","BNII","BNLI","BOBA","BOGA","BOLA","BOLT","BOSS","BPFI","BPII","BPTR","BRAM","BRIS","BRMS","BRNA","BRPT","BSDE","BSIM","BSML","BSSR","BSWD","BTEK","BTEL","BTON","BTPN","BTPS","BUDI","BUKA","BUKK","BULL","BUMI","BUVA","BVIC","BWPT","BYAN","CAKK","CAMP","CANI","CARE","CARS","CASA","CASH","CASS","CBMF","CCSI","CEKA","CENT","CFIN","CINT","CITA","CITY","CLAY","CLEO","CLPI","CMNP","CMNT","CMPP","CMRY","CNKO","CNTB","CNTX","COCO","COWL","CPIN","CPRI","CPRO","CSAP","CSIS","CSMI","CSRA","CTBN","CTRA","CTTH","DADA","DART","DAYA","DCII","DEAL","DEFI","DEPO","DEWA","DFAM","DGIK","DGNS","DIGI","DILD","DIVA","DKFT","DLTA","DMAS","DMMX","DMND","DNAR","DNET","DOID","DPNS","DPUM","DRMA","DSFI","DSNG","DSSA","DUCK","DUTI","DVLA","DWGL","DYAN","EAST","ECII","EDGE","EKAD","ELSA","ELTY","EMDE","EMTK","ENAK","ENRG","ENVY","ENZO","EPAC","EPMT","ERAA","ERTX","ESIP","ESSA","ESTA","ESTI","ETWA","EXCL","FAPA","FAST","FASW","FILM","FIMP","FIRE","FISH","FITT","FLMC","FMII","FOOD","FORU","FORZ","FPNI","FREN","FUJI","GAMA","GDST","GDYR","GEMA","GEMS","GGRM","GGRP","GHON","GIAA","GJTL","GLOB","GLVA","GMFI","GMTD","GOLD","GOLL","GOOD","GPRA","GPSO","GSMF","GTBO","GTSI","GWSA","GZCO","HADE","HAIS","HDFA","HDIT","HDTX","HEAL","HELI","HERO","HEXA","HITS","HKMU","HMSP","HOKI","HOME","HOMI","HOPE","HOTL","HRME","HRTA","HRUM","IATA","IBFN","IBST","ICBP","ICON","IDEA","IDPR","IFII","IFSH","IGAR","IIKP","IKAI","IKAN","IKBI","IMAS","IMJS","IMPC","INAF","INAI","INCF","INCI","INCO","INDF","INDO","INDR","INDS","INDX","INDY","INKP","INOV","INPC","INPP","INPS","INRU","INTA","INTD","INTP","IPAC","IPCC","IPCM","IPOL","IPPE","IPTV","IRRA","ISAT","ISSP","ITIC","ITMA","ITMG","JAST","JAWA","JAYA","JECC","JGLE","JIHD","JKON","JKSW","JMAS","JPFA","JRPT","JSKY","JSMR","JSPT","JTPE","KAEF","KARW","KAYU","KBAG","KBLI","KBLM","KBLV","KBRI","KDSI","KEEN","KEJU","KIAS","KICI","KIJA","KINO","KIOS","KJEN","KKGI","KLBF","KMDS","KMTR","KOBX","KOIN","KONI","KOPI","KOTA","KPAL","KPAS","KPIG","KRAH","KRAS","KREN","KUAS","LABA","LAND","LAPD","LCGP","LCKM","LEAD","LFLO","LIFE","LINK","LION","LMAS","LMPI","LMSH","LPCK","LPGI","LPIN","LPKR","LPLI","LPPF","LPPS","LRNA","LSIP","LTLS","LUCK","LUCY","MABA","MAGP","MAIN","MAMI","MAMI","MAPA","MAPB","MAPI","MARI","MARK","MASA","MASB","MAYA","MBAP","MBSS","MBTO","MCAS","MCOL","MCOR","MDIA","MDKA","MDKI","MDLN","MDRN","MEDC","MEGA","MERK","META","MFIN","MFMI","MGLV","MGNA","MGRO","MICE","MIDI","MIKA","MINA","MIRA","MITI","MKNT","MKPI","MLBI","MLIA","MLPL","MLPT","MMLP","MNCN","MOLI","MPMX","MPOW","MPPA","MPRO","MRAT","MREI","MSIN","MSKY","MTDL","MTEL","MTFN","MTLA","MTPS","MTRA","MTSM","MTWI","MYOH","MYOR","MYRX","MYRX","MYTX","NASA","NASI","NATO","NELY","NETV","NFCX","NICK","NICL","NIKL","NIPS","NIRO","NISP","NOBU","NPGF","NRCA","NTBK","NUSA","NZIA","OASA","OBMD","OCAP","OILS","OKAS","OMRE","OPMS","PADI","PALM","PAMG","PANI","PANR","PANS","PBID","PBRX","PBSA","PCAR","PDES","PEGE","PEHA","PGAS","PGJO","PGLI","PGUN","PICO","PJAA","PKPK","PLAN","PLAS","PLIN","PMJS","PMMP","PNBN","PNBS","PNGO","PNIN","PNLF","PNSE","POLA","POLI","POLL","POLU","POLY","POOL","PORT","POSA","POWR","PPGL","PPRE","PPRO","PRAS","PRDA","PRIM","PSAB","PSDN","PSGO","PSKT","PSSI","PTBA","PTDU","PTIS","PTPP","PTPW","PTRO","PTSN","PTSP","PUDP","PURA","PURE","PURI","PWON","PYFA","PZZA","RAJA","RALS","RANC","RBMS","RDTX","REAL","RELI","RICY","RIGS","RIMO","RISE","RMBA","RMKE","ROCK","RODA","RONY","ROTI","RSGK","RUIS","RUNS","SAFE","SAME","SAMF","SAPX","SATU","SBAT","SBMA","SCCO","SCMA","SCNP","SCPI","SDMU","SDPC","SDRA","SEMA","SFAN","SGER","SGRO","SHID","SHIP","SIDO","SILO","SIMA","SIMP","SINI","SIPD","SKBM","SKLT","SKRN","SKYB","SLIS","SMAR","SMBR","SMCB","SMDM","SMDR","SMGR","SMKL","SMMA","SMMT","SMRA","SMRU","SMSM","SNLK","SOCI","SOFA","SOHO","SONA","SOSS","SOTS","SPMA","SPTO","SQMI","SRAJ","SRIL","SRSN","SRTG","SSIA","SSMS","SSTM","STAR","STTP","SUGI","SULI","SUPR","SURE","SWAT","TALF","TAMA","TAMU","TAPG","TARA","TAXI","TAYS","TBIG","TBLA","TBMS","TCID","TCPI","TDPM","TEBE","TECH","TELE","TFAS","TFCO","TGKA","TGRA","TIFA","TINS","TIRA","TIRT","TKIM","TLKM","TMAS","TMPO","TNCA","TOBA","TOPS","TOTL","TOTO","TOWR","TOYS","TPIA","TPMA","TRAM","TRIL","TRIM","TRIN","TRIO","TRIS","TRJA","TRST","TRUE","TRUK","TRUS","TSPC","TUGU","TURI","UANG","UCID","UFOE","ULTJ","UNIC","UNIQ","UNIT","UNSP","UNTR","UNVR","URBN","UVCR","VICI","VICO","VINS","VIVA","VOKS","VRNA","WAPO","WEGE","WEHA","WGSH","WICO","WIFI","WIIM","WIKA","WINS","WMPP","WMUU","WOMF","WOOD","WOWS","WSBP","WSKT","WTON","YELO","YPAS","YULE","ZBRA","ZINC","ZONE","ZYRX"]
 
 class TradingViewScraper:
     def __init__(self,
@@ -39,7 +39,7 @@ class TradingViewScraper:
         
         # Go to url
         self.driver.get(url)
-        sleep(2)
+        sleep(1)
 
         # Load all data
         while len(self.driver.find_elements(By.CLASS_NAME, 'loadButton-59hnCnPW')) != 0:
@@ -88,10 +88,10 @@ class TradingViewScraper:
         df["Change [%]"] = df["Change [%]"].apply(lambda x: x.replace('%', ''))
 
         # Convert T, B, M, K
-        df["Vol"] = df["Vol"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
-        df["Volume*Price"] = df["Volume*Price"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
-        df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
-        df["Employees"] = df["Employees"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
+        df["Vol"] = df["Vol"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
+        df["Volume*Price"] = df["Volume*Price"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
+        df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
+        df["Employees"] = df["Employees"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
         
         # Create directory
         directory = f'./results'
@@ -152,16 +152,16 @@ class TradingViewScraper:
                             # Go to url
                             self.driver.get(url)
 
-                            if period_type == 'yearly':
-                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div/button')[0]
+                            if period_type == 'yearly':                             
+                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[4]/div[2]/div/div/div/div/div/button')[0]
                                 self.driver.execute_script("arguments[0].click();", period_click)
                             elif period_type == 'quarterly':
-                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div/button')[1]
+                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[4]/div[2]/div/div/div/div/div/button')[1]
                                 self.driver.execute_script("arguments[0].click();", period_click)
 
                             # Get all elements
-                            elements = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div[2]/div/div[3]/div[2]/div/div')
                             sleep(1)
+                            elements = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[5]/div[2]/div/div[1]/div')
                         except:
                             print(f"Cannot access fundamental data for stock: {stock}")
                             break
@@ -218,17 +218,17 @@ class TradingViewScraper:
                                     if data[0] in doubles_income_statement:
                                         try:
                                             if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             income_statement.loc[data[0], columns[i]] = data[2*i+1]
                                     else:
                                         try:
                                             if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             income_statement.loc[data[0], columns[i]] = data[i+1]
                             elif financial_type == 'balance-sheet':
@@ -236,17 +236,17 @@ class TradingViewScraper:
                                     if data[0] in doubles_balance_sheet:
                                         try:
                                             if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             balance_sheet.loc[data[0], columns[i]] = data[2*i+1]
                                     else:
                                         try:
                                             if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             balance_sheet.loc[data[0], columns[i]] = data[i+1]
                             elif financial_type == 'cash-flow':
@@ -254,17 +254,17 @@ class TradingViewScraper:
                                     if data[0] in doubles_cash_flow:
                                         try:
                                             if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             cash_flow.loc[data[0], columns[i]] = data[2*i+1]
                                     else:
                                         try:
                                             if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             cash_flow.loc[data[0], columns[i]] = data[i+1]
                             elif financial_type == 'statistics-and-ratios':
@@ -274,9 +274,9 @@ class TradingViewScraper:
                                     else:
                                         try:
                                             if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             ratios.loc[data[0], columns[i]] = data[i+1]
 
@@ -308,11 +308,11 @@ def main():
     """Run fundamental analysis scraper"""
     tv_scraper = TradingViewScraper()
 
-    # Get all companies data
-    tv_scraper.get_all_stock_code()
+    # # Get all companies data
+    # tv_scraper.get_all_stock_code()
 
     # Get fundamental data
-    tv_scraper.get_fundamental_data()
+    tv_scraper.get_fundamental_data(stock_filter=ALL)
 
 if __name__ == '__main__':
     main()
