@@ -308,11 +308,11 @@ def main():
     """Run fundamental analysis scraper"""
     tv_scraper = TradingViewScraper()
 
-    # # Get all companies data
-    # tv_scraper.get_all_stock_code()
+    # Get all stock code
+    tv_scraper.get_all_stock_code()
 
     # Get fundamental data
-    tv_scraper.get_fundamental_data(stock_filter=ALL)
+    tv_scraper.get_fundamental_data()
 
 if __name__ == '__main__':
     main()
