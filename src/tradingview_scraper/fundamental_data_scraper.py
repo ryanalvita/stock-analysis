@@ -88,10 +88,10 @@ class TradingViewScraper:
         df["Change [%]"] = df["Change [%]"].apply(lambda x: x.replace('%', ''))
 
         # Convert T, B, M, K
-        df["Vol"] = df["Vol"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
-        df["Volume*Price"] = df["Volume*Price"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
-        df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
-        df["Employees"] = df["Employees"].apply(lambda x: x.replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.', ''))
+        df["Vol"] = df["Vol"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
+        df["Volume*Price"] = df["Volume*Price"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
+        df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
+        df["Employees"] = df["Employees"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
         
         # Create directory
         directory = f'./results'
@@ -218,17 +218,17 @@ class TradingViewScraper:
                                     if data[0] in doubles_income_statement:
                                         try:
                                             if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             income_statement.loc[data[0], columns[i]] = data[2*i+1]
                                     else:
                                         try:
                                             if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             income_statement.loc[data[0], columns[i]] = data[i+1]
                             elif financial_type == 'balance-sheet':
@@ -236,17 +236,17 @@ class TradingViewScraper:
                                     if data[0] in doubles_balance_sheet:
                                         try:
                                             if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             balance_sheet.loc[data[0], columns[i]] = data[2*i+1]
                                     else:
                                         try:
                                             if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             balance_sheet.loc[data[0], columns[i]] = data[i+1]
                             elif financial_type == 'cash-flow':
@@ -254,17 +254,17 @@ class TradingViewScraper:
                                     if data[0] in doubles_cash_flow:
                                         try:
                                             if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             cash_flow.loc[data[0], columns[i]] = data[2*i+1]
                                     else:
                                         try:
                                             if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             cash_flow.loc[data[0], columns[i]] = data[i+1]
                             elif financial_type == 'statistics-and-ratios':
@@ -274,9 +274,9 @@ class TradingViewScraper:
                                     else:
                                         try:
                                             if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000').replace('.',''))
+                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
                                             else:
-                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '000000000000').replace('B', '000000000').replace('M', '000000').replace('K', '000'))
+                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
                                         except:
                                             ratios.loc[data[0], columns[i]] = data[i+1]
 
