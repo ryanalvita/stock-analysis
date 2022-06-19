@@ -317,11 +317,11 @@ class TradingViewScraper:
                         json_structure.update({"ratios": json.loads(ratios.to_json(orient='split', indent=4))})
 
                         # Save the data in json
-                        with open(f'{directory}/{stock}.json', 'w') as f:
+                        with open(f'{directory}/{stock}_{period_type}.json', 'w') as f:
                             f.write(json.dumps(json_structure, ensure_ascii=False, indent=4))
 
                         # Upload to google drive
-                        gdrive_api.file_upload(f'{directory}/{stock}.json', folder_id)
+                        gdrive_api.file_upload(f'{directory}/{stock}_{period_type}.json', folder_id)
 
                     else:
                         print(f"No fundamental data available for stock: {stock}")
