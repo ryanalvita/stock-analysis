@@ -326,7 +326,7 @@ class TradingViewScraper:
                     else:
                         print(f"No fundamental data available for stock: {stock}")
 
-                bar()
+            bar()
         
         print(f"All fundamental data is downloaded and stored in: {directory} directory")
 
