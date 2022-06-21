@@ -108,8 +108,11 @@ class TradingViewScraper:
         df.to_csv(f'{directory}/overview.csv')
 
         # Upload to google drive
+        # List all files
         folder_id = os.environ["GDRIVE_FOLDER_ID_TRADINGVIEW"]
-        gdrive_api.file_upload(f'{directory}/overview.csv', folder_id)
+        query = f"name = 'overview.csv' and '{folder_id}' in parents"
+        file_id = gdrive_api.file_list(query)[0].get("id")
+        gdrive_api.file_update(f'{directory}/overview.csv', file_id)
 
     def get_fundamental_data(
         self,
@@ -145,12 +148,10 @@ class TradingViewScraper:
             stocks = stock_filter
         else:
             # Find overview file on google drive
-            file_list = gdrive_api.file_list()
-            for file in file_list:
-                if file["name"].lower() == "overview.csv":
-                    file_id = file["id"]
-                    break
-            file = gdrive_api.file_download(file_id, f'{directory}/Overview.csv')
+            folder_id = os.environ["GDRIVE_FOLDER_ID_TRADINGVIEW"]
+            query = f"name = 'overview.csv' and '{folder_id}' in parents"
+            file_id = gdrive_api.file_list(query)[0].get("id")
+            gdrive_api.file_download(file_id, f'{directory}/Overview.csv')
 
             overview = pd.read_csv(f'{directory}/Overview.csv', index_col=0)
             stocks = overview["Stock Code"].to_list()
@@ -321,12 +322,14 @@ class TradingViewScraper:
                             f.write(json.dumps(json_structure, ensure_ascii=False, indent=4))
 
                         # Upload to google drive
-                        gdrive_api.file_upload(f'{directory}/{stock}_{period_type}.json', folder_id)
+                        query = f"name = '{stock}_{period_type}.json' and '{folder_id}' in parents"
+                        file_id = gdrive_api.file_list(query)[0].get("id")
+                        gdrive_api.file_update(f'{directory}/{stock}_{period_type}.json', file_id)
 
                     else:
                         print(f"No fundamental data available for stock: {stock}")
 
-                bar()
+            bar()
         
         print(f"All fundamental data is downloaded and stored in: {directory} directory")
 

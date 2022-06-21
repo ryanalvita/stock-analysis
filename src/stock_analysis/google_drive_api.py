@@ -29,11 +29,16 @@ class GoogleDriveAPI:
         # Connect to the API service
         self.service = build('drive', 'v3', credentials=self.creds)
   
-    def file_list(self):
+    def file_list(self, query):
+        """List files within a folder
+
+        Args:
+            folder_id: id of the folder.
+        """
         page_token = None
         files = []
         while True:
-            response = self.service.files().list(spaces='drive', fields='nextPageToken, files(id, name)', pageToken=page_token).execute()
+            response = self.service.files().list(q=query, spaces='drive', fields='nextPageToken, files(id, name)', pageToken=page_token).execute()
             for file in response.get('files', []):
                 files.append(file)
             page_token = response.get('nextPageToken', None)
@@ -112,3 +117,25 @@ class GoogleDriveAPI:
             self.service.files().delete(fileId=file_id).execute()
         except:
             print(f'An error occurred in deleting file id: {file_id}')
+
+    def file_update(self, filepath, file_id):
+        """Updates a file's metadata and/or content
+        
+        Args:
+            filepath: path of the file to update.
+            file_id: id of the file to update.
+        """
+        # Extract the file name out of the file path
+        name = filepath.split('/')[-1]
+        
+        # Find the MimeType of the file
+        mimetype = MimeTypes().guess_type(name)[0]
+
+        try:
+            media = MediaFileUpload(filepath, mimetype=mimetype)
+
+            self.service.files().update(fileId=file_id, media_body=media).execute()
+        
+        except:
+            # Raise UploadError if file is not uploaded.
+            print(f"Can't update file: {name}")
