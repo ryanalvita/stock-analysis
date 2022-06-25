@@ -1,14 +1,13 @@
-import os
 import json
+import os
+from time import sleep
+from typing import Optional
 
 import numpy as np
 import pandas as pd
-
 from alive_progress import alive_bar
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from time import sleep
-from typing import Optional
 from webdriver_manager.chrome import ChromeDriverManager
 
 from stock_analysis.google_drive_api import GoogleDriveAPI

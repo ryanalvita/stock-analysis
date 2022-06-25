@@ -1,7 +1,8 @@
+import json
 from importlib.metadata import files
 from os import walk
+
 import pandas as pd
-import json
 
 file_list = []
 for (dirpaths, dirnames, filenames) in walk ('./results/tradingview/quarterly'):
