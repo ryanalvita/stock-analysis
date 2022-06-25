@@ -141,7 +141,8 @@ class TradingViewScraper:
         period_types = ["yearly", "quarterly"]
 
         # Create directory
-        directory = f'./results'
+        directory = f'./results/tradingview'
+        directory_previous = f'./previous/tradingview'
 
         # Get stocks
         if stock_filter:
@@ -172,8 +173,11 @@ class TradingViewScraper:
                         folder_id = os.environ["GDRIVE_FOLDER_ID_TRADINGVIEW_YEARLY"]
 
                     for financial_type in financial_types: 
-                        directory = f'./results/{period_type}'
+                        directory = f'{directory}/{period_type}'
                         create_directory(directory)
+
+                        directory_previous = f'{directory_previous}/{period_type}'
+                        create_directory(directory_previous)
 
                         # Define url
                         url = f"https://www.tradingview.com/symbols/IDX-{stock}/financials-{financial_type}/"
@@ -312,18 +316,35 @@ class TradingViewScraper:
 
                     # Structurized the json
                     if len(income_statement.columns) >= 1 and len(balance_sheet.columns) >= 1 and len(cash_flow.columns) >= 1 and len(ratios.columns) >= 1:
+                        # Get file id
+                        query = f"name = '{stock}_{period_type}.json' and '{folder_id}' in parents"
+                        file_id = gdrive_api.file_list(query)[0].get("id")
+
+                        # Download previous file
+                        gdrive_api.file_download(file_id, f"{directory_previous}/{stock}_{period_type}.json")
+
+                        with open(f"{directory_previous}/{stock}_{period_type}.json", 'rb') as f:
+                            contents = f.read()
+                            load_json = json.loads(contents.decode('ISO-8859-1'))
+                            income_statement_previous = pd.DataFrame(load_json["income_statement"]["data"], index=load_json["income_statement"]["index"], columns=load_json["income_statement"]["columns"])
+                            balance_sheet_previous = pd.DataFrame(load_json["balance_sheet"]["data"], index=load_json["balance_sheet"]["index"], columns=load_json["balance_sheet"]["columns"])
+                            cash_flow_previous = pd.DataFrame(load_json["cash_flow"]["data"], index=load_json["cash_flow"]["index"], columns=load_json["cash_flow"]["columns"])
+
+                        # Combine with previous data
+                        income_statement = income_statement.combine_first(income_statement_previous)
+                        balance_sheet = balance_sheet.combine_first(balance_sheet_previous)
+                        cash_flow = cash_flow.combine_first(cash_flow_previous)
+
+                        # Add to json structure
                         json_structure.update({"income_statement": json.loads(income_statement.to_json(orient='split', indent=4))})
                         json_structure.update({"balance_sheet": json.loads(balance_sheet.to_json(orient='split', indent=4))})
                         json_structure.update({"cash_flow": json.loads(cash_flow.to_json(orient='split', indent=4))})
                         json_structure.update({"ratios": json.loads(ratios.to_json(orient='split', indent=4))})
 
-                        # Save the data in json
+                        # Save the data in directory json
                         with open(f'{directory}/{stock}_{period_type}.json', 'w') as f:
                             f.write(json.dumps(json_structure, ensure_ascii=False, indent=4))
 
-                        # Upload to google drive
-                        query = f"name = '{stock}_{period_type}.json' and '{folder_id}' in parents"
-                        file_id = gdrive_api.file_list(query)[0].get("id")
                         gdrive_api.file_update(f'{directory}/{stock}_{period_type}.json', file_id)
 
                     else:
