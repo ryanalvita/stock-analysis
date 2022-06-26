@@ -1,12 +1,14 @@
 # import the required libraries
-import os
 import io
+import os
 import shutil
 from mimetypes import MimeTypes
+
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseDownload, MediaFileUpload
-  
+from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
+
+
 class GoogleDriveAPI:
     def __init__(self):
         
@@ -139,3 +141,24 @@ class GoogleDriveAPI:
         except:
             # Raise UploadError if file is not uploaded.
             print(f"Can't update file: {name}")
+
+    def create_folder(self, folder_name, parents_folder_id):
+        """Updates a file's metadata and/or content
+        
+        Args:
+            folder_name: name of the folder to create.
+        """
+        
+        # Create file metadata
+        file_metadata = {
+            'name': folder_name,
+            'mimeType': 'application/vnd.google-apps.folder',
+            'parents': [parents_folder_id],
+        }
+
+        # Create folder
+        try:
+            self.service.files().create(body=file_metadata, fields='id').execute()
+        except:
+            # Raise UploadError if file is not uploaded.
+            print(f"Can't create folder: {folder_name}")

@@ -1,21 +1,18 @@
+import json
 from os import walk
 
-import numpy as np
-
-import json
-
 import dash
-import dash_table as dt
-import pandas as pd
-import dash_core_components as dcc
 import dash_bootstrap_components as dbc
+import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
-
+import dash_table as dt
+import numpy as np
+import pandas as pd
 import plotly.graph_objs as go
+import yfinance as yf
+from dash.dependencies import Input, Output
 from soupsieve import select
 
-import yfinance as yf
 
 # Functions
 def clean_dataframe(df):
