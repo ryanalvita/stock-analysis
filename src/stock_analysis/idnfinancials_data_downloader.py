@@ -42,6 +42,9 @@ class IDNFinancials_Downloader:
         self.gdrive_api = GoogleDriveAPI()
 
     def get_all_companies_url(self, stocks_filter: Optional[list] = None):
+        # Check whether all companies url already exists
+        filename = "all_companies_url.csv"
+        
         # Get company page
         self.driver.get(self.target_url + "/company")
 
@@ -76,22 +79,25 @@ class IDNFinancials_Downloader:
                 bar()
 
         # Save overview companies data as csv
-        all_companies_url.to_csv(f"{self.directory}/all_companies_url.csv")
+        all_companies_url.to_csv(f"{self.directory}/{filename}")
 
         # Upload to google drive
         folder_id = os.environ["GDRIVE_FOLDER_ID_IDNFINANCIALS"]
 
         # Update previous version
         try:
-            query = f"name = 'all_companies_url.csv' and '{folder_id}' in parents"
+            query = f"name = '{filename}' and '{folder_id}' in parents"
             file_id = self.gdrive_api.file_list(query)[0].get("id")
-            self.gdrive_api.file_update(f'{self.directory}/all_companies_url.csv', file_id)
+            self.gdrive_api.file_update(f'{self.directory}/{filename}', file_id)
         # Create new file
         except:
-            self.gdrive_api.file_upload(f"{self.directory}/all_companies_url.csv", folder_id)
+            self.gdrive_api.file_upload(f"{self.directory}/{filename}", folder_id)
 
 
     def get_all_financials_url(self):
+        # Define filename
+        filename = "all_financials_url.csv"
+        
         # Load all_companies_url
         all_companies_url = pd.read_csv(
             f"{self.directory}/all_companies_url.csv", index_col=0
@@ -137,19 +143,19 @@ class IDNFinancials_Downloader:
         all_financials_url = all_financials_url.T
 
         # Save overview companies data as csv
-        all_financials_url.to_csv(f"{self.directory}/all_financials_url.csv")
+        all_financials_url.to_csv(f"{self.directory}/{filename}")
 
         # Upload to google drive
         folder_id = os.environ["GDRIVE_FOLDER_ID_IDNFINANCIALS"]
 
         # Update previous version
         try:
-            query = f"name = 'all_financials_url.csv' and '{folder_id}' in parents"
+            query = f"name = '{filename}' and '{folder_id}' in parents"
             file_id = self.gdrive_api.file_list(query)[0].get("id")
-            self.gdrive_api.file_update(f'{self.directory}/all_financials_url.csv', file_id)
+            self.gdrive_api.file_update(f'{self.directory}/{filename}', file_id)
         # Create new file
         except:
-            self.gdrive_api.file_upload(f"{self.directory}/all_financials_url.csv", folder_id)
+            self.gdrive_api.file_upload(f"{self.directory}/{filename}", folder_id)
 
     def download_data(
         self,
@@ -180,6 +186,10 @@ class IDNFinancials_Downloader:
                 all_financials_url["Period"].isin(period_filter)
             ]
 
+        filenames_exists = []
+        for (dirpath, dirnames, filenames) in os.walk(self.directory):
+            filenames_exists.extend(filenames)
+        
         with alive_bar(len(all_financials_url), force_tty=True) as bar:
             for ix, row in all_financials_url.iterrows():
                 stock_code = row["Stock Code"]
@@ -189,22 +199,17 @@ class IDNFinancials_Downloader:
 
                 directory = f"{self.directory}/{stock_code}"
                 create_directory(directory)
-
-                filepath = (
-                    f"{directory}/{year}_{period}_{stock_code}_Financial_Statement.pdf"
-                )
+                
+                # Check whether file is already available
+                filename = f"{year}_{period}_{stock_code}_Financial_Statement.pdf"
+                filepath = f"{directory}/{filename}"
+                    
+                if filename in filenames_exists:
+                    print(f"{filename} already exist in OS")
+                    continue
 
                 try:
-                    response = requests.get(url)
-                    file = open(filepath, "wb")
-                    file.write(response.content)
-                    file.close()
-
-                    # Upload to google drive
-                    parents_folder_id = os.environ["GDRIVE_FOLDER_ID_IDNFINANCIALS"]
-                    folder_name = stock_code
-
-                    # Create folder if it doesn't exist
+                    # Create stock code folder if it doesn't exist
                     try:
                         query = f"name = '{folder_name}' and '{parents_folder_id}' in parents"
                         folder_id = self.gdrive_api.file_list(query)[0].get("id")
@@ -214,13 +219,23 @@ class IDNFinancials_Downloader:
                         folder_id = self.gdrive_api.file_list(query)[0].get("id")
                         print(f"New folder of {stock_code} has been created")
                         
-                    # Update
+                    # Upload file
                     try:
-                        query = f"name = '{directory}/{year}_{period}_{stock_code}_Financial_Statement.pdf' and '{folder_id}' in parents"
-                        print(f"Financial statement of {stock_code} {period} {year} is already exist.")
+                        query = f"name = '{filename}' and '{folder_id}' in parents"
+                        print(f"{filename} is already exist in Google Drive.")
                         continue
                     except:
-                        self.gdrive_api.file_upload(f"{directory}/{year}_{period}_{stock_code}_Financial_Statement.pdf", folder_id)
+                        # Download file
+                        response = requests.get(url)
+                        file = open(filepath, "wb")
+                        file.write(response.content)
+                        file.close()
+
+                        self.gdrive_api.file_upload(f"{directory}/{filename}", folder_id)
+
+                    # Upload to google drive
+                    parents_folder_id = os.environ["GDRIVE_FOLDER_ID_IDNFINANCIALS"]
+                    folder_name = stock_code
 
                 except:
                     print(
