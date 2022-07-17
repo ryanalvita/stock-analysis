@@ -41,8 +41,7 @@ class GoogleDriveAPI:
         files = []
         while True:
             response = self.service.files().list(q=query, spaces='drive', fields='nextPageToken, files(id, name)', pageToken=page_token).execute()
-            for file in response.get('files', []):
-                files.append(file)
+            files.extend(iter(response.get('files', [])))
             page_token = response.get('nextPageToken', None)
             if page_token is None:
                 break
@@ -58,7 +57,6 @@ class GoogleDriveAPI:
         """
         request = self.service.files().get_media(fileId=file_id)
         fh = io.BytesIO()
-          
         # Initialise a downloader object to download the file
         downloader = MediaIoBaseDownload(fh, request, chunksize=204800)
         done = False
@@ -77,7 +75,7 @@ class GoogleDriveAPI:
             print("File Downloaded")
             # Return True if file Downloaded successfully
             return True
-        except:
+        except Exception:
             
             # Return False if something went wrong
             print("Something went wrong.")
@@ -105,7 +103,7 @@ class GoogleDriveAPI:
             # Create a new file in the Drive storage
             self.service.files().create(body=file_metadata, media_body=media, fields='id').execute()
           
-        except:
+        except Exception:
             # Raise UploadError if file is not uploaded.
             print(f"Can't upload file: {name}")
 
@@ -117,7 +115,7 @@ class GoogleDriveAPI:
         """
         try:
             self.service.files().delete(fileId=file_id).execute()
-        except:
+        except Exception:
             print(f'An error occurred in deleting file id: {file_id}')
 
     def file_update(self, filepath, file_id):
@@ -138,7 +136,7 @@ class GoogleDriveAPI:
 
             self.service.files().update(fileId=file_id, media_body=media).execute()
         
-        except:
+        except Exception:
             # Raise UploadError if file is not uploaded.
             print(f"Can't update file: {name}")
 
@@ -159,6 +157,6 @@ class GoogleDriveAPI:
         # Create folder
         try:
             self.service.files().create(body=file_metadata, fields='id').execute()
-        except:
+        except Exception:
             # Raise UploadError if file is not uploaded.
             print(f"Can't create folder: {folder_name}")
