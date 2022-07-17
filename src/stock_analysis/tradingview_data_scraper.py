@@ -77,15 +77,15 @@ class TradingViewScraper:
             "Company Name": "Company Name",
             "Sector": "Sector",
             "Last": "Last",
-            "Chg": "Change",
-            "Chg %": "Change [%]",
-            "Technical Rating": "Technical Rating",
-            "Vol": "Vol",
-            "Volume*Price": "Volume*Price",
+            "Chg, 1D": "Change",
+            "Chg %, 1D": "Change [%]",
+            "Technical Rating, 1D": "Technical Rating",
+            "Vol, 1D": "Vol",
+            "Volume*Price, 1D": "Volume*Price",
             "Mkt Cap": "Market Cap",
             "P/E": "PE Ratio",
             "EPS (TTM)": "EPS (TTM)",
-            "EMPLOYEES": "Employees",
+            "Employees": "Employees",
         }
         df = df.rename(columns=rename_columns)
         df = df[list(rename_columns.values())]
