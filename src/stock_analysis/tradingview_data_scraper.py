@@ -21,14 +21,22 @@ ALL = ['AALI', 'ABBA', 'ABMM', 'ACES', 'ACST', 'ADCP', 'ADES', 'ADHI', 'ADMF', '
 class TradingViewScraper:
     def __init__(self,
                  target_url='https://www.tradingview.com/'):
+                 
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("start-maximized"); # open Browser in maximized mode
-        chrome_options.add_argument("disable-infobars"); # disabling infobars
-        chrome_options.add_argument("--disable-dev-shm-usage"); # overcome limited resource problems
-        chrome_options.add_argument("--disable-extensions"); # disabling extensions
-        chrome_options.add_argument("--disable-gpu"); # applicable to windows os only
-        chrome_options.add_argument("--no-sandbox"); # bypass OS security model
-        chrome_options.add_argument("--headless"); # bypass OS security model
+        # open Browser in maximized mode
+        chrome_options.add_argument("start-maximized");
+        # disabling infobars
+        chrome_options.add_argument("disable-infobars");
+        # overcome limited resource problems
+        chrome_options.add_argument("--disable-dev-shm-usage");
+        # disabling extensions
+        chrome_options.add_argument("--disable-extensions");
+        # disabling gpu, applicable to windows os only
+        chrome_options.add_argument("--disable-gpu");
+        # bypass OS security model
+        chrome_options.add_argument("--no-sandbox");
+        chrome_options.add_argument("--headless");
+
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
 
         self.target_url = target_url
@@ -77,12 +85,12 @@ class TradingViewScraper:
             "Company Name": "Company Name",
             "Sector": "Sector",
             "Last": "Last",
-            "Chg, 1D": "Change",
-            "Chg %, 1D": "Change [%]",
-            "Technical Rating, 1D": "Technical Rating",
-            "Vol, 1D": "Vol",
-            "Volume*Price, 1D": "Volume*Price",
-            "Mkt Cap": "Market Cap",
+            "Chg,\xa01D": "Change",
+            "Chg %,\xa01D": "Change [%]",
+            "Technical Rating,\xa01D": "Technical Rating",
+            "Vol,\xa01D": "Vol",
+            "Volume*price,\xa01D": "Volume*Price",
+            "Mkt cap": "Market Cap",
             "P/E": "PE Ratio",
             "EPS (TTM)": "EPS (TTM)",
             "Employees": "Employees",

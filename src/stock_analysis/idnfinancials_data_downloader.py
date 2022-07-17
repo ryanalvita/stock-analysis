@@ -44,7 +44,7 @@ class IDNFinancials_Downloader:
     def get_all_companies_url(self, stocks_filter: Optional[list] = None):
         # Check whether all companies url already exists
         filename = "all_companies_url.csv"
-        
+
         # Get company page
         self.driver.get(self.target_url + "/company")
 
@@ -67,9 +67,8 @@ class IDNFinancials_Downloader:
                     By.XPATH, '//*[@id="table-companies"]/div[2]/div'
                 ):
                     stock_code = element.find_element(By.CLASS_NAME, "code").text
-                    if stocks_filter:
-                        if stock_code in stocks_filter:
-                            continue
+                    if stocks_filter and stock_code in stocks_filter:
+                        continue
                     url = element.find_element(By.CLASS_NAME, "ld").get_attribute(
                         "href"
                     )
@@ -90,14 +89,14 @@ class IDNFinancials_Downloader:
             file_id = self.gdrive_api.file_list(query)[0].get("id")
             self.gdrive_api.file_update(f'{self.directory}/{filename}', file_id)
         # Create new file
-        except:
+        except Exception:
             self.gdrive_api.file_upload(f"{self.directory}/{filename}", folder_id)
 
 
     def get_all_financials_url(self):
         # Define filename
         filename = "all_financials_url.csv"
-        
+
         # Load all_companies_url
         all_companies_url = pd.read_csv(
             f"{self.directory}/all_companies_url.csv", index_col=0
@@ -154,7 +153,7 @@ class IDNFinancials_Downloader:
             file_id = self.gdrive_api.file_list(query)[0].get("id")
             self.gdrive_api.file_update(f'{self.directory}/{filename}', file_id)
         # Create new file
-        except:
+        except Exception:
             self.gdrive_api.file_upload(f"{self.directory}/{filename}", folder_id)
 
     def download_data(
@@ -189,7 +188,7 @@ class IDNFinancials_Downloader:
         filenames_exists = []
         for (dirpath, dirnames, filenames) in os.walk(self.directory):
             filenames_exists.extend(filenames)
-        
+
         with alive_bar(len(all_financials_url), force_tty=True) as bar:
             for ix, row in all_financials_url.iterrows():
                 stock_code = row["Stock Code"]
@@ -199,11 +198,11 @@ class IDNFinancials_Downloader:
 
                 directory = f"{self.directory}/{stock_code}"
                 create_directory(directory)
-                
+
                 # Check whether file is already available
                 filename = f"{year}_{period}_{stock_code}_Financial_Statement.pdf"
                 filepath = f"{directory}/{filename}"
-                    
+
                 if filename in filenames_exists:
                     print(f"{filename} already exist in OS")
                     continue
@@ -218,16 +217,17 @@ class IDNFinancials_Downloader:
                         query = f"name = '{folder_name}' and '{parents_folder_id}' in parents"
                         folder_id = self.gdrive_api.file_list(query)[0].get("id")
                         print(f"New folder of {stock_code} has been created")
-                        
+
                     # Upload file
                     try:
                         query = f"name = '{filename}' and '{folder_id}' in parents"
                         print(f"{filename} is already exist in Google Drive.")
                         continue
-                    except:
+                    except Exception:
                         # Download file
                         response = requests.get(url)
-                        file = open(filepath, "wb")
+                        with open(filepath, "wb") as file:
+                            file.write(response.content)
                         file.write(response.content)
                         file.close()
 
@@ -237,7 +237,7 @@ class IDNFinancials_Downloader:
                     parents_folder_id = os.environ["GDRIVE_FOLDER_ID_IDNFINANCIALS"]
                     folder_name = stock_code
 
-                except:
+                except Exception:
                     print(
                         f"Error on stock_code = {stock_code}, year = {year}, period = {period}, ix = {ix}"
                     )
