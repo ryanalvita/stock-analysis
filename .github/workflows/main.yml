@@ -30,6 +30,6 @@ jobs:
           GDRIVE_FOLDER_ID_TRADINGVIEW: ${{ secrets.GDRIVE_FOLDER_ID_TRADINGVIEW }}
           GDRIVE_FOLDER_ID_TRADINGVIEW_QUARTERLY: ${{ secrets.GDRIVE_FOLDER_ID_TRADINGVIEW_QUARTERLY }}
           GDRIVE_FOLDER_ID_TRADINGVIEW_YEARLY: ${{ secrets.GDRIVE_FOLDER_ID_TRADINGVIEW_YEARLY }}
-          MONGODB_URI: ${{ secrets.MONGODBURI }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: |
           python src/stock_analysis/tradingview_data_scraper.py
