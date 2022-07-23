@@ -43,9 +43,9 @@ class TradingViewScraper:
         self.driver.get(self.target_url)
 
         # Create directory
-        self.directory = f"./results/tradingview"
+        self.directory = "./results/tradingview"
         create_directory(self.directory)
-        self.directory_previous = f"./previous/tradingview"
+        self.directory_previous = "./previous/tradingview"
         create_directory(self.directory_previous)
 
         # Get google drive API

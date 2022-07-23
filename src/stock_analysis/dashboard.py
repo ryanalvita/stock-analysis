@@ -19,14 +19,14 @@ def clean_dataframe(df):
 
     try:
         df = df.drop(columns=["TTM"])
-    except:
+    except Exception:
         pass
 
     for index in df.index:
         try:
             df.loc[index] = df.loc[index].replace('', np.nan)
             df.loc[index] = df.loc[index].apply(lambda x: float(x))
-        except:
+        except Exception:
             df.loc[index] = np.nan
     
     return df
