@@ -11,8 +11,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
-from stock_analysis.google_drive_api import GoogleDriveAPI
-
 IDX_30 = ["ADRO","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BMRI","BRPT","BUKA","CPIN","EMTK","EXCL","ICBP","INCO","INDF","INKP","KLBF","MDKA","MIKA","PGAS","PTBA","SMGR","TBIG","TINS","TLKM","TOWR","UNTR","UNVR","WSKT"]
 LQ_45 = ["ADRO","AMRT","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BFIN","BMRI","BRPT","BUKA","CPIN","EMTK","ERAA","EXCL","GGRM","HMSP","HRUM","ICBP","INCO","INDF","INKP","INTP","ITMG","JPFA","KLBF","MDKA","MEDC","MIKA","MNCN","PGAS","PTBA","PTPP","SMGR","TBIG","TINS","TKIM","TLKM","TOWR","TPIA","UNTR","UNVR","WIKA","WSKT"]
 IDX_80 = ["AALI","ACES","ADRO","AGII","AKRA","AMRT","ANTM","ASII","ASRI","ASSA","BBCA","BBNI","BBRI","BBTN","BFIN","BJBR","BJTM","BMRI","BMTR","BRPT","BSDE","BTPS","BUKA","CPIN","CTRA","DGNS","DMAS","DOID","DSNG","ELSA","EMTK","ERAA","ESSA","EXCL","GGRM","HEAL","HMSP","HOKI","HRUM","ICBP","INCO","INDF","INKP","INTP","ISAT","ITMG","JPFA","JSMR","KAEF","KLBF","LPKR","LPPF","LSIP","MAPI","MDKA","MEDC","MIKA","MNCN","MYOR","PGAS","PTBA","PTPP","PWON","SCMA","SIDO","SMGR","SMRA","SRTG","TAPG","TBIG","TINS","TKIM","TLKM","TOWR","TPIA","UNTR","UNVR","WIKA","WMUU","WSKT"]
