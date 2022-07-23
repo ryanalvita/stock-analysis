@@ -5,6 +5,7 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
+from pymongo import MongoClient
 from alive_progress import alive_bar
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -48,9 +49,9 @@ class TradingViewScraper:
         self.directory_previous = "./previous/tradingview"
         create_directory(self.directory_previous)
 
-        # Get google drive API
-        # Initialize google drive api
-        self.gdrive_api = GoogleDriveAPI()
+        # Initialize MongoDB
+        self.cluster = MongoClient(os.environ["MONGODB_URI"])
+        self.db = self.cluster["financial_data"]
 
     def get_all_stock_code(
         self,
@@ -114,21 +115,16 @@ class TradingViewScraper:
         df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
         df["Employees"] = df["Employees"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
         
-        # Save overview companies data as csv
-        df.to_csv(f'{self.directory}/overview.csv')
+        # Upload to MongoDB
+        collection = self.db["overview"]
 
-        # Upload to google drive
-        folder_id = os.environ["GDRIVE_FOLDER_ID_TRADINGVIEW"]
+        # Get data from database
+        previous_df = pd.DataFrame(list(collection.find({})))
+        df = df.combine_first(previous_df)
 
-        # Concat with previous version
-        try:
-            query = f"name = 'overview.csv' and '{folder_id}' in parents"
-            file_id = self.gdrive_api.file_list(query)[0].get("id")
-            self.gdrive_api.file_update(f'{self.directory}/overview.csv', file_id)
-        
-        # Crete new file
-        except:
-            self.gdrive_api.file_upload(f'{self.directory}/overview.csv', folder_id)
+        # Upload data to database
+        for ix, row in df.iterrows():
+            collection.replace_one({"Stock Code": row["Stock Code"]}, row.to_dict())
 
     def get_fundamental_data(
         self,
@@ -157,29 +153,23 @@ class TradingViewScraper:
         if stock_filter:
             stocks = stock_filter
         else:
-            # Find overview file on google drive
-            folder_id = os.environ["GDRIVE_FOLDER_ID_TRADINGVIEW"]
-            query = f"name = 'overview.csv' and '{folder_id}' in parents"
-            file_id = self.gdrive_api.file_list(query)[0].get("id")
-            self.gdrive_api.file_download(file_id, f'{self.directory}/Overview.csv')
+            # Upload to MongoDB
+            collection = self.db["overview"]
 
-            overview = pd.read_csv(f'{self.directory}/Overview.csv', index_col=0)
-            stocks = overview["Stock Code"].to_list()
+            # Get data from database
+            overview_df = pd.DataFrame(list(collection.find({})))
+            stocks = overview_df["Stock Code"].to_list()
         
         with alive_bar(len(stocks), force_tty=True) as bar:
-            for stock in stocks:
-                for period_type in period_types:
+            for period_type in period_types:
+                # Set collection based on period types
+                collection = self.db[period_type]
+                for stock in stocks:
                     json_structure = {}
                     income_statement = pd.DataFrame()
                     balance_sheet = pd.DataFrame()
                     cash_flow = pd.DataFrame()
                     ratios = pd.DataFrame()
-
-                    # Define folder id for uploading to google drive
-                    if period_type == 'quarterly':
-                        folder_id = os.environ["GDRIVE_FOLDER_ID_TRADINGVIEW_QUARTERLY"]
-                    elif period_type == 'yearly':
-                        folder_id = os.environ["GDRIVE_FOLDER_ID_TRADINGVIEW_YEARLY"]
 
                     for financial_type in financial_types: 
                         directory = f'{self.directory}/{period_type}'
@@ -326,41 +316,15 @@ class TradingViewScraper:
                     # Structurized the json
                     if len(income_statement.columns) >= 1 and len(balance_sheet.columns) >= 1 and len(cash_flow.columns) >= 1 and len(ratios.columns) >= 1:
                         # Add to json structure
-                        json_structure.update({"income_statement": json.loads(income_statement.to_json(orient='split', indent=4))})
-                        json_structure.update({"balance_sheet": json.loads(balance_sheet.to_json(orient='split', indent=4))})
-                        json_structure.update({"cash_flow": json.loads(cash_flow.to_json(orient='split', indent=4))})
-                        json_structure.update({"ratios": json.loads(ratios.to_json(orient='split', indent=4))})
-
-                        # Save the data in directory json
-                        with open(f'{directory}/{stock}_{period_type}.json', 'w') as f:
-                            f.write(json.dumps(json_structure, ensure_ascii=False, indent=4))
+                        json_structure["stock_code"] = stock
+                        json_structure["period_type"] = period_type
+                        json_structure["income_statement"] = income_statement.to_dict()
+                        json_structure["balance_sheet"] = balance_sheet.to_dict()
+                        json_structure["cash_flow"] = cash_flow.to_dict()
+                        json_structure["ratios"] = ratios.to_dict()
 
                         # Concat with previous version
-                        try:
-                            # Get file id
-                            query = f"name = '{stock}_{period_type}.json' and '{folder_id}' in parents"
-                            file_id = self.gdrive_api.file_list(query)[0].get("id")
-
-                            # Download previous file
-                            self.gdrive_api.file_download(file_id, f"{directory_previous}/{stock}_{period_type}.json")
-
-                            with open(f"{directory_previous}/{stock}_{period_type}.json", 'rb') as f:
-                                contents = f.read()
-                                load_json = json.loads(contents.decode('ISO-8859-1'))
-                                income_statement_previous = pd.DataFrame(load_json["income_statement"]["data"], index=load_json["income_statement"]["index"], columns=load_json["income_statement"]["columns"])
-                                balance_sheet_previous = pd.DataFrame(load_json["balance_sheet"]["data"], index=load_json["balance_sheet"]["index"], columns=load_json["balance_sheet"]["columns"])
-                                cash_flow_previous = pd.DataFrame(load_json["cash_flow"]["data"], index=load_json["cash_flow"]["index"], columns=load_json["cash_flow"]["columns"])
-
-                            # Combine with previous data
-                            income_statement = income_statement.combine_first(income_statement_previous)
-                            balance_sheet = balance_sheet.combine_first(balance_sheet_previous)
-                            cash_flow = cash_flow.combine_first(cash_flow_previous)
-
-                            self.gdrive_api.file_update(f'{directory}/{stock}_{period_type}.json', file_id)
-
-                        # Upload new file
-                        except:
-                            self.gdrive_api.file_upload(f'{directory}/{stock}_{period_type}.json', folder_id)
+                        collection.insert_one(json_structure)
 
                     else:
                         print(f"No fundamental data available for stock: {stock}")
