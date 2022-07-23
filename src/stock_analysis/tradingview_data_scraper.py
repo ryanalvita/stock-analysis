@@ -157,6 +157,8 @@ class TradingViewScraper:
             # Get data from database
             overview_df = pd.DataFrame(list(collection.find({})))
             stocks = overview_df["Stock Code"].to_list()
+
+        errors = {}
         
         with alive_bar(len(stocks), force_tty=True) as bar:
             for period_type in period_types:
@@ -168,6 +170,8 @@ class TradingViewScraper:
                     balance_sheet = pd.DataFrame()
                     cash_flow = pd.DataFrame()
                     ratios = pd.DataFrame()
+
+                    errors[stock] = []
 
                     for financial_type in financial_types: 
                         directory = f'{self.directory}/{period_type}'
@@ -191,10 +195,10 @@ class TradingViewScraper:
                                 self.driver.execute_script("arguments[0].click();", period_click)
 
                             # Get all elements
-                            sleep(1)
+                            sleep(3)
                             elements = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[5]/div[2]/div/div[1]/div')
                         except:
-                            print(f"Cannot access fundamental data for stock: {stock}")
+                            errors[stock].append(f"Cannot access fundamental data for stock: {stock}")
                             break
                         
                         # Define empty list for columns
@@ -325,11 +329,15 @@ class TradingViewScraper:
                         collection.insert_one(json_structure)
 
                     else:
-                        print(f"No fundamental data available for stock: {stock}")
+                        errors[stock].append(f"No fundamental data available for stock: {stock}")
 
             bar()
+
+        # Store errors to MongoDB
+        collection_errors = self.db["errors"]
+        collection_errors.insert_one(errors)
         
-        print(f"All fundamental data is downloaded and stored in: {self.directory} directory")
+        print(f"Process finished")
 
 def create_directory(directory):
     # Check whether the specified path exists or not
