@@ -2,8 +2,9 @@ name: Cronjob to scrape data from Trading View website
 on:
   schedule:
     - cron: "0 8 * * 1"
-  tags:
-    - "v*"
+  push:
+    tags:
+      - "v*"
 jobs:
   build:
     runs-on: ubuntu-latest
