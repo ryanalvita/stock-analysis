@@ -160,10 +160,10 @@ class TradingViewScraper:
 
         errors = {}
         
-        with alive_bar(len(stocks), force_tty=True) as bar:
-            for period_type in period_types:
-                # Set collection based on period types
-                collection = self.db[period_type]
+        for period_type in period_types:
+            # Set collection based on period types
+            collection = self.db[period_type]
+            with alive_bar(len(stocks), force_tty=True) as bar:
                 for stock in stocks:
                     json_structure = {}
                     income_statement = pd.DataFrame()
@@ -325,13 +325,13 @@ class TradingViewScraper:
                         json_structure["cash_flow"] = cash_flow.to_dict()
                         json_structure["ratios"] = ratios.to_dict()
 
-                        # Concat with previous version
-                        collection.insert_one(json_structure)
+                        # # Concat with previous version
+                        # collection.insert_one(json_structure)
 
                     else:
                         errors[stock].append(f"No fundamental data available for stock: {stock}")
 
-            bar()
+                    bar()
 
         # Store errors to MongoDB
         collection_errors = self.db["errors"]
