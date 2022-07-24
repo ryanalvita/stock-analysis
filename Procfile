@@ -1,0 +1,1 @@
+web: gunicorn --chdir MyDashApp\src app:server
