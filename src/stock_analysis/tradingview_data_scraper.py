@@ -5,6 +5,7 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
+from datetime import datetime
 from pymongo import MongoClient
 from alive_progress import alive_bar
 from selenium import webdriver
@@ -318,15 +319,42 @@ class TradingViewScraper:
                     # Structurized the json
                     if len(income_statement.columns) >= 1 and len(balance_sheet.columns) >= 1 and len(cash_flow.columns) >= 1 and len(ratios.columns) >= 1:
                         # Add to json structure
-                        json_structure["stock_code"] = stock
-                        json_structure["period_type"] = period_type
-                        json_structure["income_statement"] = income_statement.to_dict()
-                        json_structure["balance_sheet"] = balance_sheet.to_dict()
-                        json_structure["cash_flow"] = cash_flow.to_dict()
-                        json_structure["ratios"] = ratios.to_dict()
+                        # Concat with previous version
+                        if collection.find_one({"stock_code": stock}):
+                            previous_data = collection.find_one({"stock_code": stock})
 
-                        # # Concat with previous version
-                        # collection.insert_one(json_structure)
+                            income_statement_previous = pd.DataFrame(previous_data["income_statement"])
+                            income_statement = income_statement.combine_first(income_statement_previous)
+
+                            balance_sheet_previous = pd.DataFrame(previous_data["balance_sheet"])
+                            balance_sheet = balance_sheet.combine_first(balance_sheet_previous)
+
+                            cash_flow_previous = pd.DataFrame(previous_data["cash_flow"])
+                            cash_flow = cash_flow.combine_first(cash_flow_previous)
+
+                            ratios_previous = pd.DataFrame(previous_data["ratios"])
+                            ratios = ratios.combine_first(ratios_previous)
+
+                            json_structure["stock_code"] = stock
+                            json_structure["period_type"] = period_type
+                            json_structure["income_statement"] = income_statement.to_dict()
+                            json_structure["balance_sheet"] = balance_sheet.to_dict()
+                            json_structure["cash_flow"] = cash_flow.to_dict()
+                            json_structure["ratios"] = ratios.to_dict()
+                            json_structure["date_updated"] = datetime.now().strftime('%d-%m-%Y')
+
+                            collection.replace_one({"stock_code": json_structure["stock_code"]}, json_structure)
+
+                        else:
+                            json_structure["stock_code"] = stock
+                            json_structure["period_type"] = period_type
+                            json_structure["income_statement"] = income_statement.to_dict()
+                            json_structure["balance_sheet"] = balance_sheet.to_dict()
+                            json_structure["cash_flow"] = cash_flow.to_dict()
+                            json_structure["ratios"] = ratios.to_dict()
+                            json_structure["date_updated"] = datetime.now().strftime('%d-%m-%Y')
+                                                
+                            collection.insert_one(json_structure)
 
                     else:
                         errors[stock].append(f"No fundamental data available for stock: {stock}")
@@ -334,6 +362,8 @@ class TradingViewScraper:
                     bar()
 
         # Store errors to MongoDB
+        errors["date_updated"] = datetime.now().strftime('%d-%m-%Y')
+        errors = {key: value for key, value in errors.items() if value != []}
         collection_errors = self.db["errors"]
         collection_errors.insert_one(errors)
         
