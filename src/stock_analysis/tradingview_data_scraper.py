@@ -123,6 +123,7 @@ class TradingViewScraper:
 
         # Upload data to database
         for ix, row in df.iterrows():
+            row = row.drop("_id")
             collection.replace_one({"Stock Code": row["Stock Code"]}, row.to_dict())
 
     def get_fundamental_data(
