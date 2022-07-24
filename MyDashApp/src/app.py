@@ -34,10 +34,15 @@ def clean_dataframe(df):
     
     return df
 
+# MongoDB
+cluster = MongoClient('mongodb+srv://mongo:KgWIfb4AzqkTyDXb@stockanalysis.f30kw8z.mongodb.net/?retryWrites=true&w=majority')
+db = cluster["financial_data"]
+
 # Dropdown
-stock_code_list = []
-for (dirpaths, dirnames, filenames) in os.walk ('./results/tradingview/yearly'):
-    stock_code_list.extend([filename[0:4] for filename in filenames])
+collection = db["overview"]
+overview_df = pd.DataFrame(list(collection.find({})))
+
+stock_code_list = overview_df["Stock Code"].to_list()
 
 dropdown_ticker = html.Div([
     dcc.Dropdown(
@@ -95,8 +100,6 @@ stock_price_graph = html.Div([
 ])
 
 # Open json
-cluster = MongoClient('mongodb+srv://mongo:KgWIfb4AzqkTyDXb@stockanalysis.f30kw8z.mongodb.net/?retryWrites=true&w=majority')
-db = cluster["financial_data"]
 collection = db["yearly"]
 
 load_json = collection.find_one({"stock_code": "BBCA"})
