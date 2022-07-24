@@ -4,10 +4,8 @@ import os
 from pymongo import MongoClient
 
 import dash
+from dash import dcc, html, dash_table
 import dash_bootstrap_components as dbc
-import dash_core_components as dcc
-import dash_html_components as html
-from dash import dash_table
 import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
@@ -15,7 +13,7 @@ import yfinance as yf
 from dash.dependencies import Input, Output
 
 # Initiate app
-app = dash.Dash(name=__name__, external_stylesheets=[dbc.themes.FLATLY])
+app = dash.Dash(name=__name__)
 server = app.server
 
 # Functions
@@ -908,4 +906,3 @@ def update_data(value_dropdown_ticker, value_tabs_report, value_tabs_statement, 
 
 if __name__ == '__main__':
     app.run_server(debug=False)
-
