@@ -195,7 +195,7 @@ class TradingViewScraper:
                                 self.driver.execute_script("arguments[0].click();", period_click)
 
                             # Get all elements
-                            sleep(3)
+                            sleep(2)
                             elements = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[5]/div[2]/div/div[1]/div')
                         except:
                             errors[stock].append(f"Cannot access fundamental data for stock: {stock}")
