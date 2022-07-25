@@ -42,12 +42,6 @@ class TradingViewScraper:
         self.target_url = target_url
         self.driver.get(self.target_url)
 
-        # Create directory
-        self.directory = "./results/tradingview"
-        create_directory(self.directory)
-        self.directory_previous = "./previous/tradingview"
-        create_directory(self.directory_previous)
-
         # Initialize MongoDB
         self.cluster = MongoClient(os.environ["MONGODB_URI"])
         self.db = self.cluster["financial_data"]
@@ -176,12 +170,6 @@ class TradingViewScraper:
                     errors[stock] = []
 
                     for financial_type in financial_types: 
-                        directory = f'{self.directory}/{period_type}'
-                        create_directory(directory)
-
-                        directory_previous = f'{self.directory_previous}/{period_type}'
-                        create_directory(directory_previous)
-
                         # Define url
                         url = f"https://www.tradingview.com/symbols/IDX-{stock}/financials-{financial_type}/"
                         
@@ -369,13 +357,6 @@ class TradingViewScraper:
         collection_errors.insert_one(errors)
         
         print(f"Process finished")
-
-def create_directory(directory):
-    # Check whether the specified path exists or not
-    directory_exist = os.path.exists(directory)
-
-    if not directory_exist:
-        os.makedirs(directory, exist_ok = True)
 
 def main():
     """Run fundamental analysis scraper"""
