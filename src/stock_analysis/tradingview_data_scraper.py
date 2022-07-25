@@ -78,7 +78,6 @@ class TradingViewScraper:
             "Stock Code": "Stock Code",
             "Company Name": "Company Name",
             "Sector": "Sector",
-            "Last": "Last",
             "Chg,\xa01D": "Change",
             "Chg %,\xa01D": "Change [%]",
             "Technical Rating,\xa01D": "Technical Rating",
@@ -94,7 +93,6 @@ class TradingViewScraper:
 
         # Clean dataframe
         # Remove IDR
-        df["Last"] = df["Last"].apply(lambda x: x.replace('IDR', ''))
         df["Change"] = df["Change"].apply(lambda x: x.replace('IDR', ''))
         df["EPS (TTM)"] = df["EPS (TTM)"].apply(lambda x: x.replace('IDR', ''))
         df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('IDR', ''))
