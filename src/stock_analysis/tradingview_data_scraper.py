@@ -111,7 +111,7 @@ class TradingViewScraper:
 
         # Get data from database
         previous_df = pd.DataFrame(list(collection.find({})))
-        df = df.combine_first(previous_df)
+        df = previous_df.combine_first(df)
 
         # Upload data to database
         for ix, row in df.iterrows():
@@ -314,16 +314,16 @@ class TradingViewScraper:
                             previous_data = collection.find_one({"stock_code": stock})
 
                             income_statement_previous = pd.DataFrame(previous_data["income_statement"])
-                            income_statement = income_statement.combine_first(income_statement_previous)
+                            income_statement = income_statement_previous.combine_first(income_statement)
 
                             balance_sheet_previous = pd.DataFrame(previous_data["balance_sheet"])
-                            balance_sheet = balance_sheet.combine_first(balance_sheet_previous)
+                            balance_sheet = balance_sheet_previous.combine_first(balance_sheet)
 
                             cash_flow_previous = pd.DataFrame(previous_data["cash_flow"])
-                            cash_flow = cash_flow.combine_first(cash_flow_previous)
+                            cash_flow = cash_flow_previous.combine_first(cash_flow)
 
                             ratios_previous = pd.DataFrame(previous_data["ratios"])
-                            ratios = ratios.combine_first(ratios_previous)
+                            ratios = ratios_previous.combine_first(ratios)
 
                             json_structure["stock_code"] = stock
                             json_structure["period_type"] = period_type
