@@ -154,11 +154,11 @@ class TradingViewScraper:
 
         errors = {}
         
-        for period_type in period_types:
-            # Set collection based on period types
-            collection = self.db[period_type]
-            with alive_bar(len(stocks), force_tty=True) as bar:
-                for stock in stocks:
+        with alive_bar(len(stocks), force_tty=True) as bar:
+            for stock in stocks:
+                for period_type in period_types:
+                    
+                    # Define dicts, dataframes, lists
                     json_structure = {}
                     income_statement = pd.DataFrame()
                     balance_sheet = pd.DataFrame()
@@ -166,6 +166,9 @@ class TradingViewScraper:
                     ratios = pd.DataFrame()
 
                     errors[stock] = []
+
+                    # Set collection based on period types
+                    collection = self.db[period_type]
 
                     for financial_type in financial_types: 
                         # Define url
@@ -346,10 +349,10 @@ class TradingViewScraper:
                     else:
                         errors[stock].append(f"No fundamental data available for stock: {stock}")
 
-                    bar()
+                bar()
 
         # Store errors to MongoDB
-        errors["date_updated"] = datetime.now().strftime('%d-%m-%Y')
+        errors["datetime"] = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
         errors = {key: value for key, value in errors.items() if value != []}
         collection_errors = self.db["errors"]
         collection_errors.insert_one(errors)
