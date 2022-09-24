@@ -177,16 +177,17 @@ class TradingViewScraper:
                         try:
                             # Go to url
                             self.driver.get(url)
+                            sleep(1)
 
                             if period_type == 'yearly':                             
-                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[4]/div[2]/div/div/div/div/div/button')[0]
+                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[4]/div[2]/div/div/div/button')[0]
                                 self.driver.execute_script("arguments[0].click();", period_click)
                             elif period_type == 'quarterly':
-                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[4]/div[2]/div/div/div/div/div/button')[1]
-                                self.driver.execute_script("arguments[0].click();", period_click)
+                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[4]/div[2]/div/div/div/button')[1]
+                                self.driver.execute_script("arguments[0].click();", period_click) 
 
                             # Get all elements
-                            sleep(2)
+                            sleep(1)
                             elements = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[5]/div[2]/div/div[1]/div')
                         except:
                             errors[stock].append(f"Cannot access fundamental data for stock: {stock}")
