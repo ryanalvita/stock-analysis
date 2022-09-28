@@ -154,7 +154,7 @@ class TradingViewScraper:
 
         errors = {}
         
-        with alive_bar(len(stocks), force_tty=True) as bar:
+        with alive_bar(len(stocks)) as bar:
             for stock in stocks:
                 for period_type in period_types:
                     
