@@ -1,4 +1,4 @@
-name: Cronjob to create daily notification via email for IDX financial statement releases
+name: Send Email Notification for IDX Financial Statement Releases
 on:
   schedule:
     - cron: "0 8 * * *"
