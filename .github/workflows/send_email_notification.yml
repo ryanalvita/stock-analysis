@@ -1,0 +1,21 @@
+name: Cronjob to create daily notification via email for IDX financial statement releases
+on:
+  schedule:
+    - cron: "0 8 * * *"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Create daily notification via email for IDX financial statement releases
+        env:
+          GMAIL_ID: ${{ secrets.GMAIL_ID }}
+          YAHOO_ID: ${{ secrets.YAHOO_ID }}
+          YAHOO_PASSWORD: ${{ secrets.YAHOO_PASSWORD }}
+        run: |
+          python src/stock_analysis/send_email_notification.py
