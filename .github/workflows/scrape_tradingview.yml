@@ -1,4 +1,4 @@
-name: Cronjob to scrape data from Trading View website
+name: Scrape TradingView Financials
 on:
   schedule:
     - cron: "0 8 * * 1"
