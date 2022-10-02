@@ -99,7 +99,7 @@ class NotifikasiEmailRilisLapkeu:
         self,
     ):
         # Construct HTML
-        with open("html_template.html", "r", encoding='utf-8') as f:
+        with open("./src/stock_analysis/html_template.html", "r", encoding='utf-8') as f:
             html = f.read()
         
         insert = []
