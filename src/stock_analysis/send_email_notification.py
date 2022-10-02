@@ -27,7 +27,6 @@ class NotifikasiEmailRilisLapkeu:
         chrome_options.add_argument("--disable-gpu");
         # bypass OS security model
         chrome_options.add_argument("--no-sandbox");
-        chrome_options.add_argument("--headless");
 
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
 
@@ -100,7 +99,7 @@ class NotifikasiEmailRilisLapkeu:
         self,
     ):
         # Construct HTML
-        with open("html_template.html", "r", encoding='utf-8') as f:
+        with open("./src/stock_analysis/html_template.html", "r", encoding='utf-8') as f:
             html = f.read()
         
         insert = []
