@@ -17,18 +17,18 @@ class NotifikasiEmailRilisLapkeu:
                  
         chrome_options = webdriver.ChromeOptions()
         # open Browser in maximized mode
-        chrome_options.add_argument("start-maximized");
+        chrome_options.add_argument("start-maximized")
         # disabling infobars
-        chrome_options.add_argument("disable-infobars");
+        chrome_options.add_argument("disable-infobars")
         # overcome limited resource problems
-        chrome_options.add_argument("--disable-dev-shm-usage");
+        chrome_options.add_argument("--disable-dev-shm-usage")
         # disabling extensions
-        chrome_options.add_argument("--disable-extensions");
+        chrome_options.add_argument("--disable-extensions")
         # disabling gpu, applicable to windows os only
-        chrome_options.add_argument("--disable-gpu");
+        chrome_options.add_argument("--disable-gpu")
         # bypass OS security model
-        chrome_options.add_argument("--no-sandbox");
-        chrome_options.add_argument("--headless");
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--headless")
         # add user agent
         chrome_options.add_argument(f'user-agent={UserAgent().random}')
 
