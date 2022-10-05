@@ -9,6 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
 from webdriver_manager.chrome import ChromeDriverManager
+from fake_useragent import UserAgent
 
 
 class NotifikasiEmailRilisLapkeu:
@@ -28,6 +29,8 @@ class NotifikasiEmailRilisLapkeu:
         # bypass OS security model
         chrome_options.add_argument("--no-sandbox");
         chrome_options.add_argument("--headless");
+        # add user agent
+        chrome_options.add_argument(f'user-agent={UserAgent().random}')
 
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
 
