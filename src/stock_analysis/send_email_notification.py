@@ -97,7 +97,7 @@ class NotifikasiEmailRilisLapkeu:
                 self.driver.execute_script("arguments[0].click();", period_click)
 
         # Store to df
-        self.df = df
+        self.df = df.reset_index()
 
     def send_email(
         self,
@@ -119,7 +119,7 @@ class NotifikasiEmailRilisLapkeu:
                 quarter = "FY"
 
             number = ix + 1
-            ticker = row["Unnamed: 0"]
+            ticker = row["index"]
             year = row["Year"]
             link = row["Link"]
             insert.append(f'<tr>\n                      <td align="left" style="padding:10px;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, \'helvetica neue\', helvetica, sans-serif;line-height:27px;color:#333333;font-size:18px"><strong>{number}. {ticker} [{quarter} - {year}]</strong><br><a target="_blank" href="{link}" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#1376C8;font-size:18px;font-family:arial, \'helvetica neue\', helvetica, sans-serif">Link</a></p></td>\n                     </tr>\n                     ')
