@@ -230,8 +230,8 @@ class TradingViewScraper:
 
                         # Get all data from all elements
                         for element in elements:
-                            sleep(1)
-                            text = element.text
+                            sleep(2)
+                            text = element.get_attribute('textContent')
                             data = pd.Series([x.replace("−","-") for x in text.replace('\n','#').replace('YoY growth','#').replace('\u202c','#').replace('\u202a','#').replace('####','#').replace('###','#').replace('##','#').split('#')])
                             if data[0] == "Currency: IDR":
                                 # Define columns
