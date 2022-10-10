@@ -37,7 +37,7 @@ class TradingViewScraper:
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--headless")
 
-        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
 
         # Initialize MongoDB
         self.cluster = MongoClient(os.environ["MONGODB_URI"])
