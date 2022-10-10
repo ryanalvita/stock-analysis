@@ -11,7 +11,6 @@ from alive_progress import alive_bar
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
 
 IDX_30 = ["ADRO","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BMRI","BRPT","BUKA","CPIN","EMTK","EXCL","ICBP","INCO","INDF","INKP","KLBF","MDKA","MIKA","PGAS","PTBA","SMGR","TBIG","TINS","TLKM","TOWR","UNTR","UNVR","WSKT"]
 LQ_45 = ["ADRO","AMRT","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BFIN","BMRI","BRPT","BUKA","CPIN","EMTK","ERAA","EXCL","GGRM","HMSP","HRUM","ICBP","INCO","INDF","INKP","INTP","ITMG","JPFA","KLBF","MDKA","MEDC","MIKA","MNCN","PGAS","PTBA","PTPP","SMGR","TBIG","TINS","TKIM","TLKM","TOWR","TPIA","UNTR","UNVR","WIKA","WSKT"]
@@ -20,7 +19,7 @@ IDX_80 = ["AALI","ACES","ADRO","AGII","AKRA","AMRT","ANTM","ASII","ASRI","ASSA",
 ALL = ['AALI', 'ABBA', 'ABMM', 'ACES', 'ACST', 'ADCP', 'ADES', 'ADHI', 'ADMF', 'ADMG', 'ADMR', 'ADRO', 'AGAR', 'AGII', 'AGRO', 'AGRS', 'AHAP', 'AIMS', 'AISA', 'AKKU', 'AKPI', 'AKRA', 'AKSI', 'ALDO', 'ALKA', 'ALMI', 'ALTO', 'AMAG', 'AMAN', 'AMAR', 'AMFG', 'AMIN', 'AMOR', 'AMRT', 'ANDI', 'ANJT', 'ANTM', 'APEX', 'APIC', 'APII', 'APLI', 'APLN', 'ARCI', 'ARGO', 'ARII', 'ARKA', 'ARNA', 'ARTA', 'ARTO', 'ASBI', 'ASDM', 'ASGR', 'ASHA', 'ASII', 'ASJT', 'ASLC', 'ASMI', 'ASPI', 'ASRI', 'ASRM', 'ASSA', 'ATAP', 'ATIC', 'AUTO', 'AVIA', 'AYLS', 'BABP', 'BACA', 'BAJA', 'BALI', 'BANK', 'BAPA', 'BAPI', 'BATA', 'BAUT', 'BAYU', 'BBCA', 'BBHI', 'BBKP', 'BBLD', 'BBMD', 'BBNI', 'BBRI', 'BBRM', 'BBSI', 'BBSS', 'BBTN', 'BBYB', 'BCAP', 'BCIC', 'BCIP', 'BDMN', 'BEBS', 'BEEF', 'BEKS', 'BELL', 'BESS', 'BEST', 'BFIN', 'BGTG', 'BHAT', 'BHIT', 'BIKA', 'BIKE', 'BIMA', 'BINA', 'BINO', 'BIPI', 'BIPP', 'BIRD', 'BISI', 'BJBR', 'BJTM', 'BKDP', 'BKSL', 'BKSW', 'BLTA', 'BLTZ', 'BLUE', 'BMAS', 'BMHS', 'BMRI', 'BMTR', 'BNBA', 'BNBR', 'BNGA', 'BNII', 'BNLI', 'BOBA', 'BOGA', 'BOLA', 'BOLT', 'BOSS', 'BPFI', 'BPTR', 'BRIS', 'BRMS', 'BRPT', 'BSDE', 'BSIM', 'BSML', 'BSSR', 'BTEK', 'BTON', 'BTPN', 'BTPS', 'BUDI', 'BUKA', 'BUKK', 'BULL', 'BUMI', 'BVIC', 'BWPT', 'BYAN', 'CAKK', 'CAMP', 'CANI', 'CARE', 'CARS', 'CASA', 'CASH', 'CASS', 'CBMF', 'CCSI', 'CEKA', 'CENT', 'CFIN', 'CINT', 'CITA', 'CITY', 'CLEO', 'CLPI', 'CMNP', 'CMNT', 'CMPP', 'CMRY', 'CNKO', 'CNTX', 'COCO', 'CPIN', 'CPRO', 'CSAP', 'CSIS', 'CSMI', 'CSRA', 'CTRA', 'DADA', 'DART', 'DAYA', 'DCII', 'DEAL', 'DEPO', 'DEWA', 'DFAM', 'DGIK', 'DGNS', 'DIGI', 'DILD', 'DIVA', 'DKFT', 'DLTA', 'DMAS', 'DMMX', 'DMND', 'DNAR', 'DNET', 'DOID', 'DPNS', 'DRMA', 'DSFI', 'DSNG', 'DUTI', 'DVLA', 'DWGL', 'DYAN', 'EAST', 'ECII', 'EDGE', 'EKAD', 'ELSA', 'ELTY', 'EMDE', 'EMTK', 'ENAK', 'ENRG', 'ENZO', 'EPAC', 'EPMT', 'ERAA', 'ERTX', 'ESIP', 'ESSA', 'ESTA', 'ESTI', 'EXCL', 'FAPA', 'FAST', 'FILM', 'FIMP', 'FIRE', 'FISH', 'FITT', 'FLMC', 'FMII', 'FOOD', 'FORU', 'FPNI', 'FREN', 'FUJI', 'GAMA', 'GDST', 'GDYR', 'GEMA', 'GEMS', 'GGRM', 'GGRP', 'GHON', 'GJTL', 'GLOB', 'GLVA', 'GMFI', 'GOLD', 'GOOD', 'GOTO', 'GPRA', 'GPSO', 'GSMF', 'GTSI', 'GWSA', 'GZCO', 'HAIS', 'HDFA', 'HDIT', 'HEAL', 'HELI', 'HERO', 'HEXA', 'HITS', 'HKMU', 'HMSP', 'HOKI', 'HOMI', 'HOPE', 'HRME', 'HRTA', 'HRUM', 'IATA', 'IBOS', 'IBST', 'ICBP', 'ICON', 'IDEA', 'IDPR', 'IFII', 'IFSH', 'IGAR', 'IKAN', 'IKBI', 'IMAS', 'IMJS', 'IMPC', 'INAF', 'INAI', 'INCF', 'INCI', 'INCO', 'INDF', 'INDO', 'INDR', 'INDS', 'INDX', 'INDY', 'INKP', 'INOV', 'INPC', 'INPP', 'INPS', 'INRU', 'INTD', 'INTP', 'IPAC', 'IPCC', 'IPCM', 'IPOL', 'IPPE', 'IPTV', 'IRRA', 'ISAT', 'ISSP', 'ITIC', 'ITMA', 'ITMG', 'JAST', 'JAWA', 'JAYA', 'JECC', 'JIHD', 'JKON', 'JMAS', 'JPFA', 'JRPT', 'JSKY', 'JSMR', 'JTPE', 'KAEF', 'KARW', 'KAYU', 'KBAG', 'KBLI', 'KBLM', 'KBLV', 'KDSI', 'KEEN', 'KEJU', 'KIAS', 'KICI', 'KIJA', 'KINO', 'KIOS', 'KJEN', 'KKGI', 'KLBF', 'KMDS', 'KMTR', 'KOBX', 'KOIN', 'KONI', 'KOPI', 'KOTA', 'KPIG', 'KRAS', 'KREN', 'KUAS', 'LABA', 'LAND', 'LCKM', 'LEAD', 'LFLO', 'LINK', 'LION', 'LMAS', 'LMPI', 'LMSH', 'LPCK', 'LPGI', 'LPIN', 'LPKR', 'LPLI', 'LPPF', 'LPPS', 'LSIP', 'LTLS', 'LUCK', 'LUCY', 'MAIN', 'MAPA', 'MAPI', 'MARI', 'MARK', 'MASA', 'MASB', 'MAYA', 'MBAP', 'MBSS', 'MBTO', 'MCAS', 'MCOL', 'MCOR', 'MDIA', 'MDKA', 'MDKI', 'MDLN', 'MEDC', 'MEGA', 'MERK', 'META', 'MFIN', 'MFMI', 'MGLV', 'MGRO', 'MICE', 'MIDI', 'MIKA', 'MIRA', 'MITI', 'MKNT', 'MKPI', 'MLBI', 'MLIA', 'MLPL', 'MLPT', 'MMLP', 'MNCN', 'MOLI', 'MPMX', 'MPOW', 'MPPA', 'MPRO', 'MRAT', 'MREI', 'MSIN', 'MSKY', 'MTDL', 'MTEL', 'MTLA', 'MTMH', 'MTPS', 'MTSM', 'MTWI', 'MYOH', 'MYOR', 'MYTX', 'NANO', 'NASA', 'NASI', 'NATO', 'NELY', 'NETV', 'NFCX', 'NICK', 'NICL', 'NIKL', 'NIRO', 'NISP', 'NOBU', 'NPGF', 'NRCA', 'NTBK', 'NZIA', 'OASA', 'OBMD', 'OILS', 'OKAS', 'OLIV', 'OMRE', 'OPMS', 'PADI', 'PALM', 'PAMG', 'PANI', 'PANR', 'PANS', 'PBID', 'PBRX', 'PBSA', 'PCAR', 'PDES', 'PEGE', 'PEHA', 'PGAS', 'PGJO', 'PGLI', 'PGUN', 'PICO', 'PJAA', 'PKPK', 'PLAN', 'PLIN', 'PMJS', 'PMMP', 'PNBN', 'PNBS', 'PNGO', 'PNIN', 'PNLF', 'POLA', 'POLI', 'POLL', 'POLU', 'POLY', 'POWR', 'PPGL', 'PPRE', 'PPRO', 'PRAS', 'PRDA', 'PRIM', 'PSAB', 'PSDN', 'PSGO', 'PSKT', 'PSSI', 'PTBA', 'PTDU', 'PTIS', 'PTPP', 'PTPW', 'PTRO', 'PTSN', 'PUDP', 'PURA', 'PURE', 'PURI', 'PWON', 'PYFA', 'PZZA', 'RAJA', 'RALS', 'RANC', 'RBMS', 'RDTX', 'REAL', 'RELI', 'RICY', 'RIGS', 'RISE', 'RMKE', 'ROCK', 'RODA', 'ROTI', 'RSGK', 'RUIS', 'RUNS', 'SAFE', 'SAME', 'SAMF', 'SAPX', 'SATU', 'SBAT', 'SBMA', 'SCCO', 'SCMA', 'SCNP', 'SDMU', 'SDPC', 'SDRA', 'SEMA', 'SFAN', 'SGER', 'SGRO', 'SHID', 'SHIP', 'SICO', 'SIDO', 'SILO', 'SIMP', 'SINI', 'SIPD', 'SKBM', 'SKLT', 'SKRN', 'SLIS', 'SMAR', 'SMBR', 'SMCB', 'SMDM', 'SMDR', 'SMGR', 'SMKL', 'SMKM', 'SMMT', 'SMRA', 'SMSM', 'SNLK', 'SOCI', 'SOFA', 'SOHO', 'SOSS', 'SOTS', 'SPMA', 'SPTO', 'SQMI', 'SRAJ', 'SRSN', 'SRTG', 'SSIA', 'SSMS', 'SSTM', 'STAA', 'STAR', 'STTP', 'SULI', 'SWAT', 'TALF', 'TAMA', 'TAPG', 'TAXI', 'TAYS', 'TBIG', 'TBLA', 'TBMS', 'TCID', 'TCPI', 'TEBE', 'TECH', 'TELE', 'TFAS', 'TGKA', 'TGRA', 'TIFA', 'TINS', 'TIRA', 'TIRT', 'TKIM', 'TLDN', 'TLKM', 'TMAS', 'TMPO', 'TNCA', 'TOBA', 'TOPS', 'TOTL', 'TOTO', 'TOWR', 'TOYS', 'TPIA', 'TPMA', 'TRIM', 'TRIN', 'TRIS', 'TRJA', 'TRST', 'TRUE', 'TRUK', 'TRUS', 'TSPC', 'TUGU', 'UANG', 'UCID', 'UFOE', 'ULTJ', 'UNIC', 'UNIQ', 'UNSP', 'UNTR', 'UNVR', 'URBN', 'UVCR', 'VICI', 'VICO', 'VINS', 'VIVA', 'VOKS', 'VRNA', 'WAPO', 'WEGE', 'WEHA', 'WGSH', 'WICO', 'WIFI', 'WIIM', 'WIKA', 'WINR', 'WINS', 'WIRG', 'WMPP', 'WMUU', 'WOMF', 'WOOD', 'WOWS', 'WSKT', 'WTON', 'YELO', 'YPAS', 'YULE', 'ZBRA', 'ZINC', 'ZONE', 'ZYRX']
 
 class TradingViewScraper:
-    def __init__(self, target_url='https://www.tradingview.com/'):
+    def __init__(self):
                  
         chrome_options = webdriver.ChromeOptions()
         # open Browser in maximized mode
@@ -38,9 +37,6 @@ class TradingViewScraper:
         chrome_options.add_argument("--headless")
 
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
-
-        self.target_url = target_url
-        self.driver.get(self.target_url)
 
         # Initialize MongoDB
         self.cluster = MongoClient(os.environ["MONGODB_URI"])
@@ -231,8 +227,8 @@ class TradingViewScraper:
 
                         # Get all data from all elements
                         for element in elements:
-                            sleep(2)
-                            text = element.text
+                            sleep(1)
+                            text = element.get_attributes('textContent')
                             data = pd.Series([x.replace("−","-") for x in text.replace('\n','#').replace('YoY growth','#').replace('\u202c','#').replace('\u202a','#').replace('####','#').replace('###','#').replace('##','#').split('#')])
                             if data[0] == "Currency: IDR":
                                 # Define columns
@@ -351,7 +347,7 @@ class TradingViewScraper:
                     else:
                         errors[stock].append(f"No fundamental data available for stock: {stock}")
 
-                bar()
+                    bar()
 
         # Store errors to MongoDB
         errors["datetime"] = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
@@ -366,7 +362,7 @@ def main():
     tv_scraper = TradingViewScraper()
 
     # Get all stock code
-    # tv_scraper.get_all_stock_code()
+    tv_scraper.get_all_stock_code()
 
     # Get fundamental data
     tv_scraper.get_fundamental_data()
