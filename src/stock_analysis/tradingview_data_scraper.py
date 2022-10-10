@@ -11,6 +11,7 @@ from alive_progress import alive_bar
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from fake_useragent import UserAgent
 
 IDX_30 = ["ADRO","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BMRI","BRPT","BUKA","CPIN","EMTK","EXCL","ICBP","INCO","INDF","INKP","KLBF","MDKA","MIKA","PGAS","PTBA","SMGR","TBIG","TINS","TLKM","TOWR","UNTR","UNVR","WSKT"]
@@ -39,7 +40,7 @@ class TradingViewScraper:
         # add user agent
         chrome_options.add_argument(f'user-agent={UserAgent().random}')
 
-        self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
         # Initialize MongoDB
         self.cluster = MongoClient(os.environ["MONGODB_URI"])
