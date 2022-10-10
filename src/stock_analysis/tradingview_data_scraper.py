@@ -186,7 +186,7 @@ class TradingViewScraper:
             "Solvency ratios",
         ]
         
-        with alive_bar(len(stocks), force_tty=False) as bar:
+        with alive_bar(len(stocks), force_tty=True) as bar:
             for stock in stocks:
                 for period_type in period_types:
                     
