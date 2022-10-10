@@ -345,7 +345,7 @@ class TradingViewScraper:
                     else:
                         errors[stock].append(f"No fundamental data available for stock: {stock}")
 
-                bar()
+                    bar()
 
         # Store errors to MongoDB
         errors["datetime"] = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
