@@ -10,6 +10,8 @@ from pymongo import MongoClient
 from alive_progress import alive_bar
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 IDX_30 = ["ADRO","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BMRI","BRPT","BUKA","CPIN","EMTK","EXCL","ICBP","INCO","INDF","INKP","KLBF","MDKA","MIKA","PGAS","PTBA","SMGR","TBIG","TINS","TLKM","TOWR","UNTR","UNVR","WSKT"]
@@ -184,7 +186,7 @@ class TradingViewScraper:
             "Solvency ratios",
         ]
         
-        with alive_bar(len(stocks)) as bar:
+        with alive_bar(len(stocks), force_tty=True) as bar:
             for stock in stocks:
                 for period_type in period_types:
                     
@@ -207,17 +209,19 @@ class TradingViewScraper:
                         try:
                             # Go to url
                             self.driver.get(url)
-                            sleep(1)
+                            
 
                             if period_type == 'yearly':                             
-                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[4]/div[2]/div/div/div/button')[0]
+                                WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, '//*[@id="FY"]')))
+                                period_click = self.driver.find_element(By.XPATH, '//*[@id="FY"]')
                                 self.driver.execute_script("arguments[0].click();", period_click)
                             elif period_type == 'quarterly':
-                                period_click = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[4]/div[2]/div/div/div/button')[1]
+                                WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, '//*[@id="FQ"]')))
+                                period_click = self.driver.find_element(By.XPATH, '//*[@id="FQ"]')
                                 self.driver.execute_script("arguments[0].click();", period_click) 
 
                             # Get all elements
-                            sleep(1)
+                            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[5]/div[2]/div/div[1]/div')))
                             elements = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[5]/div[2]/div/div[1]/div')
                         except:
                             errors[stock].append(f"Cannot access fundamental data for stock: {stock}")
@@ -227,7 +231,6 @@ class TradingViewScraper:
                         columns = []
 
                         # Get all data from all elements
-                        sleep(2)
                         for element in elements:
                             text = element.text
                             data = pd.Series([x.replace("−","-") for x in text.replace('\n','#').replace('YoY growth','#').replace('\u202c','#').replace('\u202a','#').replace('####','#').replace('###','#').replace('##','#').split('#')])
@@ -348,7 +351,7 @@ class TradingViewScraper:
                     else:
                         errors[stock].append(f"No fundamental data available for stock: {stock}")
 
-                    bar()
+                bar()
 
         # Store errors to MongoDB
         errors["datetime"] = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
@@ -363,7 +366,7 @@ def main():
     tv_scraper = TradingViewScraper()
 
     # Get all stock code
-    tv_scraper.get_all_stock_code()
+    # tv_scraper.get_all_stock_code()
 
     # Get fundamental data
     tv_scraper.get_fundamental_data()
