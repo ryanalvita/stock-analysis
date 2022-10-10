@@ -366,7 +366,7 @@ def main():
     tv_scraper = TradingViewScraper()
 
     # Get all stock code
-    tv_scraper.get_all_stock_code()
+    # tv_scraper.get_all_stock_code()
 
     # Get fundamental data
     tv_scraper.get_fundamental_data()
