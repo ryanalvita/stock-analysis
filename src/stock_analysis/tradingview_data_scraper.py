@@ -149,6 +149,40 @@ class TradingViewScraper:
             stocks = overview_df["Stock Code"].to_list()
 
         errors = {}
+
+
+        # Define double data every financial type
+        # Double data means that in the website, it has percentage for the differnce
+        # We will exclude those data since those data can be also determined post-scraping
+        doubles_income_statement = [
+            "Gross profit", 
+            "Total revenue",
+            "Operating income", 
+            "Pretax income", 
+            "Net income", 
+            "Basic earnings per share (Basic EPS)", 
+            "Diluted earnings per share (Diluted EPS)", 
+            "EBITDA", 
+            "EBIT",
+        ]
+        doubles_balance_sheet = [
+            "Total assets",
+            "Total liabilities",
+            "Total equity",
+        ]
+        doubles_cash_flow = [
+            "Cash from operating activities",
+            "Cash from investing activities",
+            "Cash from financing activities",
+            "Free cash flow",
+        ]
+        skip_ratios = [
+            "Valuation ratios",
+            "Key stats",
+            "Profitability ratios",
+            "Liquidity ratios",
+            "Solvency ratios",
+        ]
         
         with alive_bar(len(stocks)) as bar:
             for stock in stocks:
@@ -188,47 +222,14 @@ class TradingViewScraper:
                         except:
                             errors[stock].append(f"Cannot access fundamental data for stock: {stock}")
                             break
-                        
+
                         # Define empty list for columns
                         columns = []
 
-                        # Define double data every financial type
-                        # Double data means that in the website, it has percentage for the differnce
-                        # We will exclude those data since those data can be also determined post-scraping
-                        doubles_income_statement = [
-                            "Gross profit", 
-                            "Total revenue",
-                            "Operating income", 
-                            "Pretax income", 
-                            "Net income", 
-                            "Basic earnings per share (Basic EPS)", 
-                            "Diluted earnings per share (Diluted EPS)", 
-                            "EBITDA", 
-                            "EBIT",
-                        ]
-                        doubles_balance_sheet = [
-                            "Total assets",
-                            "Total liabilities",
-                            "Total equity",
-                        ]
-                        doubles_cash_flow = [
-                            "Cash from operating activities",
-                            "Cash from investing activities",
-                            "Cash from financing activities",
-                            "Free cash flow",
-                        ]
-                        skip_ratios = [
-                            "Valuation ratios",
-                            "Key stats",
-                            "Profitability ratios",
-                            "Liquidity ratios",
-                            "Solvency ratios",
-                        ]
-
                         # Get all data from all elements
+                        sleep(2)
                         for element in elements:
-                            sleep(1)
-                            text = element.get_attributes('textContent')
+                            text = element.text
                             data = pd.Series([x.replace("−","-") for x in text.replace('\n','#').replace('YoY growth','#').replace('\u202c','#').replace('\u202a','#').replace('####','#').replace('###','#').replace('##','#').split('#')])
                             if data[0] == "Currency: IDR":
                                 # Define columns
