@@ -186,7 +186,7 @@ class TradingViewScraper:
             "Solvency ratios",
         ]
         
-        with alive_bar(len(stocks), force_tty=True) as bar:
+        with alive_bar(len(stocks), force_tty=False) as bar:
             for stock in stocks:
                 for period_type in period_types:
                     
@@ -209,19 +209,16 @@ class TradingViewScraper:
                         try:
                             # Go to url
                             self.driver.get(url)
+                            sleep(1)
                             
-
                             if period_type == 'yearly':                             
-                                WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, '//*[@id="FY"]')))
                                 period_click = self.driver.find_element(By.XPATH, '//*[@id="FY"]')
                                 self.driver.execute_script("arguments[0].click();", period_click)
                             elif period_type == 'quarterly':
-                                WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, '//*[@id="FQ"]')))
                                 period_click = self.driver.find_element(By.XPATH, '//*[@id="FQ"]')
                                 self.driver.execute_script("arguments[0].click();", period_click) 
 
                             # Get all elements
-                            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[5]/div[2]/div/div[1]/div')))
                             elements = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[5]/div[2]/div/div[1]/div')
                         except:
                             errors[stock].append(f"Cannot access fundamental data for stock: {stock}")
@@ -229,6 +226,7 @@ class TradingViewScraper:
 
                         # Define empty list for columns
                         columns = []
+                        sleep(2)
 
                         # Get all data from all elements
                         for element in elements:
