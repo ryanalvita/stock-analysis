@@ -226,7 +226,7 @@ class TradingViewScraper:
 
                         # Define empty list for columns
                         columns = []
-                        sleep(2)
+                        sleep(1.5)
 
                         # Get all data from all elements
                         for element in elements:
