@@ -153,7 +153,8 @@ class NotifikasiEmailRilisLapkeu:
         # Attach parts into message container.
         msg.attach(part)
 
-        with smtplib.SMTP_SSL('smtp.mail.yahoo.com', 587) as server:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 587) as server:
+            server.ehlo()
             server.login(gmail_id, gmail_password)
             server.sendmail(email_from, email_to, msg.as_string())
             server.quit()
