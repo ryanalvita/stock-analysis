@@ -16,7 +16,6 @@ jobs:
       - name: Create daily notification via email for IDX financial statement releases
         env:
           GMAIL_ID: ${{ secrets.GMAIL_ID }}
-          YAHOO_ID: ${{ secrets.YAHOO_ID }}
-          YAHOO_PASSWORD: ${{ secrets.YAHOO_PASSWORD }}
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
         run: |
           python src/stock_analysis/send_email_notification.py

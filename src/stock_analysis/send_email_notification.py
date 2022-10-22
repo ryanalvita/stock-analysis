@@ -134,12 +134,12 @@ class NotifikasiEmailRilisLapkeu:
 
         # Send email
         # sender
-        yahoo_email = (os.environ["YAHOO_ID"])
-        yahoo_password = (os.environ["YAHOO_PASSWORD"])
+        gmail_id = (os.environ["GMAIL_ID"])
+        gmail_password = (os.environ["GMAIL_PASSWORD"])
 
         # reciever
-        email_from = yahoo_email
-        email_to = (os.environ["GMAIL_ID"])
+        email_from = gmail_id
+        email_to = "ryanalvita@gmail.com"
 
         # Create message container - the correct MIME type is multipart/alternative.
         msg = MIMEMultipart('alternative')
@@ -153,11 +153,10 @@ class NotifikasiEmailRilisLapkeu:
         # Attach parts into message container.
         msg.attach(part)
 
-        server = smtplib.SMTP_SSL('smtp.mail.yahoo.com', 465)
-        server.ehlo()
-        server.login(yahoo_email, yahoo_password)
-        server.sendmail(email_from, email_to, msg.as_string())
-        server.quit()
+        with smtplib.SMTP_SSL('smtp.mail.yahoo.com', 587) as server:
+            server.login(gmail_id, gmail_password)
+            server.sendmail(email_from, email_to, msg.as_string())
+            server.quit()
 
 def main():
     """Get"""
