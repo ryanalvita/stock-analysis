@@ -1,6 +1,7 @@
 import os
+import numpy as np
 import pandas as pd
-import smtplib
+import smtplib, ssl
 
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
@@ -153,7 +154,10 @@ class NotifikasiEmailRilisLapkeu:
         # Attach parts into message container.
         msg.attach(part)
 
-        with smtplib.SMTP_SSL('smtp.gmail.com', 587) as server:
+        context = ssl.create_default_context()
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.ehlo()
+            server.starttls(context=context)
             server.ehlo()
             server.login(gmail_id, gmail_password)
             server.sendmail(email_from, email_to, msg.as_string())
