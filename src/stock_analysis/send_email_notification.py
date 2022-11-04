@@ -1,7 +1,9 @@
 import os
+import this
 import numpy as np
 import pandas as pd
 import smtplib, ssl
+import tabula
 
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
@@ -10,6 +12,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.utils import ChromeType
 from fake_useragent import UserAgent
 
 
@@ -33,7 +36,19 @@ class NotifikasiEmailRilisLapkeu:
         # add user agent
         chrome_options.add_argument(f'user-agent={UserAgent().random}')
 
+        # add experimental option
+        download_path = os.getcwd() + os.path.sep + "pdf" + os.path.sep
+        if not os.path.exists(download_path):
+            os.makedirs(download_path)
+        profile = {"plugins.plugins_list": [{"enabled": False,
+                                         "name": "Chrome PDF Viewer"}],
+               "download.default_directory": download_path,
+               "download.extensions_to_open": "",
+               "plugins.always_open_pdf_externally": True}
+        chrome_options.add_experimental_option("prefs", profile)
+
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+        self.download_path = download_path
 
     def get_all_releases(
         self,
@@ -99,6 +114,53 @@ class NotifikasiEmailRilisLapkeu:
 
         # Store to df
         self.df = df.reset_index()
+
+    def net_income_growth(
+        self,
+    ):
+
+        # Open pdf link
+        # Read using pdf parser
+        for ix, row in self.df.iterrows():
+            stock = row["index"]
+            url = row["Link"]
+
+            try:
+                self.driver.get(url)
+                for subdir, dirs, files in os.walk(self.download_path):
+                    for file in files:
+                        if stock in file:
+                            filename = file
+                            break
+
+            except:
+                print(f"{stock}: Data is not yet available in IDX")
+
+            tables = tabula.read_pdf(self.download_path + filename, pages="all", multiple_tables = True, stream=True, pandas_options= {'header': None})
+            for table in tables:
+                if len(table.columns) > 3 and not (pd.isna(table[3][0])) and any(table[3].str.lower().str.contains('comprehensive income').replace(np.nan, False)):
+                    this_quarter = table[table[3] == "Comprehensive income"].dropna().iloc[0][1].replace(",","")
+                    if '(' in this_quarter:
+                        this_quarter = this_quarter.replace('( ', '-').replace(' )','')
+                    this_quarter = float(this_quarter)
+                    
+                    last_quarter = table[table[3] == "Comprehensive income"].dropna().iloc[0][2].replace(",","")
+                    if '(' in last_quarter:
+                        last_quarter = this_quarter.replace('( ', '-').replace(' )','')
+                    last_quarter = float(last_quarter)
+                
+                    if this_quarter > 0 and last_quarter > 0:
+                        growth = ((this_quarter / last_quarter) - 1) * 100
+                    elif this_quarter < 0 and last_quarter < 0:
+                        growth = -((this_quarter / last_quarter) - 1) * 100
+                    elif this_quarter > 0 and last_quarter < 0:
+                        growth = ((this_quarter + 2 * abs(last_quarter)) / abs(last_quarter) - 1) * 100
+                    elif this_quarter < 0 and last_quarter > 0:
+                        growth = -((abs(this_quarter) + 2 * last_quarter) / last_quarter - 1) * 100
+                    self.df.loc[ix, "this_quarter_net_income"] = this_quarter
+                    self.df.loc[ix, "last_quarter_net_income"] = last_quarter 
+                    self.df.loc[ix, "Growth"] = growth
+                    break
 
     def send_email(
         self,
@@ -169,6 +231,9 @@ def main():
 
     # Get all stock code
     main_class.get_all_releases()
+
+    # Read all and compare
+    main_class.net_income_growth()
 
     # Send email
     main_class.send_email()
