@@ -314,16 +314,20 @@ class TradingViewScraper:
                             previous_data = collection.find_one({"stock_code": stock})
 
                             income_statement_previous = pd.DataFrame(previous_data["income_statement"])
-                            income_statement = income_statement_previous.combine_first(income_statement)
+                            income_statement_previous = income_statement_previous[income_statement_previous.columns[~income_statement_previous.columns.isin(income_statement.columns)]]
+                            income_statement = pd.concat([income_statement_previous, income_statement], axis=1)
 
                             balance_sheet_previous = pd.DataFrame(previous_data["balance_sheet"])
-                            balance_sheet = balance_sheet_previous.combine_first(balance_sheet)
+                            balance_sheet_previous = balance_sheet_previous[balance_sheet_previous.columns[~balance_sheet_previous.columns.isin(balance_sheet.columns)]]
+                            balance_sheet = pd.concat([balance_sheet_previous, balance_sheet], axis=1)
 
                             cash_flow_previous = pd.DataFrame(previous_data["cash_flow"])
-                            cash_flow = cash_flow_previous.combine_first(cash_flow)
+                            cash_flow_previous = cash_flow_previous[cash_flow_previous.columns[~cash_flow_previous.columns.isin(cash_flow.columns)]]
+                            cash_flow = pd.concat([cash_flow_previous, cash_flow], axis=1)
 
                             ratios_previous = pd.DataFrame(previous_data["ratios"])
-                            ratios = ratios_previous.combine_first(ratios)
+                            ratios_previous = ratios_previous[ratios_previous.columns[~ratios_previous.columns.isin(ratios.columns)]]
+                            ratios = pd.concat([ratios_previous, ratios], axis=1)
 
                             json_structure["stock_code"] = stock
                             json_structure["period_type"] = period_type
