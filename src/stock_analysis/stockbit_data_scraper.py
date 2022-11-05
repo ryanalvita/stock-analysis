@@ -951,6 +951,7 @@ ALL = [
     "ZYRX",
 ]
 
+
 class StockbitScraper:
     def __init__(self):
         # Define chrome options
@@ -967,8 +968,8 @@ class StockbitScraper:
         # disabling gpu, applicable to windows os only
         chrome_options.add_argument("--disable-gpu")
         # bypass OS security model
-        # chrome_options.add_argument("--no-sandbox")
-        # chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--headless")
 
         self.driver = webdriver.Chrome(
             ChromeDriverManager().install(), chrome_options=chrome_options
@@ -1075,8 +1076,20 @@ class StockbitScraper:
                         ).click()
 
                         tables = pd.read_html(self.driver.page_source)
-                        df1 = tables[1].rename(columns={"In Thousand IDR": "In IDR", "In Billion IDR": "In IDR", "In Trillion IDR": "In IDR"})
-                        df2 = tables[2].rename(columns={"In Thousand IDR": "In IDR", "In Billion IDR": "In IDR", "In Trillion IDR": "In IDR"})
+                        df1 = tables[1].rename(
+                            columns={
+                                "In Thousand IDR": "In IDR",
+                                "In Billion IDR": "In IDR",
+                                "In Trillion IDR": "In IDR",
+                            }
+                        )
+                        df2 = tables[2].rename(
+                            columns={
+                                "In Thousand IDR": "In IDR",
+                                "In Billion IDR": "In IDR",
+                                "In Trillion IDR": "In IDR",
+                            }
+                        )
                         data = pd.concat([df1, df2], axis=0)
                         data = data.fillna("")
 
@@ -1084,8 +1097,28 @@ class StockbitScraper:
                         data.columns = data.columns.str.replace("12M ", "")
 
                         for col in data.columns:
-                            data[col] = data[col].apply(lambda x: str(x).replace(".", "").replace(" K", "0").replace(" B", "0000").replace(" T", "0000000").replace("-", "").replace(")", "").replace("(", "-")
-                            if all(ext in x for ext in ([".","K"] or [".", "B"] or [".","T"])) else str(x).replace(",", "").replace(" K", "000").replace(" B", "000000").replace(" T", "000000000").replace("-", "").replace(")", "").replace("(", "-"))
+                            data[col] = data[col].apply(
+                                lambda x: str(x)
+                                .replace(".", "")
+                                .replace(" K", "0")
+                                .replace(" B", "0000")
+                                .replace(" T", "0000000")
+                                .replace("-", "")
+                                .replace(")", "")
+                                .replace("(", "-")
+                                if all(
+                                    ext in x
+                                    for ext in ([".", "K"] or [".", "B"] or [".", "T"])
+                                )
+                                else str(x)
+                                .replace(",", "")
+                                .replace(" K", "000")
+                                .replace(" B", "000000")
+                                .replace(" T", "000000000")
+                                .replace("-", "")
+                                .replace(")", "")
+                                .replace("(", "-")
+                            )
 
                         if report_type == "income-statement":
                             data = data.rename(
@@ -1094,22 +1127,14 @@ class StockbitScraper:
                                     "Comprehensive Income Attributab...": "Comprehensive Income Attributabable To",
                                 }
                             )
-                            data = data[~data.index.duplicated(keep='first')]
+                            data = data[~data.index.duplicated(keep="first")]
                             if statement_type == "quarterly":
                                 json_structure_quarterly.update(
-                                    {
-                                        "income_statement": json.loads(
-                                            data.to_json()
-                                        )
-                                    }
+                                    {"income_statement": json.loads(data.to_json())}
                                 )
                             elif statement_type == "yearly":
                                 json_structure_yearly.update(
-                                    {
-                                        "income_statement": json.loads(
-                                            data.to_json()
-                                        )
-                                    }
+                                    {"income_statement": json.loads(data.to_json())}
                                 )
 
                         elif report_type == "balance-sheet":
@@ -1123,22 +1148,14 @@ class StockbitScraper:
                                     "Non-Controlling Interest...": "Non-Controlling Interests",
                                 }
                             )
-                            data = data[~data.index.duplicated(keep='first')]
+                            data = data[~data.index.duplicated(keep="first")]
                             if statement_type == "quarterly":
                                 json_structure_quarterly.update(
-                                    {
-                                        "balance_sheet": json.loads(
-                                            data.to_json()
-                                        )
-                                    }
+                                    {"balance_sheet": json.loads(data.to_json())}
                                 )
                             elif statement_type == "yearly":
                                 json_structure_yearly.update(
-                                    {
-                                        "balance_sheet": json.loads(
-                                            data.to_json()
-                                        )
-                                    }
+                                    {"balance_sheet": json.loads(data.to_json())}
                                 )
 
                         elif report_type == "cash-flow":
@@ -1153,22 +1170,14 @@ class StockbitScraper:
                                     "Net Effect Of Changes In Exchan...": "Net Effect Of Changes In Exchange Rate In Cash and Cash Equivalents",
                                 }
                             )
-                            data = data[~data.index.duplicated(keep='first')]
+                            data = data[~data.index.duplicated(keep="first")]
                             if statement_type == "quarterly":
                                 json_structure_quarterly.update(
-                                    {
-                                        "cash_flow": json.loads(
-                                            data.to_json()
-                                        )
-                                    }
+                                    {"cash_flow": json.loads(data.to_json())}
                                 )
                             elif statement_type == "yearly":
                                 json_structure_yearly.update(
-                                    {
-                                        "cash_flow": json.loads(
-                                            data.to_json()
-                                        )
-                                    }
+                                    {"cash_flow": json.loads(data.to_json())}
                                 )
 
             except:
@@ -1185,12 +1194,14 @@ class StockbitScraper:
             values_quarterly = {"$set": json_structure_quarterly}
 
             # Update values to database
-            collection_yearly.update_one(filter=filter, update=values_yearly, upsert=True)
-            collection_quarterly.update_one(filter=filter, update=values_quarterly, upsert=True)
+            collection_yearly.update_one(
+                filter=filter, update=values_yearly, upsert=True
+            )
+            collection_quarterly.update_one(
+                filter=filter, update=values_quarterly, upsert=True
+            )
 
-        print(
-            f"All fundamental data is downloaded and stored in the database"
-        )
+        print(f"All fundamental data is downloaded and stored in the database")
 
 
 def create_directory(directory):
