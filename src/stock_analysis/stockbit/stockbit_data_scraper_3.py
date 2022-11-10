@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 from time import sleep
 from typing import Optional
 
@@ -837,6 +838,12 @@ class StockbitScraper:
         period_filter: Optional[list] = None,
     ):
 
+        date = (
+            datetime.now()
+            .replace(hour=0, minute=0, second=0, microsecond=0)
+            .timestamp()
+        )
+
         # Filter
         if stock_filter:
             if isinstance(stock_filter, str):
@@ -1018,6 +1025,7 @@ class StockbitScraper:
                         filter = {"stock_code": f"{stock}"}
 
                         # Determine values to be updated
+                        json_structure["date"] = date
                         data = {"$set": json_structure}
 
                         # Update values to database
@@ -1049,7 +1057,7 @@ def main():
 
     # Get fundamental data
     stockbit_scraper.get_fundamental_data(
-        stock_filter=ALL[int(1 * len(ALL) / 5) : int(2 * len(ALL) / 5)]
+        stock_filter=ALL[int(2 * len(ALL) / 5) : int(3 * len(ALL) / 5)]
     )
 
 
