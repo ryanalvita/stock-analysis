@@ -7,7 +7,7 @@ on:
       - "v*"
   workflow_dispatch:
 jobs:
-  build:
+  job1:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -23,8 +23,7 @@ jobs:
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
           python src/stock_analysis/stockbit_stockbit_data_scraper_1.py
-jobs:
-  build:
+  job2:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -40,8 +39,7 @@ jobs:
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
           python src/stock_analysis/stockbit_stockbit_data_scraper_2.py
-jobs:
-  build:
+  job3:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -57,8 +55,7 @@ jobs:
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
           python src/stock_analysis/stockbit_stockbit_data_scraper_3.py
-jobs:
-  build:
+  job4:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -74,8 +71,7 @@ jobs:
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
           python src/stock_analysis/stockbit_stockbit_data_scraper_4.py
-jobs:
-  build:
+  job5:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
