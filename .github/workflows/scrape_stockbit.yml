@@ -24,6 +24,7 @@ jobs:
         run: |
           python src/stock_analysis/stockbit/stockbit_data_scraper_1.py
   job2:
+    needs: job1
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -40,6 +41,7 @@ jobs:
         run: |
           python src/stock_analysis/stockbit/stockbit_data_scraper_2.py
   job3:
+    needs: job2
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -56,6 +58,7 @@ jobs:
         run: |
           python src/stock_analysis/stockbit/stockbit_data_scraper_3.py
   job4:
+    needs: job3
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -72,6 +75,7 @@ jobs:
         run: |
           python src/stock_analysis/stockbit/stockbit_data_scraper_4.py
   job5:
+    needs: job4
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
