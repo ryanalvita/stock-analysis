@@ -886,8 +886,6 @@ class StockbitScraper:
                     print(f"Cannot access fundamental data for stock: {stock}")
                     continue
 
-                json_structure = {"stock_code": f"{stock}"}
-
                 selection_report_type = Select(
                     self.driver.find_element(By.CLASS_NAME, "reportType")
                 )
@@ -901,6 +899,7 @@ class StockbitScraper:
                 ).select_by_value("1")
 
                 for key, values in statement_types.items():
+                    json_structure = {"stock_code": f"{stock}"}
                     for report_type in report_types:
                         if report_type == "income-statement":
                             selection_report_type.select_by_value("1")
