@@ -1017,18 +1017,18 @@ class StockbitScraper:
                                 {"cash_flow": json.loads(data.to_json())}
                             )
 
-                        # Store data to mongodb
-                        collection = self.db[values]
+                    # Store data to mongodb
+                    collection = self.db[values]
 
-                        # Define filters based on domain_id
-                        filter = {"stock_code": f"{stock}"}
+                    # Define filters based on domain_id
+                    filter = {"stock_code": f"{stock}"}
 
-                        # Determine values to be updated
-                        json_structure["date"] = date
-                        data = {"$set": json_structure}
+                    # Determine values to be updated
+                    json_structure["date"] = date
+                    data = {"$set": json_structure}
 
-                        # Update values to database
-                        collection.update_one(filter=filter, update=data, upsert=True)
+                    # Update values to database
+                    collection.update_one(filter=filter, update=data, upsert=True)
 
             except:
                 print(f"Error in getting fundamental data available for stock: {stock}")
