@@ -22,7 +22,7 @@ jobs:
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          python src/stock_analysis/stockbit_stockbit_data_scraper_1.py
+          python src/stock_analysis/stockbit/stockbit_data_scraper_1.py
   job2:
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +38,7 @@ jobs:
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          python src/stock_analysis/stockbit_stockbit_data_scraper_2.py
+          python src/stock_analysis/stockbit/stockbit_data_scraper_2.py
   job3:
     runs-on: ubuntu-latest
     steps:
@@ -54,7 +54,7 @@ jobs:
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          python src/stock_analysis/stockbit_stockbit_data_scraper_3.py
+          python src/stock_analysis/stockbit/stockbit_data_scraper_3.py
   job4:
     runs-on: ubuntu-latest
     steps:
@@ -70,7 +70,7 @@ jobs:
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          python src/stock_analysis/stockbit_stockbit_data_scraper_4.py
+          python src/stock_analysis/stockbit/stockbit_data_scraper_4.py
   job5:
     runs-on: ubuntu-latest
     steps:
@@ -86,4 +86,4 @@ jobs:
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          python src/stock_analysis/stockbit_stockbit_data_scraper_5.py
+          python src/stock_analysis/stockbit/stockbit_data_scraper_5.py
