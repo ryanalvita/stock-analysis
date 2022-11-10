@@ -901,6 +901,7 @@ class StockbitScraper:
                 ).select_by_value("1")
 
                 for key, values in statement_types.items():
+                    json_structure = {"stock_code": f"{stock}"}
                     for report_type in report_types:
                         if report_type == "income-statement":
                             selection_report_type.select_by_value("1")
