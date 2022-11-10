@@ -870,7 +870,6 @@ class StockbitScraper:
             "12": "annual_yoy_growth",
             "13": "3_year_cagr",
         }
-        statement_types = ["quarterly", "quarterly"]
 
         # Get stocks
         stocks = stock_filter
@@ -910,7 +909,7 @@ class StockbitScraper:
                         selection_report_type.select_by_value("3")
                     sleep(2)
 
-                    for key, values in statement_types:
+                    for key, values in statement_types.items():
                         selection_statement_type.select_by_value(key)
                         sleep(2)
 
