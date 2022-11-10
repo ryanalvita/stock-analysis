@@ -1054,16 +1054,16 @@ class StockbitScraper:
                     self.driver.find_element(By.CLASS_NAME, "transType")
                 ).select_by_value("1")
 
-                for report_type in report_types:
-                    if report_type == "income-statement":
-                        selection_report_type.select_by_value("1")
-                    elif report_type == "balance-sheet":
-                        selection_report_type.select_by_value("2")
-                    elif report_type == "cash-flow":
-                        selection_report_type.select_by_value("3")
-                    sleep(2)
+                for key, values in statement_types.items():
+                    for report_type in report_types:
+                        if report_type == "income-statement":
+                            selection_report_type.select_by_value("1")
+                        elif report_type == "balance-sheet":
+                            selection_report_type.select_by_value("2")
+                        elif report_type == "cash-flow":
+                            selection_report_type.select_by_value("3")
+                        sleep(2)
 
-                    for key, values in statement_types.items():
                         selection_statement_type.select_by_value(key)
                         sleep(2)
 
