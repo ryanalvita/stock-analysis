@@ -13,6 +13,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from pymongo import MongoClient
 
 ALL = [
+    "AAAA",
     "AALI",
     "ABBA",
     "ABDA",
@@ -930,21 +931,16 @@ class StockbitScraper:
                         ).click()
 
                         tables = pd.read_html(self.driver.page_source)
-                        df1 = tables[1].rename(
-                            columns={
-                                "In Thousand IDR": "In IDR",
-                                "In Billion IDR": "In IDR",
-                                "In Trillion IDR": "In IDR",
-                            }
-                        )
-                        df2 = tables[2].rename(
-                            columns={
-                                "In Thousand IDR": "In IDR",
-                                "In Billion IDR": "In IDR",
-                                "In Trillion IDR": "In IDR",
-                            }
-                        )
-                        data = pd.concat([df1, df2], axis=0)
+                        data = pd.DataFrame()
+                        for table in tables:
+                            df = table.rename(
+                                columns={
+                                    "In Thousand IDR": "In IDR",
+                                    "In Billion IDR": "In IDR",
+                                    "In Trillion IDR": "In IDR",
+                                }
+                            )
+                            data = pd.concat([data, df], axis=0)
                         data = data.fillna("")
 
                         data = data.set_index("In IDR")
