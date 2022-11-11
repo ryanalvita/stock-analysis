@@ -906,7 +906,10 @@ class StockbitScraper:
                         if report_type == "income-statement":
                             selection_report_type.select_by_value("1")
                         elif report_type == "balance-sheet":
-                            selection_report_type.select_by_value("2")
+                            if values != "ttm":
+                                selection_report_type.select_by_value("2")
+                            else:
+                                continue
                         elif report_type == "cash-flow":
                             selection_report_type.select_by_value("3")
                         sleep(2)
