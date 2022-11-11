@@ -918,18 +918,13 @@ class StockbitScraper:
                         sleep(2)
 
                         # Always round to K
-                        self.driver.find_element(
+                        click = self.driver.find_element(
                             By.XPATH,
                             '//*[@id="content-box"]/div[3]/div[2]/div[1]/div[8]/div[3]/button[2]',
-                        ).click()
-                        self.driver.find_element(
-                            By.XPATH,
-                            '//*[@id="content-box"]/div[3]/div[2]/div[1]/div[8]/div[3]/button[2]',
-                        ).click()
-                        self.driver.find_element(
-                            By.XPATH,
-                            '//*[@id="content-box"]/div[3]/div[2]/div[1]/div[8]/div[3]/button[2]',
-                        ).click()
+                        )
+                        self.driver.execute_script("arguments[0].click();", click)
+                        self.driver.execute_script("arguments[0].click();", click)
+                        self.driver.execute_script("arguments[0].click();", click)
 
                         tables = pd.read_html(self.driver.page_source)
                         data = pd.DataFrame()
