@@ -7,7 +7,7 @@ on:
       - "v*"
   workflow_dispatch:
 jobs:
-  quarterly:
+  job1:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -16,15 +16,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -e .
-      - name: Scrape fundamental data from Stockbit website - quarterly
+      - name: Scrape fundamental data from Stockbit website 1
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          python src/stock_analysis/stockbit/stockbit_data_scraper_quarterly.py
-  yearly:
-    needs: quarterly
+          python src/stock_analysis/stockbit/stockbit_data_scraper_1.py
+  job2:
+    needs: job1
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -33,15 +33,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -e .
-      - name: Scrape fundamental data from Stockbit website - yearly
+      - name: Scrape fundamental data from Stockbit website 2
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          python src/stock_analysis/stockbit/stockbit_data_scraper_yearly.py
-  ttm:
-    needs: yearly
+          python src/stock_analysis/stockbit/stockbit_data_scraper_2.py
+  job3:
+    needs: job2
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -50,15 +50,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -e .
-      - name: Scrape fundamental data from Stockbit website - TTM
+      - name: Scrape fundamental data from Stockbit website 3
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          python src/stock_analysis/stockbit/stockbit_data_scraper_ttm.py
-  ytd:
-    needs: ttm
+          python src/stock_analysis/stockbit/stockbit_data_scraper_3.py
+  job4:
+    needs: job3
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -67,15 +67,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -e .
-      - name: Scrape fundamental data from Stockbit website - YTD
+      - name: Scrape fundamental data from Stockbit website 4
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          python src/stock_analysis/stockbit/stockbit_data_scraper_ytd.py
-  qoq_growth:
-    needs: ytd
+          python src/stock_analysis/stockbit/stockbit_data_scraper_4.py
+  job5:
+    needs: job4
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -84,78 +84,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -e .
-      - name: Scrape fundamental data from Stockbit website - QoQ Growth
+      - name: Scrape fundamental data from Stockbit website 5
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          python src/stock_analysis/stockbit/stockbit_data_scraper_qoq_growth.py
-  qoq_yoy_growth:
-    needs: qoq_growth
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -e .
-      - name: Scrape fundamental data from Stockbit website - QoQ YoY Growth
-        env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
-          STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
-        run: |
-          python src/stock_analysis/stockbit/stockbit_data_scraper_qoq_yoy_growth.py
-  ytd_yoy_growth:
-    needs: qoq_yoy_growth
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -e .
-      - name: Scrape fundamental data from Stockbit website - YTD YoY Growth
-        env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
-          STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
-        run: |
-          python src/stock_analysis/stockbit/stockbit_data_scraper_ytd_yoy_growth.py
-  annual_yoy_growth:
-    needs: ytd_yoy_growth
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -e .
-      - name: Scrape fundamental data from Stockbit website - Annual YoY Growth
-        env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
-          STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
-        run: |
-          python src/stock_analysis/stockbit/stockbit_data_scraper_annual_yoy_growth.py
-  three_year_cagr:
-    needs: annual_yoy_growth
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -e .
-      - name: Scrape fundamental data from Stockbit website - 3 Year CAGR
-        env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
-          STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
-        run: |
-          python src/stock_analysis/stockbit/stockbit_data_scraper_3year_cagr.py
+          python src/stock_analysis/stockbit/stockbit_data_scraper_5.py
