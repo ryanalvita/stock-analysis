@@ -1113,7 +1113,7 @@ class StockbitScraper:
                                 .replace(")", "")
                                 .replace("(", "-")
                                 if all(
-                                    ext in x
+                                    ext in str(x)
                                     for ext in ([".", "K"] or [".", "B"] or [".", "T"])
                                 )
                                 else str(x)
@@ -1183,10 +1183,8 @@ class StockbitScraper:
                         # Update values to database
                         collection.update_one(filter=filter, update=data, upsert=True)
 
-            except:
-                print(f"Error in getting fundamental data available for stock: {stock}")
-
-        print(f"All fundamental data is downloaded and stored in the database")
+            except Exception as e:
+                print(f"{stock}: Error ({e})")
 
 
 def create_directory(directory):
