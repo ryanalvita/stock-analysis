@@ -809,8 +809,8 @@ class StockbitScraper:
         # disabling gpu, applicable to windows os only
         chrome_options.add_argument("--disable-gpu")
         # bypass OS security model
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--headless")
+        # chrome_options.add_argument("--no-sandbox")
+        # chrome_options.add_argument("--headless")
 
         self.driver = webdriver.Chrome(
             ChromeDriverManager().install(), chrome_options=chrome_options
@@ -861,14 +861,6 @@ class StockbitScraper:
         # Define statement types
         statement_types = {
             "1": "quarterly",
-            "2": "yearly",
-            "3": "ttm",
-            "4": "ytd",
-            "9": "qoq_growth",
-            "10": "qoq_yoy_growth",
-            "11": "ytd_yoy_growth",
-            "12": "annual_yoy_growth",
-            "13": "3_year_cagr",
         }
 
         # Get stocks
@@ -886,8 +878,6 @@ class StockbitScraper:
                     print(f"Cannot access fundamental data for stock: {stock}")
                     continue
 
-                json_structure = {"stock_code": f"{stock}"}
-
                 selection_report_type = Select(
                     self.driver.find_element(By.CLASS_NAME, "reportType")
                 )
@@ -900,20 +890,17 @@ class StockbitScraper:
                     self.driver.find_element(By.CLASS_NAME, "transType")
                 ).select_by_value("1")
 
-                for key, values in statement_types.items():
-                    json_structure = {"stock_code": f"{stock}"}
-                    for report_type in report_types:
-                        if report_type == "income-statement":
-                            selection_report_type.select_by_value("1")
-                        elif report_type == "balance-sheet":
-                            if values != "ttm":
-                                selection_report_type.select_by_value("2")
-                            else:
-                                continue
-                        elif report_type == "cash-flow":
-                            selection_report_type.select_by_value("3")
-                        sleep(2)
+                json_structure = {"stock_code": f"{stock}"}
+                for report_type in report_types:
+                    if report_type == "income-statement":
+                        selection_report_type.select_by_value("1")
+                    elif report_type == "balance-sheet":
+                        selection_report_type.select_by_value("2")
+                    elif report_type == "cash-flow":
+                        selection_report_type.select_by_value("3")
+                    sleep(2)
 
+                    for key, values in statement_types.items():
                         selection_statement_type.select_by_value(key)
                         sleep(2)
 
@@ -1016,18 +1003,18 @@ class StockbitScraper:
                                 {"cash_flow": json.loads(data.to_json())}
                             )
 
-                    # Store data to mongodb
-                    collection = self.db[values]
+                # Store data to mongodb
+                collection = self.db[values]
 
-                    # Define filters based on domain_id
-                    filter = {"stock_code": f"{stock}"}
+                # Define filters based on domain_id
+                filter = {"stock_code": f"{stock}"}
 
-                    # Determine values to be updated
-                    json_structure["date"] = date
-                    data = {"$set": json_structure}
+                # Determine values to be updated
+                json_structure["date"] = date
+                data = {"$set": json_structure}
 
-                    # Update values to database
-                    collection.update_one(filter=filter, update=data, upsert=True)
+                # Update values to database
+                collection.update_one(filter=filter, update=data, upsert=True)
 
             except Exception as e:
                 print(f"{stock}: Error ({e})")
@@ -1052,9 +1039,7 @@ def main():
     stockbit_scraper.login(username, password)
 
     # Get fundamental data
-    stockbit_scraper.get_fundamental_data(
-        stock_filter=ALL[int(1 * len(ALL) / 5) : int(2 * len(ALL) / 5)]
-    )
+    stockbit_scraper.get_fundamental_data(stock_filter=ALL)
 
 
 if __name__ == "__main__":

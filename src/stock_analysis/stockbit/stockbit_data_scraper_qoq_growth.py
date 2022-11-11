@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 from time import sleep
 from typing import Optional
 
@@ -11,167 +12,6 @@ from selenium.webdriver.support.ui import Select
 from webdriver_manager.chrome import ChromeDriverManager
 from pymongo import MongoClient
 
-IDX_30 = [
-    "ADRO",
-    "ANTM",
-    "ASII",
-    "BBCA",
-    "BBNI",
-    "BBRI",
-    "BBTN",
-    "BMRI",
-    "BRPT",
-    "BUKA",
-    "CPIN",
-    "EMTK",
-    "EXCL",
-    "ICBP",
-    "INCO",
-    "INDF",
-    "INKP",
-    "KLBF",
-    "MDKA",
-    "MIKA",
-    "PGAS",
-    "PTBA",
-    "SMGR",
-    "TBIG",
-    "TINS",
-    "TLKM",
-    "TOWR",
-    "UNTR",
-    "UNVR",
-    "WSKT",
-]
-LQ_45 = [
-    "ADRO",
-    "AMRT",
-    "ANTM",
-    "ASII",
-    "BBCA",
-    "BBNI",
-    "BBRI",
-    "BBTN",
-    "BFIN",
-    "BMRI",
-    "BRPT",
-    "BUKA",
-    "CPIN",
-    "EMTK",
-    "ERAA",
-    "EXCL",
-    "GGRM",
-    "HMSP",
-    "HRUM",
-    "ICBP",
-    "INCO",
-    "INDF",
-    "INKP",
-    "INTP",
-    "ITMG",
-    "JPFA",
-    "KLBF",
-    "MDKA",
-    "MEDC",
-    "MIKA",
-    "MNCN",
-    "PGAS",
-    "PTBA",
-    "PTPP",
-    "SMGR",
-    "TBIG",
-    "TINS",
-    "TKIM",
-    "TLKM",
-    "TOWR",
-    "TPIA",
-    "UNTR",
-    "UNVR",
-    "WIKA",
-    "WSKT",
-]
-IDX_80 = [
-    "AALI",
-    "ACES",
-    "ADRO",
-    "AGII",
-    "AKRA",
-    "AMRT",
-    "ANTM",
-    "ASII",
-    "ASRI",
-    "ASSA",
-    "BBCA",
-    "BBNI",
-    "BBRI",
-    "BBTN",
-    "BFIN",
-    "BJBR",
-    "BJTM",
-    "BMRI",
-    "BMTR",
-    "BRPT",
-    "BSDE",
-    "BTPS",
-    "BUKA",
-    "CPIN",
-    "CTRA",
-    "DGNS",
-    "DMAS",
-    "DOID",
-    "DSNG",
-    "ELSA",
-    "EMTK",
-    "ERAA",
-    "ESSA",
-    "EXCL",
-    "GGRM",
-    "HEAL",
-    "HMSP",
-    "HOKI",
-    "HRUM",
-    "ICBP",
-    "INCO",
-    "INDF",
-    "INKP",
-    "INTP",
-    "ISAT",
-    "ITMG",
-    "JPFA",
-    "JSMR",
-    "KAEF",
-    "KLBF",
-    "LPKR",
-    "LPPF",
-    "LSIP",
-    "MAPI",
-    "MDKA",
-    "MEDC",
-    "MIKA",
-    "MNCN",
-    "MYOR",
-    "PGAS",
-    "PTBA",
-    "PTPP",
-    "PWON",
-    "SCMA",
-    "SIDO",
-    "SMGR",
-    "SMRA",
-    "SRTG",
-    "TAPG",
-    "TBIG",
-    "TINS",
-    "TKIM",
-    "TLKM",
-    "TOWR",
-    "TPIA",
-    "UNTR",
-    "UNVR",
-    "WIKA",
-    "WMUU",
-    "WSKT",
-]
 ALL = [
     "AAAA",
     "AALI",
@@ -999,6 +839,11 @@ class StockbitScraper:
         period_filter: Optional[list] = None,
     ):
 
+        date = (
+            datetime.now()
+            .timestamp()
+        )
+
         # Filter
         if stock_filter:
             if isinstance(stock_filter, str):
@@ -1015,15 +860,7 @@ class StockbitScraper:
 
         # Define statement types
         statement_types = {
-            "1": "quarterly",
-            "2": "yearly",
-            "3": "ttm",
-            "4": "ytd",
             "9": "qoq_growth",
-            "10": "qoq_yoy_growth",
-            "11": "ytd_yoy_growth",
-            "12": "annual_yoy_growth",
-            "13": "3_year_cagr",
         }
 
         # Get stocks
@@ -1168,18 +1005,18 @@ class StockbitScraper:
                                 {"cash_flow": json.loads(data.to_json())}
                             )
 
-                        # Store data to mongodb
-                        collection = self.db[values]
+                # Store data to mongodb
+                collection = self.db[values]
 
-                        # Define filters based on domain_id
-                        filter = {"stock_code": f"{stock}"}
+                # Define filters based on domain_id
+                filter = {"stock_code": f"{stock}"}
 
-                        # Determine values to be updated
-                        data = {"$set": json_structure}
+                # Determine values to be updated
+                json_structure["date"] = date
+                data = {"$set": json_structure}
 
-                        # Update values to database
-                        collection.update_one(filter=filter, update=data, upsert=True)
-
+                # Update values to database
+                collection.update_one(filter=filter, update=data, upsert=True)
             except Exception as e:
                 print(f"{stock}: Error ({e})")
 
@@ -1203,7 +1040,9 @@ def main():
     stockbit_scraper.login(username, password)
 
     # Get fundamental data
-    stockbit_scraper.get_fundamental_data(stock_filter=ALL)
+    stockbit_scraper.get_fundamental_data(
+        stock_filter=ALL[int(4 * len(ALL) / 5) : int(5 * len(ALL) / 5) + 1]
+    )
 
 
 if __name__ == "__main__":
