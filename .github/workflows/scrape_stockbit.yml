@@ -142,7 +142,7 @@ jobs:
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
           python src/stock_analysis/stockbit/stockbit_data_scraper_annual_yoy_growth.py
-  3year_cagr:
+  three_year_cagr:
     needs: annual_yoy_growth
     runs-on: ubuntu-latest
     steps:
