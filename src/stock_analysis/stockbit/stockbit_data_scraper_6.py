@@ -1048,7 +1048,7 @@ def main():
 
     # Get fundamental data
     stockbit_scraper.get_fundamental_data(
-        stock_filter=ALL[int(1 * len(ALL) / 7) : int(2 * len(ALL) / 7)]
+        stock_filter=ALL[int(5 * len(ALL) / 7) : int(6 * len(ALL) / 7)]
     )
 
 

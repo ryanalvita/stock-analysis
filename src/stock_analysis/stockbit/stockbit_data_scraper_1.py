@@ -1045,7 +1045,7 @@ def main():
     stockbit_scraper.login(username, password)
 
     # Get fundamental data
-    stockbit_scraper.get_fundamental_data(stock_filter=ALL[0 : int(1 * len(ALL) / 5)])
+    stockbit_scraper.get_fundamental_data(stock_filter=ALL[0 : int(1 * len(ALL) / 7)])
 
 
 if __name__ == "__main__":
