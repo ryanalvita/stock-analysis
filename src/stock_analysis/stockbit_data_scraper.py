@@ -1113,9 +1113,12 @@ class StockbitScraper:
                                 .replace("-", "")
                                 .replace(")", "")
                                 .replace("(", "-")
-                                if all(
-                                    ext in x
-                                    for ext in ([".", "K"] or [".", "B"] or [".", "T"])
+                                if any(
+                                    [
+                                        all([ext in str(x) for ext in ([".", "K"])]),
+                                        all([ext in str(x) for ext in ([".", "B"])]),
+                                        all([ext in str(x) for ext in ([".", "T"])]),
+                                    ]
                                 )
                                 else str(x)
                                 .replace(",", "")
