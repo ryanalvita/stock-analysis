@@ -173,6 +173,7 @@ IDX_80 = [
     "WSKT",
 ]
 ALL = [
+    "AAAA",
     "AALI",
     "ABBA",
     "ABDA",
@@ -1024,7 +1025,6 @@ class StockbitScraper:
             "12": "annual_yoy_growth",
             "13": "3_year_cagr",
         }
-        statement_types = ["quarterly", "quarterly"]
 
         # Get stocks
         stocks = stock_filter
@@ -1055,49 +1055,43 @@ class StockbitScraper:
                     self.driver.find_element(By.CLASS_NAME, "transType")
                 ).select_by_value("1")
 
-                for report_type in report_types:
-                    if report_type == "income-statement":
-                        selection_report_type.select_by_value("1")
-                    elif report_type == "balance-sheet":
-                        selection_report_type.select_by_value("2")
-                    elif report_type == "cash-flow":
-                        selection_report_type.select_by_value("3")
-                    sleep(2)
+                for key, values in statement_types.items():
+                    json_structure = {"stock_code": f"{stock}"}
+                    for report_type in report_types:
+                        if report_type == "income-statement":
+                            selection_report_type.select_by_value("1")
+                        elif report_type == "balance-sheet":
+                            if values != "ttm":
+                                selection_report_type.select_by_value("2")
+                            else:
+                                continue
+                        elif report_type == "cash-flow":
+                            selection_report_type.select_by_value("3")
+                        sleep(2)
 
-                    for key, values in statement_types:
                         selection_statement_type.select_by_value(key)
                         sleep(2)
 
                         # Always round to K
-                        self.driver.find_element(
+                        click = self.driver.find_element(
                             By.XPATH,
                             '//*[@id="content-box"]/div[3]/div[2]/div[1]/div[8]/div[3]/button[2]',
-                        ).click()
-                        self.driver.find_element(
-                            By.XPATH,
-                            '//*[@id="content-box"]/div[3]/div[2]/div[1]/div[8]/div[3]/button[2]',
-                        ).click()
-                        self.driver.find_element(
-                            By.XPATH,
-                            '//*[@id="content-box"]/div[3]/div[2]/div[1]/div[8]/div[3]/button[2]',
-                        ).click()
+                        )
+                        self.driver.execute_script("arguments[0].click();", click)
+                        self.driver.execute_script("arguments[0].click();", click)
+                        self.driver.execute_script("arguments[0].click();", click)
 
                         tables = pd.read_html(self.driver.page_source)
-                        df1 = tables[1].rename(
-                            columns={
-                                "In Thousand IDR": "In IDR",
-                                "In Billion IDR": "In IDR",
-                                "In Trillion IDR": "In IDR",
-                            }
-                        )
-                        df2 = tables[2].rename(
-                            columns={
-                                "In Thousand IDR": "In IDR",
-                                "In Billion IDR": "In IDR",
-                                "In Trillion IDR": "In IDR",
-                            }
-                        )
-                        data = pd.concat([df1, df2], axis=0)
+                        data = pd.DataFrame()
+                        for table in tables:
+                            df = table.rename(
+                                columns={
+                                    "In Thousand IDR": "In IDR",
+                                    "In Billion IDR": "In IDR",
+                                    "In Trillion IDR": "In IDR",
+                                }
+                            )
+                            data = pd.concat([data, df], axis=0)
                         data = data.fillna("")
 
                         data = data.set_index("In IDR")
@@ -1187,10 +1181,8 @@ class StockbitScraper:
                         # Update values to database
                         collection.update_one(filter=filter, update=data, upsert=True)
 
-            except:
-                print(f"Error in getting fundamental data available for stock: {stock}")
-
-        print(f"All fundamental data is downloaded and stored in the database")
+            except Exception as e:
+                print(f"{stock}: Error ({e})")
 
 
 def create_directory(directory):

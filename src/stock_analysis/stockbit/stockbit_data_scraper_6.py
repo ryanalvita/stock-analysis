@@ -952,12 +952,9 @@ class StockbitScraper:
                                 .replace("-", "")
                                 .replace(")", "")
                                 .replace("(", "-")
-                                if any(
-                                    [
-                                        all([ext in str(x) for ext in ([".", "K"])]),
-                                        all([ext in str(x) for ext in ([".", "B"])]),
-                                        all([ext in str(x) for ext in ([".", "T"])]),
-                                    ]
+                                if all(
+                                    ext in str(x)
+                                    for ext in ([".", "K"] or [".", "B"] or [".", "T"])
                                 )
                                 else str(x)
                                 .replace(",", "")
@@ -1051,7 +1048,7 @@ def main():
 
     # Get fundamental data
     stockbit_scraper.get_fundamental_data(
-        stock_filter=ALL[int(4 * len(ALL) / 7) : int(5 * len(ALL) / 7)]
+        stock_filter=ALL[int(5 * len(ALL) / 7) : int(6 * len(ALL) / 7)]
     )
 
 
