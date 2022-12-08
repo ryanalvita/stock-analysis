@@ -1,4 +1,3 @@
-import os
 import numpy as np
 import streamlit as st
 import pandas as pd
@@ -8,7 +7,9 @@ from pymongo import MongoClient
 import altair as alt
 
 # MongoDB
-cluster = MongoClient(os.getenv("MONGODB_URI"))
+cluster = MongoClient(
+    "mongodb+srv://mongo:KgWIfb4AzqkTyDXb@stockanalysis.f30kw8z.mongodb.net/?retryWrites=true&w=majority"
+)
 
 # Get overview
 db_financial_data = cluster["financial_data"]
@@ -95,7 +96,7 @@ for ix, values in stock_price.iterrows():
     try:
         if (
             datetime(day=1, month=11, year=year - 1)
-            <= ix
+            <= start_date
             <= datetime(day=31, month=3, year=year)
         ):
             col = f"Q3 {str(year - 1)}"
