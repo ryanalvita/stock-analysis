@@ -95,7 +95,7 @@ for ix, values in stock_price.iterrows():
     try:
         if (
             datetime(day=1, month=11, year=year - 1)
-            <= start_date
+            <= ix
             <= datetime(day=31, month=3, year=year)
         ):
             col = f"Q3 {str(year - 1)}"
