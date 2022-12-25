@@ -1,7 +1,5 @@
 name: Send Email Notification for IDX Financial Statement Releases
 on:
-  schedule:
-    - cron: "0 8 * * *"
   workflow_dispatch:
 jobs:
   build:
