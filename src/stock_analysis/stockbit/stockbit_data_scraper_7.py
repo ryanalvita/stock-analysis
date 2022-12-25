@@ -942,25 +942,31 @@ class StockbitScraper:
                         data = data.set_index("In IDR")
                         data.columns = data.columns.str.replace("12M ", "")
 
-                        for col in data.columns:
-                            data[col] = data[col].apply(
+                        for ix in data.index:
+                            data.loc[ix] = data.loc[ix].apply(
                                 lambda x: str(x)
                                 .replace(".", "")
                                 .replace(" K", "0")
-                                .replace(" B", "0000")
-                                .replace(" T", "0000000")
+                                .replace(" M", "0000")
+                                .replace(" B", "0000000")
+                                .replace(" T", "0000000000")
                                 .replace("-", "")
                                 .replace(")", "")
                                 .replace("(", "-")
-                                if all(
-                                    ext in str(x)
-                                    for ext in ([".", "K"] or [".", "B"] or [".", "T"])
+                                if any(
+                                    [
+                                        all([ext in str(x) for ext in ([".", "K"])]),
+                                        all([ext in str(x) for ext in ([".", "M"])]),
+                                        all([ext in str(x) for ext in ([".", "B"])]),
+                                        all([ext in str(x) for ext in ([".", "T"])]),
+                                    ]
                                 )
                                 else str(x)
                                 .replace(",", "")
                                 .replace(" K", "000")
-                                .replace(" B", "000000")
-                                .replace(" T", "000000000")
+                                .replace(" M", "000000")
+                                .replace(" B", "000000000")
+                                .replace(" T", "000000000000")
                                 .replace("-", "")
                                 .replace(")", "")
                                 .replace("(", "-")
