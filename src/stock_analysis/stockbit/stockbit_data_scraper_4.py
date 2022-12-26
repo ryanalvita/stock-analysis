@@ -942,8 +942,8 @@ class StockbitScraper:
                         data = data.set_index("In IDR")
                         data.columns = data.columns.str.replace("12M ", "")
 
-                        for ix in data.index:
-                            data.loc[ix] = data.loc[ix].apply(
+                        for col in data.columns:
+                            data[col] = data[col].apply(
                                 lambda x: str(x)
                                 .replace(".", "")
                                 .replace(" K", "0")
