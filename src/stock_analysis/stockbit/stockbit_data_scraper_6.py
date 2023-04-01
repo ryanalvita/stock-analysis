@@ -889,16 +889,16 @@ class StockbitScraper:
                 json_structure = {"stock_code": f"{stock}"}
 
                 selection_report_type = Select(
-                    self.driver.find_element(By.CLASS_NAME, "reportType")
+                    self.driver.find_element(By.XPATH, '//*[@id="financial-header"]/div[2]/select')
                 )
                 selection_statement_type = Select(
-                    self.driver.find_element(By.CLASS_NAME, "statement-type")
+                    self.driver.find_element(By.XPATH, '//*[@id="financial-header"]/div[3]/select')
                 )
 
                 # Select always EN
                 Select(
-                    self.driver.find_element(By.CLASS_NAME, "transType")
-                ).select_by_value("1")
+                    self.driver.find_element(By.XPATH, '//*[@id="financial-header"]/div[6]/select')
+                ).select_by_value("EN")
 
                 for key, values in statement_types.items():
                     json_structure = {"stock_code": f"{stock}"}
@@ -920,7 +920,7 @@ class StockbitScraper:
                         # Always round to K
                         click = self.driver.find_element(
                             By.XPATH,
-                            '//*[@id="content-box"]/div[3]/div[2]/div[1]/div[8]/div[3]/button[2]',
+                            '//*[@id="financial-header"]/div[7]/div[3]/button[2]',
                         )
                         self.driver.execute_script("arguments[0].click();", click)
                         self.driver.execute_script("arguments[0].click();", click)
