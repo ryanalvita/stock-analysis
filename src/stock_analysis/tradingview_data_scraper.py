@@ -14,15 +14,874 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-IDX_30 = ["ADRO","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BMRI","BRPT","BUKA","CPIN","EMTK","EXCL","ICBP","INCO","INDF","INKP","KLBF","MDKA","MIKA","PGAS","PTBA","SMGR","TBIG","TINS","TLKM","TOWR","UNTR","UNVR","WSKT"]
-LQ_45 = ["ADRO","AMRT","ANTM","ASII","BBCA","BBNI","BBRI","BBTN","BFIN","BMRI","BRPT","BUKA","CPIN","EMTK","ERAA","EXCL","GGRM","HMSP","HRUM","ICBP","INCO","INDF","INKP","INTP","ITMG","JPFA","KLBF","MDKA","MEDC","MIKA","MNCN","PGAS","PTBA","PTPP","SMGR","TBIG","TINS","TKIM","TLKM","TOWR","TPIA","UNTR","UNVR","WIKA","WSKT"]
-IDX_80 = ["AALI","ACES","ADRO","AGII","AKRA","AMRT","ANTM","ASII","ASRI","ASSA","BBCA","BBNI","BBRI","BBTN","BFIN","BJBR","BJTM","BMRI","BMTR","BRPT","BSDE","BTPS","BUKA","CPIN","CTRA","DGNS","DMAS","DOID","DSNG","ELSA","EMTK","ERAA","ESSA","EXCL","GGRM","HEAL","HMSP","HOKI","HRUM","ICBP","INCO","INDF","INKP","INTP","ISAT","ITMG","JPFA","JSMR","KAEF","KLBF","LPKR","LPPF","LSIP","MAPI","MDKA","MEDC","MIKA","MNCN","MYOR","PGAS","PTBA","PTPP","PWON","SCMA","SIDO","SMGR","SMRA","SRTG","TAPG","TBIG","TINS","TKIM","TLKM","TOWR","TPIA","UNTR","UNVR","WIKA","WMUU","WSKT"]
+IDX_30 = [
+    "ADRO",
+    "ANTM",
+    "ASII",
+    "BBCA",
+    "BBNI",
+    "BBRI",
+    "BBTN",
+    "BMRI",
+    "BRPT",
+    "BUKA",
+    "CPIN",
+    "EMTK",
+    "EXCL",
+    "ICBP",
+    "INCO",
+    "INDF",
+    "INKP",
+    "KLBF",
+    "MDKA",
+    "MIKA",
+    "PGAS",
+    "PTBA",
+    "SMGR",
+    "TBIG",
+    "TINS",
+    "TLKM",
+    "TOWR",
+    "UNTR",
+    "UNVR",
+    "WSKT",
+]
+LQ_45 = [
+    "ADRO",
+    "AMRT",
+    "ANTM",
+    "ASII",
+    "BBCA",
+    "BBNI",
+    "BBRI",
+    "BBTN",
+    "BFIN",
+    "BMRI",
+    "BRPT",
+    "BUKA",
+    "CPIN",
+    "EMTK",
+    "ERAA",
+    "EXCL",
+    "GGRM",
+    "HMSP",
+    "HRUM",
+    "ICBP",
+    "INCO",
+    "INDF",
+    "INKP",
+    "INTP",
+    "ITMG",
+    "JPFA",
+    "KLBF",
+    "MDKA",
+    "MEDC",
+    "MIKA",
+    "MNCN",
+    "PGAS",
+    "PTBA",
+    "PTPP",
+    "SMGR",
+    "TBIG",
+    "TINS",
+    "TKIM",
+    "TLKM",
+    "TOWR",
+    "TPIA",
+    "UNTR",
+    "UNVR",
+    "WIKA",
+    "WSKT",
+]
+IDX_80 = [
+    "AALI",
+    "ACES",
+    "ADRO",
+    "AGII",
+    "AKRA",
+    "AMRT",
+    "ANTM",
+    "ASII",
+    "ASRI",
+    "ASSA",
+    "BBCA",
+    "BBNI",
+    "BBRI",
+    "BBTN",
+    "BFIN",
+    "BJBR",
+    "BJTM",
+    "BMRI",
+    "BMTR",
+    "BRPT",
+    "BSDE",
+    "BTPS",
+    "BUKA",
+    "CPIN",
+    "CTRA",
+    "DGNS",
+    "DMAS",
+    "DOID",
+    "DSNG",
+    "ELSA",
+    "EMTK",
+    "ERAA",
+    "ESSA",
+    "EXCL",
+    "GGRM",
+    "HEAL",
+    "HMSP",
+    "HOKI",
+    "HRUM",
+    "ICBP",
+    "INCO",
+    "INDF",
+    "INKP",
+    "INTP",
+    "ISAT",
+    "ITMG",
+    "JPFA",
+    "JSMR",
+    "KAEF",
+    "KLBF",
+    "LPKR",
+    "LPPF",
+    "LSIP",
+    "MAPI",
+    "MDKA",
+    "MEDC",
+    "MIKA",
+    "MNCN",
+    "MYOR",
+    "PGAS",
+    "PTBA",
+    "PTPP",
+    "PWON",
+    "SCMA",
+    "SIDO",
+    "SMGR",
+    "SMRA",
+    "SRTG",
+    "TAPG",
+    "TBIG",
+    "TINS",
+    "TKIM",
+    "TLKM",
+    "TOWR",
+    "TPIA",
+    "UNTR",
+    "UNVR",
+    "WIKA",
+    "WMUU",
+    "WSKT",
+]
 
-ALL = ['AALI', 'ABBA', 'ABMM', 'ACES', 'ACST', 'ADCP', 'ADES', 'ADHI', 'ADMF', 'ADMG', 'ADMR', 'ADRO', 'AGAR', 'AGII', 'AGRO', 'AGRS', 'AHAP', 'AIMS', 'AISA', 'AKKU', 'AKPI', 'AKRA', 'AKSI', 'ALDO', 'ALKA', 'ALMI', 'ALTO', 'AMAG', 'AMAN', 'AMAR', 'AMFG', 'AMIN', 'AMOR', 'AMRT', 'ANDI', 'ANJT', 'ANTM', 'APEX', 'APIC', 'APII', 'APLI', 'APLN', 'ARCI', 'ARGO', 'ARII', 'ARKA', 'ARNA', 'ARTA', 'ARTO', 'ASBI', 'ASDM', 'ASGR', 'ASHA', 'ASII', 'ASJT', 'ASLC', 'ASMI', 'ASPI', 'ASRI', 'ASRM', 'ASSA', 'ATAP', 'ATIC', 'AUTO', 'AVIA', 'AYLS', 'BABP', 'BACA', 'BAJA', 'BALI', 'BANK', 'BAPA', 'BAPI', 'BATA', 'BAUT', 'BAYU', 'BBCA', 'BBHI', 'BBKP', 'BBLD', 'BBMD', 'BBNI', 'BBRI', 'BBRM', 'BBSI', 'BBSS', 'BBTN', 'BBYB', 'BCAP', 'BCIC', 'BCIP', 'BDMN', 'BEBS', 'BEEF', 'BEKS', 'BELL', 'BESS', 'BEST', 'BFIN', 'BGTG', 'BHAT', 'BHIT', 'BIKA', 'BIKE', 'BIMA', 'BINA', 'BINO', 'BIPI', 'BIPP', 'BIRD', 'BISI', 'BJBR', 'BJTM', 'BKDP', 'BKSL', 'BKSW', 'BLTA', 'BLTZ', 'BLUE', 'BMAS', 'BMHS', 'BMRI', 'BMTR', 'BNBA', 'BNBR', 'BNGA', 'BNII', 'BNLI', 'BOBA', 'BOGA', 'BOLA', 'BOLT', 'BOSS', 'BPFI', 'BPTR', 'BRIS', 'BRMS', 'BRPT', 'BSDE', 'BSIM', 'BSML', 'BSSR', 'BTEK', 'BTON', 'BTPN', 'BTPS', 'BUDI', 'BUKA', 'BUKK', 'BULL', 'BUMI', 'BVIC', 'BWPT', 'BYAN', 'CAKK', 'CAMP', 'CANI', 'CARE', 'CARS', 'CASA', 'CASH', 'CASS', 'CBMF', 'CCSI', 'CEKA', 'CENT', 'CFIN', 'CINT', 'CITA', 'CITY', 'CLEO', 'CLPI', 'CMNP', 'CMNT', 'CMPP', 'CMRY', 'CNKO', 'CNTX', 'COCO', 'CPIN', 'CPRO', 'CSAP', 'CSIS', 'CSMI', 'CSRA', 'CTRA', 'DADA', 'DART', 'DAYA', 'DCII', 'DEAL', 'DEPO', 'DEWA', 'DFAM', 'DGIK', 'DGNS', 'DIGI', 'DILD', 'DIVA', 'DKFT', 'DLTA', 'DMAS', 'DMMX', 'DMND', 'DNAR', 'DNET', 'DOID', 'DPNS', 'DRMA', 'DSFI', 'DSNG', 'DUTI', 'DVLA', 'DWGL', 'DYAN', 'EAST', 'ECII', 'EDGE', 'EKAD', 'ELSA', 'ELTY', 'EMDE', 'EMTK', 'ENAK', 'ENRG', 'ENZO', 'EPAC', 'EPMT', 'ERAA', 'ERTX', 'ESIP', 'ESSA', 'ESTA', 'ESTI', 'EXCL', 'FAPA', 'FAST', 'FILM', 'FIMP', 'FIRE', 'FISH', 'FITT', 'FLMC', 'FMII', 'FOOD', 'FORU', 'FPNI', 'FREN', 'FUJI', 'GAMA', 'GDST', 'GDYR', 'GEMA', 'GEMS', 'GGRM', 'GGRP', 'GHON', 'GJTL', 'GLOB', 'GLVA', 'GMFI', 'GOLD', 'GOOD', 'GOTO', 'GPRA', 'GPSO', 'GSMF', 'GTSI', 'GWSA', 'GZCO', 'HAIS', 'HDFA', 'HDIT', 'HEAL', 'HELI', 'HERO', 'HEXA', 'HITS', 'HKMU', 'HMSP', 'HOKI', 'HOMI', 'HOPE', 'HRME', 'HRTA', 'HRUM', 'IATA', 'IBOS', 'IBST', 'ICBP', 'ICON', 'IDEA', 'IDPR', 'IFII', 'IFSH', 'IGAR', 'IKAN', 'IKBI', 'IMAS', 'IMJS', 'IMPC', 'INAF', 'INAI', 'INCF', 'INCI', 'INCO', 'INDF', 'INDO', 'INDR', 'INDS', 'INDX', 'INDY', 'INKP', 'INOV', 'INPC', 'INPP', 'INPS', 'INRU', 'INTD', 'INTP', 'IPAC', 'IPCC', 'IPCM', 'IPOL', 'IPPE', 'IPTV', 'IRRA', 'ISAT', 'ISSP', 'ITIC', 'ITMA', 'ITMG', 'JAST', 'JAWA', 'JAYA', 'JECC', 'JIHD', 'JKON', 'JMAS', 'JPFA', 'JRPT', 'JSKY', 'JSMR', 'JTPE', 'KAEF', 'KARW', 'KAYU', 'KBAG', 'KBLI', 'KBLM', 'KBLV', 'KDSI', 'KEEN', 'KEJU', 'KIAS', 'KICI', 'KIJA', 'KINO', 'KIOS', 'KJEN', 'KKGI', 'KLBF', 'KMDS', 'KMTR', 'KOBX', 'KOIN', 'KONI', 'KOPI', 'KOTA', 'KPIG', 'KRAS', 'KREN', 'KUAS', 'LABA', 'LAND', 'LCKM', 'LEAD', 'LFLO', 'LINK', 'LION', 'LMAS', 'LMPI', 'LMSH', 'LPCK', 'LPGI', 'LPIN', 'LPKR', 'LPLI', 'LPPF', 'LPPS', 'LSIP', 'LTLS', 'LUCK', 'LUCY', 'MAIN', 'MAPA', 'MAPI', 'MARI', 'MARK', 'MASA', 'MASB', 'MAYA', 'MBAP', 'MBSS', 'MBTO', 'MCAS', 'MCOL', 'MCOR', 'MDIA', 'MDKA', 'MDKI', 'MDLN', 'MEDC', 'MEGA', 'MERK', 'META', 'MFIN', 'MFMI', 'MGLV', 'MGRO', 'MICE', 'MIDI', 'MIKA', 'MIRA', 'MITI', 'MKNT', 'MKPI', 'MLBI', 'MLIA', 'MLPL', 'MLPT', 'MMLP', 'MNCN', 'MOLI', 'MPMX', 'MPOW', 'MPPA', 'MPRO', 'MRAT', 'MREI', 'MSIN', 'MSKY', 'MTDL', 'MTEL', 'MTLA', 'MTMH', 'MTPS', 'MTSM', 'MTWI', 'MYOH', 'MYOR', 'MYTX', 'NANO', 'NASA', 'NASI', 'NATO', 'NELY', 'NETV', 'NFCX', 'NICK', 'NICL', 'NIKL', 'NIRO', 'NISP', 'NOBU', 'NPGF', 'NRCA', 'NTBK', 'NZIA', 'OASA', 'OBMD', 'OILS', 'OKAS', 'OLIV', 'OMRE', 'OPMS', 'PADI', 'PALM', 'PAMG', 'PANI', 'PANR', 'PANS', 'PBID', 'PBRX', 'PBSA', 'PCAR', 'PDES', 'PEGE', 'PEHA', 'PGAS', 'PGJO', 'PGLI', 'PGUN', 'PICO', 'PJAA', 'PKPK', 'PLAN', 'PLIN', 'PMJS', 'PMMP', 'PNBN', 'PNBS', 'PNGO', 'PNIN', 'PNLF', 'POLA', 'POLI', 'POLL', 'POLU', 'POLY', 'POWR', 'PPGL', 'PPRE', 'PPRO', 'PRAS', 'PRDA', 'PRIM', 'PSAB', 'PSDN', 'PSGO', 'PSKT', 'PSSI', 'PTBA', 'PTDU', 'PTIS', 'PTPP', 'PTPW', 'PTRO', 'PTSN', 'PUDP', 'PURA', 'PURE', 'PURI', 'PWON', 'PYFA', 'PZZA', 'RAJA', 'RALS', 'RANC', 'RBMS', 'RDTX', 'REAL', 'RELI', 'RICY', 'RIGS', 'RISE', 'RMKE', 'ROCK', 'RODA', 'ROTI', 'RSGK', 'RUIS', 'RUNS', 'SAFE', 'SAME', 'SAMF', 'SAPX', 'SATU', 'SBAT', 'SBMA', 'SCCO', 'SCMA', 'SCNP', 'SDMU', 'SDPC', 'SDRA', 'SEMA', 'SFAN', 'SGER', 'SGRO', 'SHID', 'SHIP', 'SICO', 'SIDO', 'SILO', 'SIMP', 'SINI', 'SIPD', 'SKBM', 'SKLT', 'SKRN', 'SLIS', 'SMAR', 'SMBR', 'SMCB', 'SMDM', 'SMDR', 'SMGR', 'SMKL', 'SMKM', 'SMMT', 'SMRA', 'SMSM', 'SNLK', 'SOCI', 'SOFA', 'SOHO', 'SOSS', 'SOTS', 'SPMA', 'SPTO', 'SQMI', 'SRAJ', 'SRSN', 'SRTG', 'SSIA', 'SSMS', 'SSTM', 'STAA', 'STAR', 'STTP', 'SULI', 'SWAT', 'TALF', 'TAMA', 'TAPG', 'TAXI', 'TAYS', 'TBIG', 'TBLA', 'TBMS', 'TCID', 'TCPI', 'TEBE', 'TECH', 'TELE', 'TFAS', 'TGKA', 'TGRA', 'TIFA', 'TINS', 'TIRA', 'TIRT', 'TKIM', 'TLDN', 'TLKM', 'TMAS', 'TMPO', 'TNCA', 'TOBA', 'TOPS', 'TOTL', 'TOTO', 'TOWR', 'TOYS', 'TPIA', 'TPMA', 'TRIM', 'TRIN', 'TRIS', 'TRJA', 'TRST', 'TRUE', 'TRUK', 'TRUS', 'TSPC', 'TUGU', 'UANG', 'UCID', 'UFOE', 'ULTJ', 'UNIC', 'UNIQ', 'UNSP', 'UNTR', 'UNVR', 'URBN', 'UVCR', 'VICI', 'VICO', 'VINS', 'VIVA', 'VOKS', 'VRNA', 'WAPO', 'WEGE', 'WEHA', 'WGSH', 'WICO', 'WIFI', 'WIIM', 'WIKA', 'WINR', 'WINS', 'WIRG', 'WMPP', 'WMUU', 'WOMF', 'WOOD', 'WOWS', 'WSKT', 'WTON', 'YELO', 'YPAS', 'YULE', 'ZBRA', 'ZINC', 'ZONE', 'ZYRX']
+ALL = [
+    "AALI",
+    "ABBA",
+    "ABMM",
+    "ACES",
+    "ACST",
+    "ADCP",
+    "ADES",
+    "ADHI",
+    "ADMF",
+    "ADMG",
+    "ADMR",
+    "ADRO",
+    "AGAR",
+    "AGII",
+    "AGRO",
+    "AGRS",
+    "AHAP",
+    "AIMS",
+    "AISA",
+    "AKKU",
+    "AKPI",
+    "AKRA",
+    "AKSI",
+    "ALDO",
+    "ALKA",
+    "ALMI",
+    "ALTO",
+    "AMAG",
+    "AMAN",
+    "AMAR",
+    "AMFG",
+    "AMIN",
+    "AMOR",
+    "AMRT",
+    "ANDI",
+    "ANJT",
+    "ANTM",
+    "APEX",
+    "APIC",
+    "APII",
+    "APLI",
+    "APLN",
+    "ARCI",
+    "ARGO",
+    "ARII",
+    "ARKA",
+    "ARNA",
+    "ARTA",
+    "ARTO",
+    "ASBI",
+    "ASDM",
+    "ASGR",
+    "ASHA",
+    "ASII",
+    "ASJT",
+    "ASLC",
+    "ASMI",
+    "ASPI",
+    "ASRI",
+    "ASRM",
+    "ASSA",
+    "ATAP",
+    "ATIC",
+    "AUTO",
+    "AVIA",
+    "AYLS",
+    "BABP",
+    "BACA",
+    "BAJA",
+    "BALI",
+    "BANK",
+    "BAPA",
+    "BAPI",
+    "BATA",
+    "BAUT",
+    "BAYU",
+    "BBCA",
+    "BBHI",
+    "BBKP",
+    "BBLD",
+    "BBMD",
+    "BBNI",
+    "BBRI",
+    "BBRM",
+    "BBSI",
+    "BBSS",
+    "BBTN",
+    "BBYB",
+    "BCAP",
+    "BCIC",
+    "BCIP",
+    "BDMN",
+    "BEBS",
+    "BEEF",
+    "BEKS",
+    "BELL",
+    "BESS",
+    "BEST",
+    "BFIN",
+    "BGTG",
+    "BHAT",
+    "BHIT",
+    "BIKA",
+    "BIKE",
+    "BIMA",
+    "BINA",
+    "BINO",
+    "BIPI",
+    "BIPP",
+    "BIRD",
+    "BISI",
+    "BJBR",
+    "BJTM",
+    "BKDP",
+    "BKSL",
+    "BKSW",
+    "BLTA",
+    "BLTZ",
+    "BLUE",
+    "BMAS",
+    "BMHS",
+    "BMRI",
+    "BMTR",
+    "BNBA",
+    "BNBR",
+    "BNGA",
+    "BNII",
+    "BNLI",
+    "BOBA",
+    "BOGA",
+    "BOLA",
+    "BOLT",
+    "BOSS",
+    "BPFI",
+    "BPTR",
+    "BRIS",
+    "BRMS",
+    "BRPT",
+    "BSDE",
+    "BSIM",
+    "BSML",
+    "BSSR",
+    "BTEK",
+    "BTON",
+    "BTPN",
+    "BTPS",
+    "BUDI",
+    "BUKA",
+    "BUKK",
+    "BULL",
+    "BUMI",
+    "BVIC",
+    "BWPT",
+    "BYAN",
+    "CAKK",
+    "CAMP",
+    "CANI",
+    "CARE",
+    "CARS",
+    "CASA",
+    "CASH",
+    "CASS",
+    "CBMF",
+    "CCSI",
+    "CEKA",
+    "CENT",
+    "CFIN",
+    "CINT",
+    "CITA",
+    "CITY",
+    "CLEO",
+    "CLPI",
+    "CMNP",
+    "CMNT",
+    "CMPP",
+    "CMRY",
+    "CNKO",
+    "CNTX",
+    "COCO",
+    "CPIN",
+    "CPRO",
+    "CSAP",
+    "CSIS",
+    "CSMI",
+    "CSRA",
+    "CTRA",
+    "DADA",
+    "DART",
+    "DAYA",
+    "DCII",
+    "DEAL",
+    "DEPO",
+    "DEWA",
+    "DFAM",
+    "DGIK",
+    "DGNS",
+    "DIGI",
+    "DILD",
+    "DIVA",
+    "DKFT",
+    "DLTA",
+    "DMAS",
+    "DMMX",
+    "DMND",
+    "DNAR",
+    "DNET",
+    "DOID",
+    "DPNS",
+    "DRMA",
+    "DSFI",
+    "DSNG",
+    "DUTI",
+    "DVLA",
+    "DWGL",
+    "DYAN",
+    "EAST",
+    "ECII",
+    "EDGE",
+    "EKAD",
+    "ELSA",
+    "ELTY",
+    "EMDE",
+    "EMTK",
+    "ENAK",
+    "ENRG",
+    "ENZO",
+    "EPAC",
+    "EPMT",
+    "ERAA",
+    "ERTX",
+    "ESIP",
+    "ESSA",
+    "ESTA",
+    "ESTI",
+    "EXCL",
+    "FAPA",
+    "FAST",
+    "FILM",
+    "FIMP",
+    "FIRE",
+    "FISH",
+    "FITT",
+    "FLMC",
+    "FMII",
+    "FOOD",
+    "FORU",
+    "FPNI",
+    "FREN",
+    "FUJI",
+    "GAMA",
+    "GDST",
+    "GDYR",
+    "GEMA",
+    "GEMS",
+    "GGRM",
+    "GGRP",
+    "GHON",
+    "GJTL",
+    "GLOB",
+    "GLVA",
+    "GMFI",
+    "GOLD",
+    "GOOD",
+    "GOTO",
+    "GPRA",
+    "GPSO",
+    "GSMF",
+    "GTSI",
+    "GWSA",
+    "GZCO",
+    "HAIS",
+    "HDFA",
+    "HDIT",
+    "HEAL",
+    "HELI",
+    "HERO",
+    "HEXA",
+    "HITS",
+    "HKMU",
+    "HMSP",
+    "HOKI",
+    "HOMI",
+    "HOPE",
+    "HRME",
+    "HRTA",
+    "HRUM",
+    "IATA",
+    "IBOS",
+    "IBST",
+    "ICBP",
+    "ICON",
+    "IDEA",
+    "IDPR",
+    "IFII",
+    "IFSH",
+    "IGAR",
+    "IKAN",
+    "IKBI",
+    "IMAS",
+    "IMJS",
+    "IMPC",
+    "INAF",
+    "INAI",
+    "INCF",
+    "INCI",
+    "INCO",
+    "INDF",
+    "INDO",
+    "INDR",
+    "INDS",
+    "INDX",
+    "INDY",
+    "INKP",
+    "INOV",
+    "INPC",
+    "INPP",
+    "INPS",
+    "INRU",
+    "INTD",
+    "INTP",
+    "IPAC",
+    "IPCC",
+    "IPCM",
+    "IPOL",
+    "IPPE",
+    "IPTV",
+    "IRRA",
+    "ISAT",
+    "ISSP",
+    "ITIC",
+    "ITMA",
+    "ITMG",
+    "JAST",
+    "JAWA",
+    "JAYA",
+    "JECC",
+    "JIHD",
+    "JKON",
+    "JMAS",
+    "JPFA",
+    "JRPT",
+    "JSKY",
+    "JSMR",
+    "JTPE",
+    "KAEF",
+    "KARW",
+    "KAYU",
+    "KBAG",
+    "KBLI",
+    "KBLM",
+    "KBLV",
+    "KDSI",
+    "KEEN",
+    "KEJU",
+    "KIAS",
+    "KICI",
+    "KIJA",
+    "KINO",
+    "KIOS",
+    "KJEN",
+    "KKGI",
+    "KLBF",
+    "KMDS",
+    "KMTR",
+    "KOBX",
+    "KOIN",
+    "KONI",
+    "KOPI",
+    "KOTA",
+    "KPIG",
+    "KRAS",
+    "KREN",
+    "KUAS",
+    "LABA",
+    "LAND",
+    "LCKM",
+    "LEAD",
+    "LFLO",
+    "LINK",
+    "LION",
+    "LMAS",
+    "LMPI",
+    "LMSH",
+    "LPCK",
+    "LPGI",
+    "LPIN",
+    "LPKR",
+    "LPLI",
+    "LPPF",
+    "LPPS",
+    "LSIP",
+    "LTLS",
+    "LUCK",
+    "LUCY",
+    "MAIN",
+    "MAPA",
+    "MAPI",
+    "MARI",
+    "MARK",
+    "MASA",
+    "MASB",
+    "MAYA",
+    "MBAP",
+    "MBSS",
+    "MBTO",
+    "MCAS",
+    "MCOL",
+    "MCOR",
+    "MDIA",
+    "MDKA",
+    "MDKI",
+    "MDLN",
+    "MEDC",
+    "MEGA",
+    "MERK",
+    "META",
+    "MFIN",
+    "MFMI",
+    "MGLV",
+    "MGRO",
+    "MICE",
+    "MIDI",
+    "MIKA",
+    "MIRA",
+    "MITI",
+    "MKNT",
+    "MKPI",
+    "MLBI",
+    "MLIA",
+    "MLPL",
+    "MLPT",
+    "MMLP",
+    "MNCN",
+    "MOLI",
+    "MPMX",
+    "MPOW",
+    "MPPA",
+    "MPRO",
+    "MRAT",
+    "MREI",
+    "MSIN",
+    "MSKY",
+    "MTDL",
+    "MTEL",
+    "MTLA",
+    "MTMH",
+    "MTPS",
+    "MTSM",
+    "MTWI",
+    "MYOH",
+    "MYOR",
+    "MYTX",
+    "NANO",
+    "NASA",
+    "NASI",
+    "NATO",
+    "NELY",
+    "NETV",
+    "NFCX",
+    "NICK",
+    "NICL",
+    "NIKL",
+    "NIRO",
+    "NISP",
+    "NOBU",
+    "NPGF",
+    "NRCA",
+    "NTBK",
+    "NZIA",
+    "OASA",
+    "OBMD",
+    "OILS",
+    "OKAS",
+    "OLIV",
+    "OMRE",
+    "OPMS",
+    "PADI",
+    "PALM",
+    "PAMG",
+    "PANI",
+    "PANR",
+    "PANS",
+    "PBID",
+    "PBRX",
+    "PBSA",
+    "PCAR",
+    "PDES",
+    "PEGE",
+    "PEHA",
+    "PGAS",
+    "PGJO",
+    "PGLI",
+    "PGUN",
+    "PICO",
+    "PJAA",
+    "PKPK",
+    "PLAN",
+    "PLIN",
+    "PMJS",
+    "PMMP",
+    "PNBN",
+    "PNBS",
+    "PNGO",
+    "PNIN",
+    "PNLF",
+    "POLA",
+    "POLI",
+    "POLL",
+    "POLU",
+    "POLY",
+    "POWR",
+    "PPGL",
+    "PPRE",
+    "PPRO",
+    "PRAS",
+    "PRDA",
+    "PRIM",
+    "PSAB",
+    "PSDN",
+    "PSGO",
+    "PSKT",
+    "PSSI",
+    "PTBA",
+    "PTDU",
+    "PTIS",
+    "PTPP",
+    "PTPW",
+    "PTRO",
+    "PTSN",
+    "PUDP",
+    "PURA",
+    "PURE",
+    "PURI",
+    "PWON",
+    "PYFA",
+    "PZZA",
+    "RAJA",
+    "RALS",
+    "RANC",
+    "RBMS",
+    "RDTX",
+    "REAL",
+    "RELI",
+    "RICY",
+    "RIGS",
+    "RISE",
+    "RMKE",
+    "ROCK",
+    "RODA",
+    "ROTI",
+    "RSGK",
+    "RUIS",
+    "RUNS",
+    "SAFE",
+    "SAME",
+    "SAMF",
+    "SAPX",
+    "SATU",
+    "SBAT",
+    "SBMA",
+    "SCCO",
+    "SCMA",
+    "SCNP",
+    "SDMU",
+    "SDPC",
+    "SDRA",
+    "SEMA",
+    "SFAN",
+    "SGER",
+    "SGRO",
+    "SHID",
+    "SHIP",
+    "SICO",
+    "SIDO",
+    "SILO",
+    "SIMP",
+    "SINI",
+    "SIPD",
+    "SKBM",
+    "SKLT",
+    "SKRN",
+    "SLIS",
+    "SMAR",
+    "SMBR",
+    "SMCB",
+    "SMDM",
+    "SMDR",
+    "SMGR",
+    "SMKL",
+    "SMKM",
+    "SMMT",
+    "SMRA",
+    "SMSM",
+    "SNLK",
+    "SOCI",
+    "SOFA",
+    "SOHO",
+    "SOSS",
+    "SOTS",
+    "SPMA",
+    "SPTO",
+    "SQMI",
+    "SRAJ",
+    "SRSN",
+    "SRTG",
+    "SSIA",
+    "SSMS",
+    "SSTM",
+    "STAA",
+    "STAR",
+    "STTP",
+    "SULI",
+    "SWAT",
+    "TALF",
+    "TAMA",
+    "TAPG",
+    "TAXI",
+    "TAYS",
+    "TBIG",
+    "TBLA",
+    "TBMS",
+    "TCID",
+    "TCPI",
+    "TEBE",
+    "TECH",
+    "TELE",
+    "TFAS",
+    "TGKA",
+    "TGRA",
+    "TIFA",
+    "TINS",
+    "TIRA",
+    "TIRT",
+    "TKIM",
+    "TLDN",
+    "TLKM",
+    "TMAS",
+    "TMPO",
+    "TNCA",
+    "TOBA",
+    "TOPS",
+    "TOTL",
+    "TOTO",
+    "TOWR",
+    "TOYS",
+    "TPIA",
+    "TPMA",
+    "TRIM",
+    "TRIN",
+    "TRIS",
+    "TRJA",
+    "TRST",
+    "TRUE",
+    "TRUK",
+    "TRUS",
+    "TSPC",
+    "TUGU",
+    "UANG",
+    "UCID",
+    "UFOE",
+    "ULTJ",
+    "UNIC",
+    "UNIQ",
+    "UNSP",
+    "UNTR",
+    "UNVR",
+    "URBN",
+    "UVCR",
+    "VICI",
+    "VICO",
+    "VINS",
+    "VIVA",
+    "VOKS",
+    "VRNA",
+    "WAPO",
+    "WEGE",
+    "WEHA",
+    "WGSH",
+    "WICO",
+    "WIFI",
+    "WIIM",
+    "WIKA",
+    "WINR",
+    "WINS",
+    "WIRG",
+    "WMPP",
+    "WMUU",
+    "WOMF",
+    "WOOD",
+    "WOWS",
+    "WSKT",
+    "WTON",
+    "YELO",
+    "YPAS",
+    "YULE",
+    "ZBRA",
+    "ZINC",
+    "ZONE",
+    "ZYRX",
+]
+
 
 class TradingViewScraper:
     def __init__(self):
-                 
+
         chrome_options = webdriver.ChromeOptions()
         # open Browser in maximized mode
         chrome_options.add_argument("start-maximized")
@@ -38,7 +897,9 @@ class TradingViewScraper:
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--headless")
 
-        self.driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+        self.driver = webdriver.Chrome(
+            ChromeDriverManager().install(), chrome_options=chrome_options
+        )
 
         # Initialize MongoDB
         self.cluster = MongoClient(os.environ["MONGODB_URI"])
@@ -49,23 +910,31 @@ class TradingViewScraper:
     ):
         # Define url
         url = f"https://www.tradingview.com/markets/stocks-indonesia/market-movers-all-stocks/"
-        
+
         # Go to url
         self.driver.get(url)
         sleep(1)
 
         # Load all data
-        while len(self.driver.find_elements(By.CLASS_NAME, 'loadButton-59hnCnPW')) != 0:
-            load_more_click = self.driver.find_elements(By.CLASS_NAME, 'loadButton-59hnCnPW')[0]
+        while len(self.driver.find_elements(By.CLASS_NAME, "loadButton-59hnCnPW")) != 0:
+            load_more_click = self.driver.find_elements(
+                By.CLASS_NAME, "loadButton-59hnCnPW"
+            )[0]
             self.driver.execute_script("arguments[0].click();", load_more_click)
             sleep(1)
-        
+
         # Create dataframe
         df = pd.read_html(self.driver.page_source)[1]
-        
+
         # Get Stock Code and Company Name
-        elements_stock_code = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tbody/tr/td/span/a')
-        elements_company_name = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tbody/tr/td/span/sup')
+        elements_stock_code = self.driver.find_elements(
+            By.XPATH,
+            '//*[@id="js-category-content"]/div/div/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tbody/tr/td/span/a',
+        )
+        elements_company_name = self.driver.find_elements(
+            By.XPATH,
+            '//*[@id="js-category-content"]/div/div/div[2]/div[2]/div/div[2]/div[2]/div/div/div/table/tbody/tr/td/span/sup',
+        )
         for i in range(0, len(df)):
             df.loc[i, "Stock Code"] = elements_stock_code[i].text
             df.loc[i, "Company Name"] = elements_company_name[i].text
@@ -91,19 +960,43 @@ class TradingViewScraper:
 
         # Clean dataframe
         # Remove IDR
-        df["Change"] = df["Change"].apply(lambda x: x.replace('IDR', ''))
-        df["EPS (TTM)"] = df["EPS (TTM)"].apply(lambda x: x.replace('IDR', ''))
-        df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('IDR', ''))
-        
+        df["Change"] = df["Change"].apply(lambda x: x.replace("IDR", ""))
+        df["EPS (TTM)"] = df["EPS (TTM)"].apply(lambda x: x.replace("IDR", ""))
+        df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace("IDR", ""))
+
         # Remove percentage
-        df["Change [%]"] = df["Change [%]"].apply(lambda x: x.replace('%', ''))
+        df["Change [%]"] = df["Change [%]"].apply(lambda x: x.replace("%", ""))
 
         # Convert T, B, M, K
-        df["Vol"] = df["Vol"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
-        df["Volume*Price"] = df["Volume*Price"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
-        df["Market Cap"] = df["Market Cap"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
-        df["Employees"] = df["Employees"].apply(lambda x: x.replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.', ''))
-        
+        df["Vol"] = df["Vol"].apply(
+            lambda x: x.replace("T", "0000000000")
+            .replace("B", "0000000")
+            .replace("M", "0000")
+            .replace("K", "0")
+            .replace(".", "")
+        )
+        df["Volume*Price"] = df["Volume*Price"].apply(
+            lambda x: x.replace("T", "0000000000")
+            .replace("B", "0000000")
+            .replace("M", "0000")
+            .replace("K", "0")
+            .replace(".", "")
+        )
+        df["Market Cap"] = df["Market Cap"].apply(
+            lambda x: x.replace("T", "0000000000")
+            .replace("B", "0000000")
+            .replace("M", "0000")
+            .replace("K", "0")
+            .replace(".", "")
+        )
+        df["Employees"] = df["Employees"].apply(
+            lambda x: x.replace("T", "0000000000")
+            .replace("B", "0000000")
+            .replace("M", "0000")
+            .replace("K", "0")
+            .replace(".", "")
+        )
+
         # Upload to MongoDB
         collection = self.db["overview"]
 
@@ -120,7 +1013,8 @@ class TradingViewScraper:
         self,
         stock_filter: Optional[list] = None,
         year_filter: Optional[list] = None,
-        period_filter: Optional[list] = None):
+        period_filter: Optional[list] = None,
+    ):
 
         # Filter
         if stock_filter:
@@ -134,7 +1028,12 @@ class TradingViewScraper:
                 period_filter = list(period_filter.split(","))
 
         # Define financial types
-        financial_types = ["income-statement", "balance-sheet", "cash-flow", "statistics-and-ratios"]
+        financial_types = [
+            "income-statement",
+            "balance-sheet",
+            "cash-flow",
+            "statistics-and-ratios",
+        ]
 
         # Define period types
         period_types = ["yearly", "quarterly"]
@@ -152,19 +1051,18 @@ class TradingViewScraper:
 
         errors = {}
 
-
         # Define double data every financial type
         # Double data means that in the website, it has percentage for the differnce
         # We will exclude those data since those data can be also determined post-scraping
         doubles_income_statement = [
-            "Gross profit", 
+            "Gross profit",
             "Total revenue",
-            "Operating income", 
-            "Pretax income", 
-            "Net income", 
-            "Basic earnings per share (Basic EPS)", 
-            "Diluted earnings per share (Diluted EPS)", 
-            "EBITDA", 
+            "Operating income",
+            "Pretax income",
+            "Net income",
+            "Basic earnings per share (Basic EPS)",
+            "Diluted earnings per share (Diluted EPS)",
+            "EBITDA",
             "EBIT",
         ]
         doubles_balance_sheet = [
@@ -185,11 +1083,11 @@ class TradingViewScraper:
             "Liquidity ratios",
             "Solvency ratios",
         ]
-        
+
         with alive_bar(len(stocks), force_tty=True) as bar:
             for stock in stocks:
                 for period_type in period_types:
-                    
+
                     # Define dicts, dataframes, lists
                     json_structure = {}
                     income_statement = pd.DataFrame()
@@ -202,26 +1100,39 @@ class TradingViewScraper:
                     # Set collection based on period types
                     collection = self.db[period_type]
 
-                    for financial_type in financial_types: 
+                    for financial_type in financial_types:
                         # Define url
                         url = f"https://www.tradingview.com/symbols/IDX-{stock}/financials-{financial_type}/"
-                        
+
                         try:
                             # Go to url
                             self.driver.get(url)
                             sleep(1)
-                            
-                            if period_type == 'yearly':                             
-                                period_click = self.driver.find_element(By.XPATH, '//*[@id="FY"]')
-                                self.driver.execute_script("arguments[0].click();", period_click)
-                            elif period_type == 'quarterly':
-                                period_click = self.driver.find_element(By.XPATH, '//*[@id="FQ"]')
-                                self.driver.execute_script("arguments[0].click();", period_click) 
+
+                            if period_type == "yearly":
+                                period_click = self.driver.find_element(
+                                    By.XPATH, '//*[@id="FY"]'
+                                )
+                                self.driver.execute_script(
+                                    "arguments[0].click();", period_click
+                                )
+                            elif period_type == "quarterly":
+                                period_click = self.driver.find_element(
+                                    By.XPATH, '//*[@id="FQ"]'
+                                )
+                                self.driver.execute_script(
+                                    "arguments[0].click();", period_click
+                                )
 
                             # Get all elements
-                            elements = self.driver.find_elements(By.XPATH, '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[5]/div[2]/div/div[1]/div')
+                            elements = self.driver.find_elements(
+                                By.XPATH,
+                                '//*[@id="js-category-content"]/div/div[2]/div[2]/div/div/div[5]/div[2]/div/div[1]/div',
+                            )
                         except:
-                            errors[stock].append(f"Cannot access fundamental data for stock: {stock}")
+                            errors[stock].append(
+                                f"Cannot access fundamental data for stock: {stock}"
+                            )
                             break
 
                         # Define empty list for columns
@@ -231,7 +1142,19 @@ class TradingViewScraper:
                         # Get all data from all elements
                         for element in elements:
                             text = element.text
-                            data = pd.Series([x.replace("−","-") for x in text.replace('\n','#').replace('YoY growth','#').replace('\u202c','#').replace('\u202a','#').replace('####','#').replace('###','#').replace('##','#').split('#')])
+                            data = pd.Series(
+                                [
+                                    x.replace("−", "-")
+                                    for x in text.replace("\n", "#")
+                                    .replace("YoY growth", "#")
+                                    .replace("\u202c", "#")
+                                    .replace("\u202a", "#")
+                                    .replace("####", "#")
+                                    .replace("###", "#")
+                                    .replace("##", "#")
+                                    .split("#")
+                                ]
+                            )
                             if data[0] == "Currency: IDR":
                                 # Define columns
                                 for ix, row in data.items():
@@ -239,129 +1162,344 @@ class TradingViewScraper:
                                         pass
                                     else:
                                         columns.append(row)
-                            elif financial_type == 'income-statement':
-                                for i in range (0, len(columns)):
+                            elif financial_type == "income-statement":
+                                for i in range(0, len(columns)):
                                     if data[0] in doubles_income_statement:
                                         try:
-                                            if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
+                                            if (
+                                                "t" in data[2 * i + 1].lower()
+                                                or "b" in data[2 * i + 1].lower()
+                                                or "m" in data[2 * i + 1].lower()
+                                                or "k" in data[2 * i + 1].lower()
+                                            ):
+                                                income_statement.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[2 * i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                    .replace(".", "")
+                                                )
                                             else:
-                                                income_statement.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
+                                                income_statement.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[2 * i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                )
                                         except:
-                                            income_statement.loc[data[0], columns[i]] = data[2*i+1]
+                                            income_statement.loc[
+                                                data[0], columns[i]
+                                            ] = data[2 * i + 1]
                                     else:
                                         try:
-                                            if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
+                                            if (
+                                                "t" in data[i + 1].lower()
+                                                or "b" in data[i + 1].lower()
+                                                or "m" in data[i + 1].lower()
+                                                or "k" in data[i + 1].lower()
+                                            ):
+                                                income_statement.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                    .replace(".", "")
+                                                )
                                             else:
-                                                income_statement.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
+                                                income_statement.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                )
                                         except:
-                                            income_statement.loc[data[0], columns[i]] = data[i+1]
-                            elif financial_type == 'balance-sheet':
-                                for i in range (0, len(columns)):
+                                            income_statement.loc[
+                                                data[0], columns[i]
+                                            ] = data[i + 1]
+                            elif financial_type == "balance-sheet":
+                                for i in range(0, len(columns)):
                                     if data[0] in doubles_balance_sheet:
                                         try:
-                                            if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
+                                            if (
+                                                "t" in data[2 * i + 1].lower()
+                                                or "b" in data[2 * i + 1].lower()
+                                                or "m" in data[2 * i + 1].lower()
+                                                or "k" in data[2 * i + 1].lower()
+                                            ):
+                                                balance_sheet.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[2 * i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                    .replace(".", "")
+                                                )
                                             else:
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
+                                                balance_sheet.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[2 * i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                )
                                         except:
-                                            balance_sheet.loc[data[0], columns[i]] = data[2*i+1]
+                                            balance_sheet.loc[
+                                                data[0], columns[i]
+                                            ] = data[2 * i + 1]
                                     else:
                                         try:
-                                            if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
+                                            if (
+                                                "t" in data[i + 1].lower()
+                                                or "b" in data[i + 1].lower()
+                                                or "m" in data[i + 1].lower()
+                                                or "k" in data[i + 1].lower()
+                                            ):
+                                                balance_sheet.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                    .replace(".", "")
+                                                )
                                             else:
-                                                balance_sheet.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
+                                                balance_sheet.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                )
                                         except:
-                                            balance_sheet.loc[data[0], columns[i]] = data[i+1]
-                            elif financial_type == 'cash-flow':
-                                for i in range (0, len(columns)):
+                                            balance_sheet.loc[
+                                                data[0], columns[i]
+                                            ] = data[i + 1]
+                            elif financial_type == "cash-flow":
+                                for i in range(0, len(columns)):
                                     if data[0] in doubles_cash_flow:
                                         try:
-                                            if 't' in data[2*i+1].lower() or 'b' in data[2*i+1].lower() or 'm' in data[2*i+1].lower() or 'k' in data[2*i+1].lower():
-                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
+                                            if (
+                                                "t" in data[2 * i + 1].lower()
+                                                or "b" in data[2 * i + 1].lower()
+                                                or "m" in data[2 * i + 1].lower()
+                                                or "k" in data[2 * i + 1].lower()
+                                            ):
+                                                cash_flow.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[2 * i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                    .replace(".", "")
+                                                )
                                             else:
-                                                cash_flow.loc[data[0], columns[i]] = float(data[2*i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
+                                                cash_flow.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[2 * i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                )
                                         except:
-                                            cash_flow.loc[data[0], columns[i]] = data[2*i+1]
+                                            cash_flow.loc[data[0], columns[i]] = data[
+                                                2 * i + 1
+                                            ]
                                     else:
                                         try:
-                                            if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
+                                            if (
+                                                "t" in data[i + 1].lower()
+                                                or "b" in data[i + 1].lower()
+                                                or "m" in data[i + 1].lower()
+                                                or "k" in data[i + 1].lower()
+                                            ):
+                                                cash_flow.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                    .replace(".", "")
+                                                )
                                             else:
-                                                cash_flow.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
+                                                cash_flow.loc[
+                                                    data[0], columns[i]
+                                                ] = float(
+                                                    data[i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                )
                                         except:
-                                            cash_flow.loc[data[0], columns[i]] = data[i+1]
-                            elif financial_type == 'statistics-and-ratios':
-                                for i in range (0, len(columns)):
+                                            cash_flow.loc[data[0], columns[i]] = data[
+                                                i + 1
+                                            ]
+                            elif financial_type == "statistics-and-ratios":
+                                for i in range(0, len(columns)):
                                     if data[0] in skip_ratios:
                                         break
                                     else:
                                         try:
-                                            if 't' in data[i+1].lower() or 'b' in data[i+1].lower() or 'm' in data[i+1].lower() or 'k' in data[i+1].lower():
-                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0').replace('.',''))
+                                            if (
+                                                "t" in data[i + 1].lower()
+                                                or "b" in data[i + 1].lower()
+                                                or "m" in data[i + 1].lower()
+                                                or "k" in data[i + 1].lower()
+                                            ):
+                                                ratios.loc[data[0], columns[i]] = float(
+                                                    data[i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                    .replace(".", "")
+                                                )
                                             else:
-                                                ratios.loc[data[0], columns[i]] = float(data[i+1].replace('T', '0000000000').replace('B', '0000000').replace('M', '0000').replace('K', '0'))
+                                                ratios.loc[data[0], columns[i]] = float(
+                                                    data[i + 1]
+                                                    .replace("T", "0000000000")
+                                                    .replace("B", "0000000")
+                                                    .replace("M", "0000")
+                                                    .replace("K", "0")
+                                                )
                                         except:
-                                            ratios.loc[data[0], columns[i]] = data[i+1]
+                                            ratios.loc[data[0], columns[i]] = data[
+                                                i + 1
+                                            ]
 
                     # Structurized the json
-                    if len(income_statement.columns) >= 1 and len(balance_sheet.columns) >= 1 and len(cash_flow.columns) >= 1 and len(ratios.columns) >= 1:
+                    if (
+                        len(income_statement.columns) >= 1
+                        and len(balance_sheet.columns) >= 1
+                        and len(cash_flow.columns) >= 1
+                        and len(ratios.columns) >= 1
+                    ):
                         # Add to json structure
                         # Concat with previous version
                         if collection.find_one({"stock_code": stock}):
                             previous_data = collection.find_one({"stock_code": stock})
 
-                            income_statement_previous = pd.DataFrame(previous_data["income_statement"])
-                            income_statement_previous = income_statement_previous[income_statement_previous.columns[~income_statement_previous.columns.isin(income_statement.columns)]]
-                            income_statement = pd.concat([income_statement_previous, income_statement], axis=1)
+                            income_statement_previous = pd.DataFrame(
+                                previous_data["income_statement"]
+                            )
+                            income_statement_previous = income_statement_previous[
+                                income_statement_previous.columns[
+                                    ~income_statement_previous.columns.isin(
+                                        income_statement.columns
+                                    )
+                                ]
+                            ]
+                            income_statement = pd.concat(
+                                [income_statement_previous, income_statement], axis=1
+                            )
 
-                            balance_sheet_previous = pd.DataFrame(previous_data["balance_sheet"])
-                            balance_sheet_previous = balance_sheet_previous[balance_sheet_previous.columns[~balance_sheet_previous.columns.isin(balance_sheet.columns)]]
-                            balance_sheet = pd.concat([balance_sheet_previous, balance_sheet], axis=1)
+                            balance_sheet_previous = pd.DataFrame(
+                                previous_data["balance_sheet"]
+                            )
+                            balance_sheet_previous = balance_sheet_previous[
+                                balance_sheet_previous.columns[
+                                    ~balance_sheet_previous.columns.isin(
+                                        balance_sheet.columns
+                                    )
+                                ]
+                            ]
+                            balance_sheet = pd.concat(
+                                [balance_sheet_previous, balance_sheet], axis=1
+                            )
 
-                            cash_flow_previous = pd.DataFrame(previous_data["cash_flow"])
-                            cash_flow_previous = cash_flow_previous[cash_flow_previous.columns[~cash_flow_previous.columns.isin(cash_flow.columns)]]
-                            cash_flow = pd.concat([cash_flow_previous, cash_flow], axis=1)
+                            cash_flow_previous = pd.DataFrame(
+                                previous_data["cash_flow"]
+                            )
+                            cash_flow_previous = cash_flow_previous[
+                                cash_flow_previous.columns[
+                                    ~cash_flow_previous.columns.isin(cash_flow.columns)
+                                ]
+                            ]
+                            cash_flow = pd.concat(
+                                [cash_flow_previous, cash_flow], axis=1
+                            )
 
                             ratios_previous = pd.DataFrame(previous_data["ratios"])
-                            ratios_previous = ratios_previous[ratios_previous.columns[~ratios_previous.columns.isin(ratios.columns)]]
+                            ratios_previous = ratios_previous[
+                                ratios_previous.columns[
+                                    ~ratios_previous.columns.isin(ratios.columns)
+                                ]
+                            ]
                             ratios = pd.concat([ratios_previous, ratios], axis=1)
 
                             json_structure["stock_code"] = stock
                             json_structure["period_type"] = period_type
-                            json_structure["income_statement"] = income_statement.to_dict()
+                            json_structure[
+                                "income_statement"
+                            ] = income_statement.to_dict()
                             json_structure["balance_sheet"] = balance_sheet.to_dict()
                             json_structure["cash_flow"] = cash_flow.to_dict()
                             json_structure["ratios"] = ratios.to_dict()
-                            json_structure["date_updated"] = datetime.now().strftime('%d-%m-%Y')
+                            json_structure["date_updated"] = datetime.now().strftime(
+                                "%d-%m-%Y"
+                            )
 
-                            collection.replace_one({"stock_code": json_structure["stock_code"]}, json_structure)
+                            collection.replace_one(
+                                {"stock_code": json_structure["stock_code"]},
+                                json_structure,
+                            )
 
                         else:
                             json_structure["stock_code"] = stock
                             json_structure["period_type"] = period_type
-                            json_structure["income_statement"] = income_statement.to_dict()
+                            json_structure[
+                                "income_statement"
+                            ] = income_statement.to_dict()
                             json_structure["balance_sheet"] = balance_sheet.to_dict()
                             json_structure["cash_flow"] = cash_flow.to_dict()
                             json_structure["ratios"] = ratios.to_dict()
-                            json_structure["date_updated"] = datetime.now().strftime('%d-%m-%Y')
-                                                
+                            json_structure["date_updated"] = datetime.now().strftime(
+                                "%d-%m-%Y"
+                            )
+
                             collection.insert_one(json_structure)
 
                     else:
-                        errors[stock].append(f"No fundamental data available for stock: {stock}")
+                        errors[stock].append(
+                            f"No fundamental data available for stock: {stock}"
+                        )
 
                 bar()
 
         # Store errors to MongoDB
-        errors["datetime"] = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+        errors["datetime"] = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         errors = {key: value for key, value in errors.items() if value != []}
         collection_errors = self.db["errors"]
         collection_errors.insert_one(errors)
-        
+
         print(f"Process finished")
+
 
 def main():
     """Run fundamental analysis scraper"""
@@ -373,5 +1511,6 @@ def main():
     # Get fundamental data
     tv_scraper.get_fundamental_data()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
