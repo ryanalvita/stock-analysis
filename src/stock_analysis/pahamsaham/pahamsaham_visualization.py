@@ -33,6 +33,10 @@ def update_layout(fig, figtype):
         fig.update_layout(
             yaxis=dict(title="", title_standoff=0),
         )
+    elif figtype == "price":
+        fig.update_layout(
+            yaxis=dict(title="IDR", title_standoff=0),
+        )
     elif figtype == "basic":
         fig.update_layout(
             yaxis=dict(title="IDR", title_standoff=0),
@@ -61,7 +65,7 @@ def update_layout(fig, figtype):
         margin=dict(l=25, r=25, b=25, t=25, pad=4),
         template="ggplot2",
     )
-    if figtype == "valuation":
+    if figtype == "valuation" or figtype == "price":
         fig.update_layout(
             showlegend=False,
             # legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="right", x=1),
@@ -109,10 +113,10 @@ cluster = MongoClient(os.environ["MONGODB_URI"])
 db = cluster["stockbit_data"]
 
 # Determine stock
-stock = "BBTN"
+stock = "BBRI"
 
 # Determine color scheme
-colors = ["#448AFF", "#FF9800", "#26C6DA", "#B388FF", "#3D4750"]
+colors = ["#448AFF", "#FF9800", "#26C6DA", "#B388FF", "#3D4750", "#BABABA"]
 
 # Define date
 datenow_str = datetime.strftime(datetime.now(), "%Y%m%d")
@@ -346,14 +350,14 @@ def determine_pe_pbv():
     stock_price = stock_price.set_index("Date")
     stock_price.index = stock_price.tz_localize(None).index
 
-    # # Adjust custom splits because sometimes it is not working properly
-    # splits = splits.rename(
-    #     index={
-    #         splits.index[1]: pd.Timestamp(
-    #             year=2017, month=10, day=31, tz="Asia/Jakarta"
-    #         )
-    #     }
-    # )
+    # Adjust custom splits because sometimes it is not working properly
+    splits = splits.rename(
+        index={
+            splits.index[1]: pd.Timestamp(
+                year=2017, month=10, day=31, tz="Asia/Jakarta"
+            )
+        }
+    )
 
     for ix, values in stock_price.iterrows():
         year = ix.year
@@ -639,5 +643,19 @@ fig9.update_traces(marker=dict(colors=colors), textinfo="none")
 fig9 = update_layout(fig9, "revenue_stream")
 fig9.write_image(f"{directory}/09 Revenue Stream.png")
 
+
+# Stock price
+stock_ticker = yf.Ticker(f"{stock}.JK")
+end_date = datetime.now()
+start_date = end_date - pd.DateOffset(years=1)
+
+# Get price data from yfinance
+stock_price = stock_ticker.history(
+    start=start_date, end=end_date, auto_adjust=False
+).Close.reset_index()
+fig10 = go.Figure(data=[go.Scatter(x=stock_price["Date"], y=stock_price["Close"])])
+fig10.update_traces(marker_color=colors[1], marker_line_color=colors[1])
+fig10 = update_layout(fig10, "price")
+fig10.write_image(f"{directory}/10 Share Price.png")
 
 a = 1
