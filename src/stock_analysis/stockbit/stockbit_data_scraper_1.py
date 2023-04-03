@@ -28,8 +28,8 @@ class StockbitScraper:
         # disabling gpu, applicable to windows os only
         chrome_options.add_argument("--disable-gpu")
         # bypass OS security model
-        # chrome_options.add_argument("--no-sandbox")
-        # chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--headless")
 
         self.driver = webdriver.Chrome(
             ChromeDriverManager().install(), chrome_options=chrome_options
