@@ -83,11 +83,6 @@ class StockbitScraper:
             "2": "yearly",
             "3": "ttm",
             "4": "ytd",
-            "9": "qoq_growth",
-            "10": "qoq_yoy_growth",
-            "11": "ytd_yoy_growth",
-            "12": "annual_yoy_growth",
-            "13": "3_year_cagr",
         }
 
         # Get stocks
