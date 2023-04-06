@@ -56,15 +56,15 @@ class StockbitScraper:
         sleep(3)
 
     def parse_date_title(self, text):
-        regex = r'^.*\n(\d{1,2}\s\w{3}\s\d{2})[^[\n]*\n([^\n]*(?:(?!\n\d+\slikes\s\d+|\n$).)*)'
-        match = re.search(regex, text)
-        if match:
+        try:
+            regex = r'^.*\n(\d{1,2}\s\w{3}\s\d{2})[^[\n]*\n([^\n]*(?:(?!\n\d+\slikes\s\d+|\n$).)*)'
+            match = re.search(regex, text)
             date_str = match.group(1)
             date_format = '%d %b %y'
             date_obj = datetime.strptime(date_str, date_format)
             date_str = date_obj.strftime('%Y%m%d')
             title_str = match.group(2)
-        else:
+        except:
             date_str = None
             title_str = None
         return date_str, title_str
