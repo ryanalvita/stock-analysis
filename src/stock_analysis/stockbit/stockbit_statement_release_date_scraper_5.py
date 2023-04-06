@@ -5,7 +5,7 @@ from datetime import datetime
 from time import sleep
 from typing import Optional
 
-import redis
+from pymongo import MongoClient
 
 import numpy as np
 import pandas as pd
@@ -36,12 +36,9 @@ class StockbitScraper:
             ChromeDriverManager().install(), chrome_options=chrome_options
         )
 
-        # Initialize Redis
-        self.redis = redis.Redis(
-            host=os.environ["REDIS_HOST"],
-            port=os.environ["REDIS_PORT"],
-            password=os.environ["REDIS_PASSWORD"]
-        )
+        # Initialize MongoDB
+        self.cluster = MongoClient(os.environ["MONGODB_URI"])
+        self.db = self.cluster["stockbit_data"]
 
     def login(self, username, password):
         self.driver.get("https://stockbit.com/#/login")
@@ -75,6 +72,11 @@ class StockbitScraper:
         year_filter: Optional[list] = None,
         period_filter: Optional[list] = None,
     ):
+
+        date_now = (
+            datetime.now()
+            .timestamp()
+        )
 
         # Filter
         if stock_filter:
@@ -147,7 +149,16 @@ class StockbitScraper:
                     else:
                         continue
                 
-                self.redis.set(f'{stock}', json.dumps(release_date_list))
+                json_structure = {"stock_code": f"{stock}", "release_dates": release_date_list}
+                # Define filters based on domain_id
+                filter = {"stock_code": f"{stock}"}
+
+                # Determine values to be updated
+                json_structure["date"] = date_now
+                data = {"$set": json_structure}
+
+                # Update values to database
+                self.collection.update_one(filter=filter, update=data, upsert=True)
                 print(f"{stock}: Succesfully stored to database")
 
             except Exception as e:
