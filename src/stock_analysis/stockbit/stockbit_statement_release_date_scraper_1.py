@@ -148,6 +148,7 @@ class StockbitScraper:
                         continue
                 
                 self.redis.set(f'{stock}', json.dumps(release_date_list))
+                print(f"{stock}: Succesfully stored to database")
 
             except Exception as e:
                 print(f"{stock}: Error ({e})")
@@ -175,7 +176,7 @@ def main():
     ALL = pd.read_csv("./src/stock_analysis/static/20230402_stocks_list.csv", index_col=0).index.to_list()
 
     # Get fundamental data
-    stockbit_scraper.get_statement_release_dates(stock_filter=ALL)
+    stockbit_scraper.get_statement_release_dates(stock_filter=ALL[0 : int(1 * len(ALL) / 7)])
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@ name: Scrape Stockbit Statement Release Date
 on:
   workflow_dispatch:
 jobs:
-  job:
+  job1:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -11,7 +11,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -e .
-      - name: Scrape fundamental data from Stockbit website 1
+      - name: Scrape statement release dates data from Stockbit website 1
         env:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
@@ -19,4 +19,118 @@ jobs:
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          python src/stock_analysis/stockbit/stockbit_statement_release_date_scraper.py
+          python src/stock_analysis/stockbit/stockbit_statement_release_date_scraper_1.py
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Scrape statement release dates data from Stockbit website 2
+        env:
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
+          STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
+        run: |
+          python src/stock_analysis/stockbit/stockbit_statement_release_date_scraper_2.py
+  job3:
+    needs: job2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Scrape statement release dates data from Stockbit website 3
+        env:
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
+          STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
+        run: |
+          python src/stock_analysis/stockbit/stockbit_statement_release_date_scraper_3.py
+  job4:
+    needs: job3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Scrape statement release dates data from Stockbit website 4
+        env:
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
+          STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
+        run: |
+          python src/stock_analysis/stockbit/stockbit_statement_release_date_scraper_4.py
+  job5:
+    needs: job4
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Scrape statement release dates data from Stockbit website 5
+        env:
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
+          STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
+        run: |
+          python src/stock_analysis/stockbit/stockbit_statement_release_date_scraper_5.py
+  job6:
+    needs: job5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Scrape statement release dates data from Stockbit website 6
+        env:
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
+          STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
+        run: |
+          python src/stock_analysis/stockbit/stockbit_statement_release_date_scraper_6.py
+  job7:
+    needs: job6
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Scrape statement release dates data from Stockbit website 7
+        env:
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
+          STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
+        run: |
+          python src/stock_analysis/stockbit/stockbit_statement_release_date_scraper_7.py
