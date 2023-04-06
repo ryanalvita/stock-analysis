@@ -37,8 +37,9 @@ class StockbitScraper:
         )
 
         # Initialize MongoDB
-        self.cluster = MongoClient(os.environ["MONGODB_URI"])
+        self.cluster = MongoClient(os.environ["MONGODB_PERSONAL_URI"])
         self.db = self.cluster["stockbit_data"]
+        self.collection = self.db["release_dates"]
 
     def login(self, username, password):
         self.driver.get("https://stockbit.com/#/login")
