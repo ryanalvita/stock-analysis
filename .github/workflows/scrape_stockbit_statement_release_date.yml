@@ -16,7 +16,7 @@ jobs:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-          MONGODB_PERSONAL_URI: ${{ MONGODB_PERSONAL_URI }}
+          MONGODB_PERSONAL_URI: ${{ secrets.MONGODB_PERSONAL_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
@@ -36,7 +36,7 @@ jobs:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-          MONGODB_PERSONAL_URI: ${{ MONGODB_PERSONAL_URI }}
+          MONGODB_PERSONAL_URI: ${{ secrets.MONGODB_PERSONAL_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
@@ -56,7 +56,7 @@ jobs:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-          MONGODB_PERSONAL_URI: ${{ MONGODB_PERSONAL_URI }}
+          MONGODB_PERSONAL_URI: ${{ secrets.MONGODB_PERSONAL_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
@@ -76,7 +76,7 @@ jobs:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-          MONGODB_PERSONAL_URI: ${{ MONGODB_PERSONAL_URI }}
+          MONGODB_PERSONAL_URI: ${{ secrets.MONGODB_PERSONAL_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
@@ -96,7 +96,7 @@ jobs:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-          MONGODB_PERSONAL_URI: ${{ MONGODB_PERSONAL_URI }}
+          MONGODB_PERSONAL_URI: ${{ secrets.MONGODB_PERSONAL_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
@@ -116,7 +116,7 @@ jobs:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-          MONGODB_PERSONAL_URI: ${{ MONGODB_PERSONAL_URI }}
+          MONGODB_PERSONAL_URI: ${{ secrets.MONGODB_PERSONAL_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
@@ -136,7 +136,7 @@ jobs:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-          MONGODB_PERSONAL_URI: ${{ MONGODB_PERSONAL_URI }}
+          MONGODB_PERSONAL_URI: ${{ secrets.MONGODB_PERSONAL_URI }}
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
