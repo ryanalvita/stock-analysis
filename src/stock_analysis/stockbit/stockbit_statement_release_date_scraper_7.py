@@ -115,7 +115,7 @@ class StockbitScraper:
                 search_input = self.driver.find_element(By.XPATH, '//*[@id="main-container"]/div[4]/div[1]/div[2]/div[2]/div[1]/div[2]/div/form/span/input')
                 search_input.send_keys("Laporan Keuangan")
                 search_input.submit()
-                sleep(1)
+                sleep(2)
 
                 # Get scroll height
                 last_height = self.driver.execute_script("return document.body.scrollHeight")
