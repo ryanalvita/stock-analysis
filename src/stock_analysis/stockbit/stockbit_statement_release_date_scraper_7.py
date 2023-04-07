@@ -188,7 +188,7 @@ def main():
     ALL = pd.read_csv("./src/stock_analysis/static/20230402_stocks_list.csv", index_col=0).index.to_list()
 
     # Get fundamental data
-    stockbit_scraper.get_statement_release_dates(stock_filter=ALL[int(7 * len(ALL) / 7) : int(7 * len(ALL) / 7)])
+    stockbit_scraper.get_statement_release_dates(stock_filter=ALL[int(6 * len(ALL) / 7) : int(7 * len(ALL) / 7)])
 
 if __name__ == "__main__":
     main()
