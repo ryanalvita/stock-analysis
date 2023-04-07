@@ -140,7 +140,7 @@ class StockbitScraper:
 
                         tables = pd.read_html(self.driver.page_source)
                         data = pd.DataFrame()
-                        for table in tables[0:1]:
+                        for table in tables[0:2]:
                             df = table.rename(
                                 columns={
                                     "In Thousand IDR": "In IDR",
