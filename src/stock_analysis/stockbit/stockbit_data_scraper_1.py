@@ -81,8 +81,6 @@ class StockbitScraper:
         statement_types = {
             "1": "quarterly",
             "2": "yearly",
-            "3": "ttm",
-            "4": "ytd",
         }
 
         # Get stocks
