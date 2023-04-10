@@ -28,8 +28,8 @@ class StockbitScraper:
         # disabling gpu, applicable to windows os only
         chrome_options.add_argument("--disable-gpu")
         # bypass OS security model
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--headless")
+        # chrome_options.add_argument("--no-sandbox")
+        # chrome_options.add_argument("--headless")
 
         self.driver = webdriver.Chrome(
             ChromeDriverManager().install(), chrome_options=chrome_options
@@ -136,9 +136,14 @@ class StockbitScraper:
                         self.driver.execute_script("arguments[0].click();", click)
                         self.driver.execute_script("arguments[0].click();", click)
 
-                        tables = pd.read_html(self.driver.page_source)
+                        if report_type == "income-statement":
+                            tables = pd.read_html(self.driver.page_source)[2:4]
+                        elif report_type == "balance-sheet":
+                            tables = pd.read_html(self.driver.page_source)[4:8]
+                        elif report_type == "cash-flow":
+                            tables = pd.read_html(self.driver.page_source)[2:4]
                         data = pd.DataFrame()
-                        for table in tables[2:4]:
+                        for table in tables:
                             df = table.rename(
                                 columns={
                                     "In Thousand IDR": "In IDR",
