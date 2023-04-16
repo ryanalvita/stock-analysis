@@ -38,12 +38,16 @@ if not os.path.exists(f"{dir}/images"):
 start_date = datetime(year=2008, month=5, day=1)
 end_date = datetime.now()
 
-with open(f"{dir}/idx_30_backtest.json") as file:
-    idx_30 = json.load(file)
+stocks = pd.read_csv("./src/stock_analysis/static/20230402_stocks_list_LQ45.csv")[
+    "2022"
+].to_list()
 
 data = pd.DataFrame()
 
-for stock, multiples in idx_30.items():
+for stock in stocks:
+    multiples = json.loads(
+        "./stock_analysis/backtest_strategy/data/ADRO/20230408_backtest_multiples.json"
+    )
     for multiple, timeframes in multiples.items():
         for timeframe, profit in timeframes.items():
             data.loc[

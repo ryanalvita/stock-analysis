@@ -31,33 +31,44 @@ def determine_row_col(timeframe):
 
 
 dir = "./src/stock_analysis/backtest_strategy"
-strat_types = ["-1+1stdev", "-1+2stdev", "-2+1stdev", "-2+2stdev"]
+multiples_list = ["pe", "pbv"]
+strat_types_list = ["-1+1", "-1+2", "-2+1", "-2+2"]
+timeframes_list = ["0.25", "0.5", "0.75", "1", "3", "5"]
 
-for strat_type in strat_types:
+stocks = pd.read_csv("./src/stock_analysis/static/20230402_stocks_list_LQ45.csv")[
+    "2022"
+]
 
-    if not os.path.exists(f"{dir}/images/{strat_type}"):
-        os.mkdir(f"{dir}/images/{strat_type}")
+date_str = datetime.now().strftime("%Y%m%d")
+results = {}
+for stock in stocks:
+    with open(
+        f"./src/stock_analysis/backtest_strategy/data/{stock}/20230411_backtest_multiples.json"
+    ) as file:
+        data = json.load(file)
+    results.update({stock: data})
 
-    # Dates
-    start_date = datetime(year=2008, month=5, day=1)
-    end_date = datetime.now()
-
-    data_date = "20230404"
-
-    with open(f"{dir}/idx_30_backtest_{data_date}_{strat_type}.json") as file:
-        idx_30 = json.load(file)
-
-    data = pd.DataFrame()
-
-    for stock, multiples in idx_30.items():
-        for multiple, timeframes in multiples.items():
+data = pd.DataFrame()
+for stock, multiples in results.items():
+    for multiple, strat_types in multiples.items():
+        for strat_type, timeframes in strat_types.items():
             for timeframe, profit in timeframes.items():
-                data.loc[
-                    f"{stock}",
-                    f"Annual Profit ({multiple.upper()}) [{timeframe}Y]",
-                ] = profit["annual_profit"]
+                if len(profit) > 0:
+                    data.loc[
+                        f"{stock}",
+                        f"Annual Profit ({multiple.upper()}) [{timeframe}Y, {strat_type}]",
+                    ] = profit["annual_profit"]
+                else:
+                    data.loc[
+                        f"{stock}",
+                        f"Annual Profit ({multiple.upper()}) [{timeframe}Y, {strat_type}]",
+                    ] = 0
 
-    for multiple, timeframes in multiples.items():
+if not os.path.exists(f"{dir}/images/annual_profit/{date_str}"):
+    os.mkdir(f"{dir}/images/annual_profit/{date_str}")
+
+for multiple in multiples_list:
+    for strat_type in strat_types_list:
         fig = make_subplots(
             rows=3,
             cols=2,
@@ -70,16 +81,24 @@ for strat_type in strat_types:
                 f"Backward timeframe: 5 year",
             ),
         )
-        for timeframe, profit in timeframes.items():
+        for timeframe in timeframes_list:
             row, col = determine_row_col(timeframe)
             fig.add_trace(
                 go.Scatter(
                     x=data[
-                        data[f"Annual Profit ({multiple.upper()}) [{timeframe}Y]"] > 0
+                        data[
+                            f"Annual Profit ({multiple.upper()}) [{timeframe}Y, {strat_type}]"
+                        ]
+                        > 0
                     ].index,
                     y=data[
-                        data[f"Annual Profit ({multiple.upper()}) [{timeframe}Y]"] > 0
-                    ][f"Annual Profit ({multiple.upper()}) [{timeframe}Y]"],
+                        data[
+                            f"Annual Profit ({multiple.upper()}) [{timeframe}Y, {strat_type}]"
+                        ]
+                        > 0
+                    ][
+                        f"Annual Profit ({multiple.upper()}) [{timeframe}Y, {strat_type}]"
+                    ],
                     mode="markers",
                     marker=dict(size=8, color=plotly.colors.qualitative.Plotly[0]),
                 ),
@@ -89,11 +108,19 @@ for strat_type in strat_types:
             fig.add_trace(
                 go.Scatter(
                     x=data[
-                        data[f"Annual Profit ({multiple.upper()}) [{timeframe}Y]"] < 0
+                        data[
+                            f"Annual Profit ({multiple.upper()}) [{timeframe}Y, {strat_type}]"
+                        ]
+                        < 0
                     ].index,
                     y=data[
-                        data[f"Annual Profit ({multiple.upper()}) [{timeframe}Y]"] < 0
-                    ][f"Annual Profit ({multiple.upper()}) [{timeframe}Y]"],
+                        data[
+                            f"Annual Profit ({multiple.upper()}) [{timeframe}Y, {strat_type}]"
+                        ]
+                        < 0
+                    ][
+                        f"Annual Profit ({multiple.upper()}) [{timeframe}Y, {strat_type}]"
+                    ],
                     mode="markers",
                     marker=dict(size=8, color=plotly.colors.qualitative.Plotly[1]),
                 ),
@@ -105,7 +132,7 @@ for strat_type in strat_types:
                     x=data.index,
                     y=[
                         data[
-                            f"Annual Profit ({multiple.upper()}) [{timeframe}Y]"
+                            f"Annual Profit ({multiple.upper()}) [{timeframe}Y, {strat_type}]"
                         ].mean()
                         for x in range(0, len(data))
                     ],
@@ -117,7 +144,7 @@ for strat_type in strat_types:
                         else str(
                             round(
                                 data[
-                                    f"Annual Profit ({multiple.upper()}) [{timeframe}Y]"
+                                    f"Annual Profit ({multiple.upper()}) [{timeframe}Y, {strat_type}]"
                                 ].mean()
                             )
                         )
@@ -142,8 +169,8 @@ for strat_type in strat_types:
         fig.update_layout(
             width=1920,
             height=1080,
-            title_text=f"{multiple.upper()} Annual Profit Percentage",
+            title_text=f"{multiple.upper()} {strat_type}stdev Annual Profit Percentage",
         )
         fig.write_image(
-            f"{dir}/images/{strat_type}/annual_profit_{multiple.upper()}.png"
+            f"{dir}/images/annual_profit/{date_str}/annual_profit_{multiple.upper()}_{strat_type}.png"
         )
