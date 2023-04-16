@@ -12,6 +12,7 @@ from selenium.webdriver.support.ui import Select
 from webdriver_manager.chrome import ChromeDriverManager
 from pymongo import MongoClient
 
+
 class StockbitScraper:
     def __init__(self):
         # Define chrome options
@@ -58,10 +59,7 @@ class StockbitScraper:
         period_filter: Optional[list] = None,
     ):
 
-        date = (
-            datetime.now()
-            .timestamp()
-        )
+        date = datetime.now().timestamp()
 
         # Filter
         if stock_filter:
@@ -101,15 +99,21 @@ class StockbitScraper:
                 json_structure = {"stock_code": f"{stock}"}
 
                 selection_report_type = Select(
-                    self.driver.find_element(By.XPATH, '//*[@id="financial-header"]/div[2]/select')
+                    self.driver.find_element(
+                        By.XPATH, '//*[@id="financial-header"]/div[2]/select'
+                    )
                 )
                 selection_statement_type = Select(
-                    self.driver.find_element(By.XPATH, '//*[@id="financial-header"]/div[3]/select')
+                    self.driver.find_element(
+                        By.XPATH, '//*[@id="financial-header"]/div[3]/select'
+                    )
                 )
 
                 # Select always EN
                 Select(
-                    self.driver.find_element(By.XPATH, '//*[@id="financial-header"]/div[6]/select')
+                    self.driver.find_element(
+                        By.XPATH, '//*[@id="financial-header"]/div[6]/select'
+                    )
                 ).select_by_value("EN")
 
                 for key, values in statement_types.items():
@@ -269,7 +273,9 @@ def main():
     stockbit_scraper.login(username, password)
 
     # Get list of stocks
-    ALL = pd.read_csv("./src/stock_analysis/static/20230402_stocks_list.csv", index_col=0).index.to_list()
+    ALL = pd.read_csv(
+        "./src/stock_analysis/static/20230402_stocks_list.csv", index_col=0
+    ).index.to_list()
 
     # Get fundamental data
     stockbit_scraper.get_fundamental_data(
