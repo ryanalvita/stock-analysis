@@ -103,7 +103,7 @@ for stock in stocks:
     yf_stock = yf.Ticker(f"{stock}.JK")
 
     df_is = pd.DataFrame(data_quarterly["income_statement"]).loc[
-        ["Net Income Attributable To", "Share Outstanding"]
+        ["Total Revenue", "Net Income Attributable To", "Share Outstanding"]
     ]
     df_is = clean_dataframe(df_is).loc[:, ::-1]
     df_is.loc["Net Income Attributable To"] = (
@@ -124,6 +124,7 @@ for stock in stocks:
 
     pe = pd.DataFrame()
     pbv = pd.DataFrame()
+    ps = pd.DataFrame()
 
     for ix, values in stock_price.iterrows():
         try:
@@ -137,6 +138,10 @@ for stock in stocks:
                 float(df_bs.loc["Total Equity", col])
                 / (float(df_is.loc["Share Outstanding"][-1]))
             )
+            ps.loc[ix, "ps"] = values.Close / (
+                float(df_is.loc["Total Revenue", col])
+                / (float(df_is.loc["Share Outstanding"][-1]))
+            )
 
             if pe.loc[ix, "pe"] < 0:
                 pe.loc[ix, "pe"] = np.nan
@@ -144,20 +149,27 @@ for stock in stocks:
             if pbv.loc[ix, "pbv"] < 0:
                 pbv.loc[ix, "pbv"] = np.nan
 
+            if ps.loc[ix, "ps"] < 0:
+                ps.loc[ix, "ps"] = np.nan
+
         except:
             pe.loc[ix, "pe"] = np.nan
             pbv.loc[ix, "pbv"] = np.nan
+            ps.loc[ix, "ps"] = np.nan
 
     pe.to_csv(f"{dir}/data/{date_str}/{stock}/pe_ratio.json")
     pbv.to_csv(f"{dir}/data/{date_str}/{stock}/pbv_ratio.json")
+    ps.to_csv(f"{dir}/data/{date_str}/{stock}/ps_ratio.json")
 
     results = {}
-    for multiple in ["pe", "pbv"]:
+    for multiple in ["pe", "pbv", "ps"]:
         results[f"{multiple}"] = {}
         if multiple == "pe":
             df = pe
         elif multiple == "pbv":
             df = pbv
+        elif multiple == "ps":
+            df = ps
 
         for strat_type in strat_types:
             results[f"{multiple}"][f"{strat_type}"] = {}

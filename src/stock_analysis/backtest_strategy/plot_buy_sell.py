@@ -32,8 +32,8 @@ def determine_row_col(timeframe):
 
 # Directory
 dir = "./src/stock_analysis/backtest_strategy"
-date_str = datetime.now().strftime("%Y%m%d")
-date_stock_data = "20230417"
+date_str = "20230420"
+date_stock_data = "20230420"
 
 # Dates
 start_date = datetime(year=2008, month=5, day=1)
@@ -70,6 +70,10 @@ for stock in stocks:
     )
     pbv = pd.read_csv(
         f"./src/stock_analysis/backtest_strategy/data/{date_stock_data}/{stock}/pbv_ratio.json",
+        index_col=0,
+    )
+    ps = pd.read_csv(
+        f"./src/stock_analysis/backtest_strategy/data/{date_stock_data}/{stock}/ps_ratio.json",
         index_col=0,
     )
 
@@ -152,6 +156,24 @@ for stock in stocks:
                     )
                     fig.update_yaxes(
                         title_text="PBV", row=row, col=col, secondary_y=True
+                    )
+                elif multiple == "ps":
+                    fig.add_trace(
+                        go.Scatter(
+                            x=ps.index,
+                            y=ps["ps"],
+                            mode="lines",
+                            name="PS",
+                            line=dict(
+                                color=plotly.colors.qualitative.Plotly[4],
+                            ),
+                        ),
+                        row=row,
+                        col=col,
+                        secondary_y=True,
+                    )
+                    fig.update_yaxes(
+                        title_text="PS", row=row, col=col, secondary_y=True
                     )
                 if len(profit) > 0:
                     timestamps_buy = [
