@@ -30,39 +30,46 @@ def determine_row_col(timeframe):
     return row, col
 
 
+# Directory
 dir = "./src/stock_analysis/backtest_strategy"
-
-
-stock = "ITMG"
+date_str = datetime.now().strftime("%Y%m%d")
+date_stock_data = "20230417"
 
 # Dates
 start_date = datetime(year=2008, month=5, day=1)
 end_date = datetime.now()
 
-stocks = pd.read_csv("./src/stock_analysis/static/20230402_stocks_list_LQ45.csv")[
-    "2022"
-].to_list()
+# List of stocks
+date_stocks_list = "20230416"
+index_name = "KOMPAS100"
+stocks = pd.read_csv(
+    f"./src/stock_analysis/static/{date_stocks_list}_stocks_list_{index_name}.csv",
+    index_col=0,
+).index.to_list()
 
+# Create folder
+if not os.path.exists(f"{dir}/images/buy_sell"):
+    os.mkdir(f"{dir}/images/buy_sell")
 
-date_str = datetime.now().strftime("%Y%m%d")
 if not os.path.exists(f"{dir}/images/buy_sell/{date_str}"):
     os.mkdir(f"{dir}/images/buy_sell/{date_str}")
 
+stocks = stocks[6:]
 for stock in stocks:
     if not os.path.exists(f"{dir}/images/buy_sell/{date_str}/{stock}"):
         os.mkdir(f"{dir}/images/buy_sell/{date_str}/{stock}")
 
     with open(
-        f"./src/stock_analysis/backtest_strategy/data/{stock}/20230411_backtest_multiples.json"
+        f"./src/stock_analysis/backtest_strategy/data/{date_stock_data}/{stock}/backtest_data.json"
     ) as file:
         stock_data = json.load(file)
 
     pe = pd.read_csv(
-        f"./src/stock_analysis/backtest_strategy/data/{stock}/20230411_pe.json",
+        f"./src/stock_analysis/backtest_strategy/data/{date_stock_data}/{stock}/pe_ratio.json",
         index_col=0,
     )
     pbv = pd.read_csv(
-        f"./src/stock_analysis/backtest_strategy/data/{stock}/20230411_pbv.json",
+        f"./src/stock_analysis/backtest_strategy/data/{date_stock_data}/{stock}/pbv_ratio.json",
         index_col=0,
     )
 
@@ -74,7 +81,6 @@ for stock in stocks:
         .Close.reset_index()
         .set_index("Date")
     )
-    stock_price.index = stock_price.tz_localize(None).index
 
     for multiple, strat_types in stock_data.items():
         for strat_type, timeframes in strat_types.items():
@@ -151,41 +157,6 @@ for stock in stocks:
                     timestamps_buy = [
                         timestamp["timestamp_buy"] for timestamp in profit["data"]
                     ]
-                    prices_buy = [
-                        timestamp["price_buy"] for timestamp in profit["data"]
-                    ]
-                    timestamps_sell = [
-                        timestamp["timestamp_sell"] for timestamp in profit["data"]
-                    ]
-                    prices_sell = [
-                        timestamp["price_sell"] for timestamp in profit["data"]
-                    ]
-                    first_timestamps_buy = [
-                        timestamp["first_timestamp_buy"] for timestamp in profit["data"]
-                    ]
-                    last_timestamps_buy = [
-                        timestamp["last_timestamp_buy"] for timestamp in profit["data"]
-                    ]
-                    # Add traces buy & sell
-                    for first_timestamp_buy in first_timestamps_buy:
-                        fig.add_vline(
-                            x=first_timestamp_buy,
-                            line_width=1,
-                            name="First Buy Price",
-                            line_color=plotly.colors.qualitative.Plotly[5],
-                            row=row,
-                            col=col,
-                        )
-                    # Add traces buy & sell
-                    for last_timestamp_buy in last_timestamps_buy:
-                        fig.add_vline(
-                            x=last_timestamp_buy,
-                            line_width=1,
-                            name="Last Buy Price",
-                            line_color=plotly.colors.qualitative.Plotly[5],
-                            row=row,
-                            col=col,
-                        )
                     for timestamp_buy in timestamps_buy:
                         fig.add_vline(
                             x=timestamp_buy,
@@ -196,16 +167,25 @@ for stock in stocks:
                             col=col,
                         )
 
-                    for timestamp_sell in timestamps_sell:
+                    first_timestamps_buy = [
+                        timestamp["first_timestamp_buy"] for timestamp in profit["data"]
+                    ]
+                    for first_timestamp_buy in first_timestamps_buy:
                         fig.add_vline(
-                            x=timestamp_sell,
+                            x=first_timestamp_buy,
                             line_width=1,
-                            name="Sell Price",
-                            line_color=plotly.colors.qualitative.Plotly[1],
+                            name="First Buy Price",
+                            line_color=plotly.colors.qualitative.Plotly[5],
                             row=row,
                             col=col,
                         )
+                    timestamps_sell = [
+                        timestamp["timestamp_sell"] for timestamp in profit["data"]
+                    ]
 
+                    # prices_buy = [
+                    #     timestamp["price_buy"] for timestamp in profit["data"]
+                    # ]
                     # fig.add_trace(
                     #     go.Scatter(
                     #         x=timestamps_buy,
@@ -220,6 +200,33 @@ for stock in stocks:
                     #     row=row,
                     #     col=col,
                     # )
+
+                    for timestamp_sell in timestamps_sell:
+                        fig.add_vline(
+                            x=timestamp_sell,
+                            line_width=1,
+                            name="Sell Price",
+                            line_color=plotly.colors.qualitative.Plotly[1],
+                            row=row,
+                            col=col,
+                        )
+
+                    last_timestamps_buy = [
+                        timestamp["last_timestamp_buy"] for timestamp in profit["data"]
+                    ]
+                    for last_timestamp_buy in last_timestamps_buy:
+                        fig.add_vline(
+                            x=last_timestamp_buy,
+                            line_width=1,
+                            name="Last Buy Price",
+                            line_color=plotly.colors.qualitative.Plotly[5],
+                            row=row,
+                            col=col,
+                        )
+
+                    # prices_sell = [
+                    #     timestamp["price_sell"] for timestamp in profit["data"]
+                    # ]
                     # # Add traces
                     # fig.add_trace(
                     #     go.Scatter(
@@ -235,6 +242,7 @@ for stock in stocks:
                     #     row=row,
                     #     col=col,
                     # )
+
                     fig.update_xaxes(
                         title_text="Time",
                         row=row,
@@ -250,5 +258,5 @@ for stock in stocks:
                     title_text=f"{stock}: {multiple.upper()} {strat_type}stdev Buy & Sell Backtest",
                 )
             fig.write_image(
-                f"{dir}/images/buy_sell/{date_str}/{stock}/buy_sell_{stock}_{multiple}_{strat_type}.png"
+                f"{dir}/images/buy_sell/{date_str}/{stock}/buy_sell_{multiple.upper()}_{strat_type}.png"
             )

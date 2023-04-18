@@ -61,16 +61,6 @@ def calculate_final_percentage(initial_value, profit_loss_percentages):
     return percentage_change
 
 
-def determine_col_previous(col):
-    period = int(col[1:2])
-    year = int(col[-4:])
-    if "Q1" in col:
-        col_previous = f"Q4 {year-1}"
-    else:
-        col_previous = f"Q{period-1} {year}"
-    return col_previous
-
-
 # MongoDB
 cluster = MongoClient(os.environ["MONGODB_URI"])
 db_stockbit_data = cluster["stockbit_data"]
@@ -80,13 +70,29 @@ collection_quarterly = db_stockbit_data["quarterly"]
 start_date = datetime(year=2008, month=5, day=1)
 end_date = datetime.now()
 
+# Directory
 dir = "./src/stock_analysis/backtest_strategy"
 date_str = datetime.now().strftime("%Y%m%d")
 
-stocks = pd.read_csv("./src/stock_analysis/static/20230402_stocks_list_LQ45.csv")[
-    "2022"
-].to_list()
+# List of stocks
+date_stocks_list = "20230416"
+index_name = "KOMPAS100"
+stocks = pd.read_csv(
+    f"./src/stock_analysis/static/{date_stocks_list}_stocks_list_{index_name}.csv",
+    index_col=0,
+).index.to_list()
+
 for stock in stocks:
+    # Print log started backtest
+    print(f"Started running backtest: {stock}")
+
+    # Create folder
+    if not os.path.exists(f"{dir}/data/{date_str}"):
+        os.mkdir(f"{dir}/data/{date_str}")
+
+    if not os.path.exists(f"{dir}/data/{date_str}/{stock}"):
+        os.mkdir(f"{dir}/data/{date_str}/{stock}")
+
     timeframes = [0.25, 0.5, 0.75, 1, 3, 5]
     strat_types = ["-1+1", "-1+2", "-2+1", "-2+2"]
 
@@ -108,9 +114,6 @@ for stock in stocks:
     ]
     df_bs = clean_dataframe(df_bs).loc[:, ::-1]
 
-    # Stock yf
-    splits = yf_stock.splits
-
     # Get price data from yfinance
     stock_price = (
         yf_stock.history(start=start_date, end=end_date, auto_adjust=False)
@@ -121,8 +124,6 @@ for stock in stocks:
 
     pe = pd.DataFrame()
     pbv = pd.DataFrame()
-    net_income_ttm = pd.DataFrame()
-    book_value_quarterly = pd.DataFrame()
 
     for ix, values in stock_price.iterrows():
         try:
@@ -147,8 +148,8 @@ for stock in stocks:
             pe.loc[ix, "pe"] = np.nan
             pbv.loc[ix, "pbv"] = np.nan
 
-    pe.to_csv(f"{dir}/data/{stock}/{date_str}_pe.json")
-    pbv.to_csv(f"{dir}/data/{stock}/{date_str}_pbv.json")
+    pe.to_csv(f"{dir}/data/{date_str}/{stock}/pe_ratio.json")
+    pbv.to_csv(f"{dir}/data/{date_str}/{stock}/pbv_ratio.json")
 
     results = {}
     for multiple in ["pe", "pbv"]:
@@ -308,13 +309,13 @@ for stock in stocks:
                 else:
                     results[f"{multiple}"][f"{strat_type}"][f"{tf}"] = {}
 
+    # Print log finished backtest
     elapsed_time = time.time() - start_run
+    print(f"Finished running backtest: {stock}")
     print(f"Elapsed time: {elapsed_time} seconds")
 
-    if not os.path.exists(f"{dir}/data/{stock}"):
-        os.mkdir(f"{dir}/data/{stock}")
-
-    with open(f"{dir}/data/{stock}/{date_str}_backtest_multiples.json", "w") as outfile:
+    # Save file
+    with open(f"{dir}/data/{date_str}/{stock}/backtest_data.json", "w") as outfile:
         json.dump(results, outfile)
 
     test = 1
