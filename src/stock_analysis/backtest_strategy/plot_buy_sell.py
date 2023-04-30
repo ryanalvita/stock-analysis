@@ -177,7 +177,7 @@ for stock in stocks:
                     )
                 if len(profit) > 0:
                     timestamps_buy = [
-                        timestamp["timestamp_buy"] for timestamp in profit["data"]
+                        timestamp["timestamp_buy"] for timestamp in profit["profits"]
                     ]
                     for timestamp_buy in timestamps_buy:
                         fig.add_vline(
@@ -190,7 +190,8 @@ for stock in stocks:
                         )
 
                     first_timestamps_buy = [
-                        timestamp["first_timestamp_buy"] for timestamp in profit["data"]
+                        timestamp["first_timestamp_buy"]
+                        for timestamp in profit["profits"]
                     ]
                     for first_timestamp_buy in first_timestamps_buy:
                         fig.add_vline(
@@ -202,11 +203,11 @@ for stock in stocks:
                             col=col,
                         )
                     timestamps_sell = [
-                        timestamp["timestamp_sell"] for timestamp in profit["data"]
+                        timestamp["timestamp_sell"] for timestamp in profit["profits"]
                     ]
 
                     # prices_buy = [
-                    #     timestamp["price_buy"] for timestamp in profit["data"]
+                    #     timestamp["price_buy"] for timestamp in profit["profits"]
                     # ]
                     # fig.add_trace(
                     #     go.Scatter(
@@ -234,7 +235,8 @@ for stock in stocks:
                         )
 
                     last_timestamps_buy = [
-                        timestamp["last_timestamp_buy"] for timestamp in profit["data"]
+                        timestamp["last_timestamp_buy"]
+                        for timestamp in profit["profits"]
                     ]
                     for last_timestamp_buy in last_timestamps_buy:
                         fig.add_vline(
@@ -247,7 +249,7 @@ for stock in stocks:
                         )
 
                     # prices_sell = [
-                    #     timestamp["price_sell"] for timestamp in profit["data"]
+                    #     timestamp["price_sell"] for timestamp in profit["profits"]
                     # ]
                     # # Add traces
                     # fig.add_trace(

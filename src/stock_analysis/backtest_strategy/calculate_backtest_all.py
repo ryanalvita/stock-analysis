@@ -72,7 +72,7 @@ end_date = datetime.now()
 
 # Directory
 dir = "./src/stock_analysis/backtest_strategy"
-date_str = datetime.now().strftime("%Y%m%d")
+date_str = "20230423"
 
 # List of stocks
 date_stocks_list = "20230416"
@@ -310,13 +310,16 @@ for stock in stocks:
                     annual_compound_rate = (
                         np.power(1 + profit_pct_comp / 100, 1 / (timerange / 365)) - 1
                     ) * 100
+                    df_store = df.copy()
+                    df_store.index = df_store.index.strftime("%Y-%m-%d %H:%M:%S")
 
                     results[f"{multiple}"][f"{strat_type}"][f"{tf}"] = {
                         "profit_pct_comp": profit_pct_comp,
                         "annual_profit": annual_compound_rate,
                         "first_multiple_timestamp": str(first_multiple_timestamp),
                         "last_multiple_timestamp": str(last_multiple_timestamp),
-                        "data": profits,
+                        "profits": profits,
+                        "data": df_store.to_dict(),
                     }
                 else:
                     results[f"{multiple}"][f"{strat_type}"][f"{tf}"] = {}
