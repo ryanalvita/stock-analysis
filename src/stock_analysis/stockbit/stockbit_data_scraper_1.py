@@ -140,9 +140,14 @@ class StockbitScraper:
                         self.driver.execute_script("arguments[0].click();", click)
                         self.driver.execute_script("arguments[0].click();", click)
 
-                        tables = pd.read_html(self.driver.page_source)
+                        if report_type == "income-statement":
+                            tables = pd.read_html(self.driver.page_source)[2:4]
+                        elif report_type == "balance-sheet":
+                            tables = pd.read_html(self.driver.page_source)[4:8]
+                        elif report_type == "cash-flow":
+                            tables = pd.read_html(self.driver.page_source)[2:4]
                         data = pd.DataFrame()
-                        for table in tables[0:2]:
+                        for table in tables:
                             df = table.rename(
                                 columns={
                                     "In Thousand IDR": "In IDR",
