@@ -77,7 +77,7 @@ class LatestReleaseDate:
 
         # Periode
         for p in range(1, 4+1):
-            if len(self.driver.find_elements(By.XPATH, f'/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[2]/div[1]/div/div[4]/div[{p}]/label/input')) == 0:
+            if 'is-active' not in self.driver.find_element(By.XPATH, f'/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[1]/button').get_attribute('class'):
                 self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[1]/button').click()
             self.driver.find_element(By.XPATH, f'/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[2]/div[1]/div/div[4]/div[{p}]/label/input').click()
             self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[2]/div[2]/button[2]').click()
