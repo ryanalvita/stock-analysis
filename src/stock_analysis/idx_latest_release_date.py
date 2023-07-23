@@ -78,7 +78,7 @@ class LatestReleaseDate:
         # Periode
         for p in range(1, 4+1):
             filter_button = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[1]/button')
-            self.driver.execute_script("arguments[0].scrollIntoView();", filter_button)
+            self.driver.execute_script("arguments[0].scrollIntoView({'block':'center','inline':'center'});", filter_button)
             if 'is-active' not in filter_button.get_attribute('class'):
                 filter_button.click()
             # Click periode
