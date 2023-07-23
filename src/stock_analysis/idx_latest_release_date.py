@@ -87,12 +87,16 @@ class LatestReleaseDate:
             if len(self.driver.find_elements(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/div[2]/div/div/span')) == 0:
                 # Pages
                 pages = len(self.driver.find_elements(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/ul[2]/li/select/option'))
-                pages_select = Select(
-                    self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/ul[2]/li[1]/select')
-                )
+                if pages != 0:
+                    pages_select = Select(
+                        self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/ul[2]/li[1]/select')
+                    )
+                else:
+                    pages = 1
                 for i in range(1, pages + 1):
-                    pages_select.select_by_value(str(i))
-                    sleep(2)
+                    if pages != 1:
+                        pages_select.select_by_value(str(i))
+                        sleep(2)
 
                     # Find elements
                     elements = self.driver.find_elements(
