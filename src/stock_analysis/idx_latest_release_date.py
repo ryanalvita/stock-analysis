@@ -77,10 +77,15 @@ class LatestReleaseDate:
 
         # Periode
         for p in range(1, 4+1):
-            if 'is-active' not in self.driver.find_element(By.XPATH, f'/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[1]/button').get_attribute('class'):
-                self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[1]/button').click()
+            filter_button = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[1]/button')
+            self.driver.execute_script("arguments[0].scrollIntoView();", filter_button)
+            if 'is-active' not in element.get_attribute('class'):
+                filter_button.click()
+            # Click periode
             self.driver.find_element(By.XPATH, f'/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[2]/div[1]/div/div[4]/div[{p}]/label/input').click()
-            self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[2]/div[2]/button[2]').click()
+            
+            # Click terapkan
+            click_terapkan = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[2]/div[2]/button[2]').click()
             sleep(2)
 
             if len(self.driver.find_elements(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/div[2]/div/div/span')) == 0:
