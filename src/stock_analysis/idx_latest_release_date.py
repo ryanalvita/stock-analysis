@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import Select
 from time import sleep
 from webdriver_manager.chrome import ChromeDriverManager
 from pymongo import MongoClient
+from fake_useragent import UserAgent
 
 id_en_months_mapping = {
     'Januari': 'January',
@@ -49,6 +50,9 @@ class LatestReleaseDate:
         # bypass OS security model
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--headless")
+        # add user agent
+        chrome_options.add_argument(f"user-agent={UserAgent().random}")
+
         self.driver = webdriver.Chrome(
             ChromeDriverManager().install(), chrome_options=chrome_options
         )
