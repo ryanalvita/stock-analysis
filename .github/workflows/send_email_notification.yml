@@ -13,6 +13,7 @@ jobs:
           pip install -e .
       - name: Create daily notification via email for IDX financial statement releases
         env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
           GMAIL_ID: ${{ secrets.GMAIL_ID }}
           GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
         run: |

@@ -32,6 +32,7 @@ jobs:
           pip install -e .
       - name: Create daily email financial statement releases from IDX
         env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
           GMAIL_ID: ${{ secrets.GMAIL_ID }}
           GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
         run: |
