@@ -27,7 +27,7 @@ class NotifikasiEmailRilisLapkeu:
         number = 1
 
         dt_now = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-        dt_yesterday = dt_now - pd.DateOffset(day=1)
+        dt_yesterday = dt_now - pd.DateOffset(days=1)
 
         insert = []
         for element in self.collection.find({"latest.release_date": dt_yesterday}):
