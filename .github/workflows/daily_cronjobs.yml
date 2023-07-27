@@ -23,12 +23,12 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: stocks-list
-          path: stocks-list.txt
+          name: stocks_list
+          path: stocks_list.txt
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: stocks-list
+          name: stocks_list
           path: artifact
       - name: Scrape financial data from Stockbit
         env:
@@ -36,7 +36,7 @@ jobs:
           STOCKBIT_USERNAME: ${{ secrets.STOCKBIT_USERNAME }}
           STOCKBIT_PASSWORD: ${{ secrets.STOCKBIT_PASSWORD }}
         run: |
-          STOCKS_LIST=$(cat artifact/stocks-list.txt)
+          STOCKS_LIST=$(cat artifact/stocks_list.txt)
           python src/stock_analysis/stockbit/stockbit_data_scraper.py $STOCKS_LIST
       - name: Send daily email for latest financial statement releases
         env:
