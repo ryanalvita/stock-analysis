@@ -8,6 +8,7 @@ from time import sleep
 from webdriver_manager.chrome import ChromeDriverManager
 from pymongo import MongoClient
 import pandas as pd
+from fake_useragent import UserAgent
 
 id_en_months_mapping = {
     'Januari': 'January',
