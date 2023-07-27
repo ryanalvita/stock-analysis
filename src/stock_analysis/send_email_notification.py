@@ -15,6 +15,9 @@ class NotifikasiEmailRilisLapkeu:
         self.db = self.cluster["stockbit_data"]
         self.collection = self.db["release_date"]
 
+        self.dt_now = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        self.dt_yesterday = self.dt_now - pd.DateOffset(days=1)
+
     def send_email(
         self,
     ):
@@ -26,12 +29,8 @@ class NotifikasiEmailRilisLapkeu:
 
         number = 1
 
-        dt_now = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-        dt_yesterday = dt_now - pd.DateOffset(days=1)
-
         insert = []
-        for element in self.collection.find({"latest.release_date": dt_yesterday}):
-            
+        for element in self.collection.find({"latest.release_date": self.dt_yesterday}):
             code = element["stock_code"]
             year = element["latest"]["year"]
             quarter = element["latest"]["quarter"]
@@ -55,11 +54,11 @@ class NotifikasiEmailRilisLapkeu:
 
 
         html = html.replace(
-            "1 Oktober 2020", datetime.strftime(dt_yesterday, "%d %B %Y")
+            "1 Oktober 2020", datetime.strftime(self.dt_yesterday, "%d %B %Y")
         )
 
         html = html.replace('                      <td align="center" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, \'helvetica neue\', helvetica, sans-serif;line-height:21px;color:#FFFFFF;font-size:14px">pahamsaham © 2022</p></td>', 
-            f'                      <td align="center" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, \'helvetica neue\', helvetica, sans-serif;line-height:21px;color:#FFFFFF;font-size:14px">pahamsaham © {dt_now.year}</p></td>')
+            f'                      <td align="center" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, \'helvetica neue\', helvetica, sans-serif;line-height:21px;color:#FFFFFF;font-size:14px">pahamsaham © {self.dt_now.year}</p></td>')
 
         # Send email
         # sender
@@ -90,6 +89,11 @@ class NotifikasiEmailRilisLapkeu:
             server.login(gmail_id, gmail_password)
             server.sendmail(email_from, email_to, msg.as_string())
             server.quit()
+
+    def store_artifacts(self):
+        latest_release_statements = []
+        for element in self.collection.find({"latest.release_date": self.dt_yesterday}):
+            latest_release_statements.append(["stock_code"])
 
 
 def main():

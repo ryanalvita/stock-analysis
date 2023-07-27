@@ -61,6 +61,7 @@ class LatestReleaseDate:
         # Initialize MongoDB
         self.cluster = MongoClient(os.environ["MONGODB_URI"])
         self.db = self.cluster["stockbit_data"]
+        self.collection = self.db["release_date"]
 
     def get_all_latest_releases(
         self,
@@ -109,9 +110,6 @@ class LatestReleaseDate:
                         year = year.text
                         quarter = quarter.text.replace("TW", "Q").replace("Audit", "Q4")
 
-                        # Store data to mongodb
-                        collection = self.db["release_date"]
-
                         # Define filters based on domain_id
                         filter = {"stock_code": f"{code}"}
 
@@ -125,7 +123,7 @@ class LatestReleaseDate:
                         data = {"$set": json_structure}
 
                         # Update values to database
-                        collection.update_one(filter=filter, update=data, upsert=True)
+                        self.collection.update_one(filter=filter, update=data, upsert=True)
 
         # Get latest stocks list
         dt_yesterday = dt_now - pd.DateOffset(days=1)
