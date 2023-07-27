@@ -33,7 +33,7 @@ class StockbitScraper:
         chrome_options.add_argument("--headless")
 
         self.driver = webdriver.Chrome(
-            ChromeDriverManager().install(), chrome_options=chrome_options
+            ChromeDriverManager(version="114.0.5735.90").install(), chrome_options=chrome_options
         )
 
         # Initialize MongoDB
