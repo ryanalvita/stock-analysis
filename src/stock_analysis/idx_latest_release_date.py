@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import Select
 from time import sleep
 from webdriver_manager.chrome import ChromeDriverManager
 from pymongo import MongoClient
-from fake_useragent import UserAgent
+import pandas as pd
 
 id_en_months_mapping = {
     'Januari': 'January',
@@ -68,8 +68,7 @@ class LatestReleaseDate:
         url = "https://www.idx.co.id/id/perusahaan-tercatat/laporan-keuangan-dan-tahunan"
         
         # Datetime now
-        datetime_now = dt.now()
-        datetime_now = datetime_now.replace(hour=0, minute=0, second=0, microsecond=0)
+        dt_now = dt.now().replace(hour=0, minute=0, second=0, microsecond=0)
 
         # Periode
         for p in range(1, 4+1):
@@ -117,7 +116,7 @@ class LatestReleaseDate:
 
                         # Determine values to be updated
                         json_structure = {}
-                        json_structure["last_update"] = datetime_now
+                        json_structure["last_update"] = dt_now
                         json_structure["latest"] = {}
                         json_structure["latest"]["release_date"] = release_date
                         json_structure["latest"]["quarter"] = quarter
@@ -126,6 +125,17 @@ class LatestReleaseDate:
 
                         # Update values to database
                         collection.update_one(filter=filter, update=data, upsert=True)
+
+        # Get latest stocks list
+        dt_yesterday = dt_now - pd.DateOffset(days=1)
+        stocks_list = []
+        for element in self.collection.find({"latest.release_date": dt_yesterday}):   
+            stocks_list.append(element["stock_code"])
+
+        # Save the list to a text file named list.txt
+        with open('stocks_list.txt', 'w') as file:
+            for item in stocks_list:
+                file.write(str(item) + '\n')
 
 def main():
     """Get latest financial statement release date from IDX website"""
