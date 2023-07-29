@@ -72,11 +72,11 @@ end_date = datetime.now()
 
 # Directory
 dir = "./src/stock_analysis/backtest_strategy"
-date_str = "20230423"
+date_str = "202307120"
 
 # List of stocks
 date_stocks_list = "20230416"
-index_name = "KOMPAS100"
+index_name = "LQ45"
 stocks = pd.read_csv(
     f"./src/stock_analysis/static/{date_stocks_list}_stocks_list_{index_name}.csv",
     index_col=0,
@@ -94,7 +94,7 @@ for stock in stocks:
         os.mkdir(f"{dir}/data/{date_str}/{stock}")
 
     timeframes = [0.25, 0.5, 0.75, 1, 3, 5]
-    strat_types = ["-1+1", "-1+2", "-2+1", "-2+2"]
+    strat_types = ["-1+1", "-1+2", "-2+1", "-2+2", "-2+0", "+0+2"]
 
     data_quarterly = collection_quarterly.find_one({"stock_code": stock})
     if not data_quarterly:
@@ -176,83 +176,77 @@ for stock in stocks:
             for tf in timeframes:
                 results[f"{multiple}"][f"{strat_type}"][f"{tf}"] = {}
                 days = round(365 * tf)
-                df[f"mean_{tf}y"] = df[f"{multiple}"].rolling(f"{str(days)}d").mean()
+                df[f"mean_+0_stdev_{tf}y"] = (
+                    df[f"{multiple}"].rolling(f"{str(days)}d").mean()
+                )
                 df[f"stdev_{tf}y"] = df[f"{multiple}"].rolling(f"{str(days)}d").std()
-                df[f"mean_+2_stdev_{tf}y"] = df[f"mean_{tf}y"] + 2 * df[f"stdev_{tf}y"]
-                df[f"mean_-2_stdev_{tf}y"] = df[f"mean_{tf}y"] - 2 * df[f"stdev_{tf}y"]
-                df[f"mean_+1_stdev_{tf}y"] = df[f"mean_{tf}y"] + 1 * df[f"stdev_{tf}y"]
-                df[f"mean_-1_stdev_{tf}y"] = df[f"mean_{tf}y"] - 1 * df[f"stdev_{tf}y"]
+                df[f"mean_+2_stdev_{tf}y"] = (
+                    df[f"mean_+0_stdev_{tf}y"] + 2 * df[f"stdev_{tf}y"]
+                )
+                df[f"mean_-2_stdev_{tf}y"] = (
+                    df[f"mean_+0_stdev_{tf}y"] - 2 * df[f"stdev_{tf}y"]
+                )
+                df[f"mean_+1_stdev_{tf}y"] = (
+                    df[f"mean_+0_stdev_{tf}y"] + 1 * df[f"stdev_{tf}y"]
+                )
+                df[f"mean_-1_stdev_{tf}y"] = (
+                    df[f"mean_+0_stdev_{tf}y"] - 1 * df[f"stdev_{tf}y"]
+                )
 
                 # Determine timestamp buy/sell
                 bought = False
-                first_timestamp_buy = []
-                last_timestamp_buy = []
-                timestamp_buy = []
-                timestamp_sell = []
+                timestamp_buy = {}
+                timestamp_sell = {}
+
+                low_limit = strat_type[:2]
+                high_limit = strat_type[2:]
+
+                i = 0
 
                 for ix, row in df.iterrows():
-                    low_limit = strat_type[:2]
-                    high_limit = strat_type[2:]
                     if (
                         row[f"{multiple}"] < row[f"mean_{low_limit}_stdev_{tf}y"]
                         and bought == False
                     ):
                         bought = True
-                        first_timestamp_buy.append(ix)
-                        timestamp_buy.append(ix)
-                        last_timestamp_buy.append(ix)
+                        timestamp_buy[i] = [ix]
 
-                        previous_buy_index = stock_price.iloc[
-                            stock_price.index.get_indexer(
-                                [first_timestamp_buy[-1]], method="nearest"
-                            )
-                        ].index[0]
-                        current_buy_index = stock_price.iloc[
-                            stock_price.index.get_indexer([ix], method="nearest")
-                        ].index[0]
-
-                    elif (
-                        row[f"{multiple}"] < row[f"mean_{low_limit}_stdev_{tf}y"]
-                        and stock_price.loc[current_buy_index]["Close"]
-                        <= stock_price.loc[previous_buy_index]["Close"]
-                        and bought == True
-                    ):
-                        bought = True
-                        timestamp_buy.pop()
-                        timestamp = ix - pd.DateOffset(
-                            days=((ix - first_timestamp_buy[-1]) / 2).days
-                        )
-                        timestamp_buy.append(timestamp)
-                        last_timestamp_buy.pop()
-                        last_timestamp_buy.append(ix)
+                    # elif (
+                    #     row[f"{multiple}"] < row[f"mean_{low_limit}_stdev_{tf}y"]
+                    #     and stock_price.loc[ix]["Close"]
+                    #     <= stock_price.loc[timestamp_buy[i][-1]]["Close"]
+                    #     and bought == True
+                    # ):
+                    #     bought = True
+                    #     timestamp_buy[i].append(ix)
                     elif (
                         row[f"{multiple}"] > row[f"mean_{high_limit}_stdev_{tf}y"]
                         and bought == True
                     ):
                         bought = False
-                        timestamp_sell.append(ix)
+                        timestamp_sell[i] = ix
+                        i += 1
 
                 profits = []
 
-                for (first_buy, last_buy, buy, sell) in zip(
-                    first_timestamp_buy,
-                    last_timestamp_buy,
-                    timestamp_buy,
-                    timestamp_sell,
+                for (i, buys), (j, sell) in zip(
+                    timestamp_buy.items(),
+                    timestamp_sell.items(),
                 ):
                     profit = {}
-                    profit["first_timestamp_buy"] = str(first_buy)
-                    profit["last_timestamp_buy"] = str(last_buy)
-                    profit["timestamp_buy"] = str(buy)
+                    profit["timestamp_buy"] = [str(buy) for buy in buys]
                     profit["timestamp_sell"] = str(sell)
 
-                    buy_index = stock_price.iloc[
-                        stock_price.index.get_indexer([buy], method="nearest")
-                    ].index[0]
+                    buy_index = [
+                        stock_price.iloc[
+                            stock_price.index.get_indexer([buy], method="nearest")
+                        ].index[0]
+                        for buy in buys
+                    ]
                     sell_index = stock_price.iloc[
                         stock_price.index.get_indexer([sell], method="nearest")
                     ].index[0]
-                    profit["price_buy"] = stock_price.loc[buy_index].values[0]
+                    profit["price_buy"] = stock_price.loc[buy_index].values.mean()
                     profit["price_sell"] = stock_price.loc[sell_index].values[0]
                     profit["profit_pct"] = (
                         (profit["price_sell"] - profit["price_buy"])
@@ -260,26 +254,28 @@ for stock in stocks:
                         * 100
                     )
 
-                    profit[f"{multiple}_buy"] = df.loc[buy_index, f"{multiple}"]
+                    profit[f"{multiple}_buy"] = df.loc[
+                        buy_index, f"{multiple}"
+                    ].values.mean()
                     profit[f"{multiple}_mean_{tf}y_buy"] = df.loc[
-                        buy_index, f"mean_{tf}y"
-                    ]
+                        buy_index, f"mean_+0_stdev_{tf}y"
+                    ].values.mean()
                     profit[f"{multiple}_mean_+1_stdev_{tf}y_buy"] = df.loc[
                         buy_index, f"mean_+1_stdev_{tf}y"
-                    ]
+                    ].values.mean()
                     profit[f"{multiple}_mean_-1_stdev_{tf}y_buy"] = df.loc[
                         buy_index, f"mean_-1_stdev_{tf}y"
-                    ]
+                    ].values.mean()
                     profit[f"{multiple}_mean_+2_stdev_{tf}y_buy"] = df.loc[
                         buy_index, f"mean_+2_stdev_{tf}y"
-                    ]
+                    ].values.mean()
                     profit[f"{multiple}_mean_-2_stdev_{tf}y_buy"] = df.loc[
                         buy_index, f"mean_-2_stdev_{tf}y"
-                    ]
+                    ].values.mean()
 
                     profit[f"{multiple}_sell"] = df.loc[sell_index, f"{multiple}"]
                     profit[f"{multiple}_mean_{tf}y_sell"] = df.loc[
-                        sell_index, f"mean_{tf}y"
+                        sell_index, f"mean_+0_stdev_{tf}y"
                     ]
                     profit[f"{multiple}_mean_+1_stdev_{tf}y_sell"] = df.loc[
                         sell_index, f"mean_+1_stdev_{tf}y"
@@ -310,8 +306,6 @@ for stock in stocks:
                     annual_compound_rate = (
                         np.power(1 + profit_pct_comp / 100, 1 / (timerange / 365)) - 1
                     ) * 100
-                    df_store = df.copy()
-                    df_store.index = df_store.index.strftime("%Y-%m-%d %H:%M:%S")
 
                     results[f"{multiple}"][f"{strat_type}"][f"{tf}"] = {
                         "profit_pct_comp": profit_pct_comp,
@@ -319,7 +313,6 @@ for stock in stocks:
                         "first_multiple_timestamp": str(first_multiple_timestamp),
                         "last_multiple_timestamp": str(last_multiple_timestamp),
                         "profits": profits,
-                        "data": df_store.to_dict(),
                     }
                 else:
                     results[f"{multiple}"][f"{strat_type}"][f"{tf}"] = {}

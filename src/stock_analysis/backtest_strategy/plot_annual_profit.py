@@ -32,12 +32,12 @@ def determine_row_col(timeframe):
 
 # Directory
 dir = "./src/stock_analysis/backtest_strategy"
-date_str = "20230420"
-date_stock_data = "20230420"
+date_str = "20230720"
+date_stock_data = "20230720"
 
 # Lists
 multiples_list = ["pe", "pbv", "ps"]
-strat_types_list = ["-1+1", "-1+2", "-2+1", "-2+2"]
+strat_types_list = ["-1+1", "-1+2", "-2+1", "-2+2", "-2+0", "+0+2"]
 timeframes_list = ["0.25", "0.5", "0.75", "1", "3", "5"]
 index_name_list = ["IDX30", "LQ45", "IDX80", "KOMPAS100"]
 

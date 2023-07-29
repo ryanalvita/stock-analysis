@@ -32,8 +32,8 @@ def determine_row_col(timeframe):
 
 # Directory
 dir = "./src/stock_analysis/backtest_strategy"
-date_str = "20230420"
-date_stock_data = "20230420"
+date_str = "20230720"
+date_stock_data = "20230720"
 
 # Dates
 start_date = datetime(year=2008, month=5, day=1)
@@ -41,7 +41,7 @@ end_date = datetime.now()
 
 # List of stocks
 date_stocks_list = "20230416"
-index_name = "KOMPAS100"
+index_name = "LQ45"
 stocks = pd.read_csv(
     f"./src/stock_analysis/static/{date_stocks_list}_stocks_list_{index_name}.csv",
     index_col=0,
@@ -54,7 +54,6 @@ if not os.path.exists(f"{dir}/images/buy_sell"):
 if not os.path.exists(f"{dir}/images/buy_sell/{date_str}"):
     os.mkdir(f"{dir}/images/buy_sell/{date_str}")
 
-stocks = stocks[6:]
 for stock in stocks:
     if not os.path.exists(f"{dir}/images/buy_sell/{date_str}/{stock}"):
         os.mkdir(f"{dir}/images/buy_sell/{date_str}/{stock}")
@@ -177,95 +176,107 @@ for stock in stocks:
                     )
                 if len(profit) > 0:
                     timestamps_buy = [
-                        timestamp["timestamp_buy"] for timestamp in profit["profits"]
+                        transaction["timestamp_buy"]
+                        for transaction in profit["profits"]
                     ]
-                    for timestamp_buy in timestamps_buy:
-                        fig.add_vline(
-                            x=timestamp_buy,
-                            line_width=1,
-                            name="Buy Price",
-                            line_color=plotly.colors.qualitative.Plotly[0],
-                            row=row,
-                            col=col,
-                        )
-
-                    first_timestamps_buy = [
-                        timestamp["first_timestamp_buy"]
-                        for timestamp in profit["profits"]
-                    ]
-                    for first_timestamp_buy in first_timestamps_buy:
-                        fig.add_vline(
-                            x=first_timestamp_buy,
-                            line_width=1,
-                            name="First Buy Price",
-                            line_color=plotly.colors.qualitative.Plotly[5],
-                            row=row,
-                            col=col,
-                        )
-                    timestamps_sell = [
-                        timestamp["timestamp_sell"] for timestamp in profit["profits"]
-                    ]
-
-                    # prices_buy = [
-                    #     timestamp["price_buy"] for timestamp in profit["profits"]
-                    # ]
-                    # fig.add_trace(
-                    #     go.Scatter(
-                    #         x=timestamps_buy,
-                    #         y=prices_buy,
-                    #         mode="markers",
+                    # for timestamp_buy in timestamps_buy:
+                    #     fig.add_vline(
+                    #         x=timestamp_buy,
+                    #         line_width=1,
                     #         name="Buy Price",
-                    #         marker=dict(
-                    #             size=6,
-                    #             color=plotly.colors.qualitative.Plotly[0],
-                    #         ),
-                    #     ),
-                    #     row=row,
-                    #     col=col,
-                    # )
+                    #         line_color=plotly.colors.qualitative.Plotly[0],
+                    #         row=row,
+                    #         col=col,
+                    #     )
 
-                    for timestamp_sell in timestamps_sell:
-                        fig.add_vline(
-                            x=timestamp_sell,
-                            line_width=1,
-                            name="Sell Price",
-                            line_color=plotly.colors.qualitative.Plotly[1],
-                            row=row,
-                            col=col,
-                        )
-
-                    last_timestamps_buy = [
-                        timestamp["last_timestamp_buy"]
-                        for timestamp in profit["profits"]
-                    ]
-                    for last_timestamp_buy in last_timestamps_buy:
-                        fig.add_vline(
-                            x=last_timestamp_buy,
-                            line_width=1,
-                            name="Last Buy Price",
-                            line_color=plotly.colors.qualitative.Plotly[5],
-                            row=row,
-                            col=col,
-                        )
-
-                    # prices_sell = [
-                    #     timestamp["price_sell"] for timestamp in profit["profits"]
+                    # first_timestamps_buy = [
+                    #     timestamp["first_timestamp_buy"]
+                    #     for timestamp in profit["profits"]
                     # ]
-                    # # Add traces
-                    # fig.add_trace(
-                    #     go.Scatter(
-                    #         x=timestamps_sell,
-                    #         y=prices_sell,
-                    #         mode="markers",
+                    # for first_timestamp_buy in first_timestamps_buy:
+                    #     fig.add_vline(
+                    #         x=first_timestamp_buy,
+                    #         line_width=1,
+                    #         name="First Buy Price",
+                    #         line_color=plotly.colors.qualitative.Plotly[5],
+                    #         row=row,
+                    #         col=col,
+                    #     )
+                    # timestamps_sell = [
+                    #     timestamp["timestamp_sell"] for timestamp in profit["profits"]
+                    # ]
+
+                    prices_buy = [
+                        [
+                            stock_price.loc[timestamp]["Close"]
+                            for timestamp in timestamp_buy
+                        ]
+                        for timestamp_buy in timestamps_buy
+                    ]
+                    for timestamp_buy, price_buy in zip(timestamps_buy, prices_buy):
+                        fig.add_trace(
+                            go.Scatter(
+                                x=timestamp_buy,
+                                y=price_buy,
+                                mode="markers",
+                                name="Buy Price",
+                                marker=dict(
+                                    size=6,
+                                    color=plotly.colors.qualitative.Plotly[0],
+                                ),
+                            ),
+                            row=row,
+                            col=col,
+                        )
+
+                    # for timestamp_sell in timestamps_sell:
+                    #     fig.add_vline(
+                    #         x=timestamp_sell,
+                    #         line_width=1,
                     #         name="Sell Price",
-                    #         marker=dict(
-                    #             size=6,
-                    #             color=plotly.colors.qualitative.Plotly[1],
-                    #         ),
-                    #     ),
-                    #     row=row,
-                    #     col=col,
-                    # )
+                    #         line_color=plotly.colors.qualitative.Plotly[1],
+                    #         row=row,
+                    #         col=col,
+                    #     )
+
+                    # last_timestamps_buy = [
+                    #     timestamp["last_timestamp_buy"]
+                    #     for timestamp in profit["profits"]
+                    # ]
+                    # for last_timestamp_buy in last_timestamps_buy:
+                    #     fig.add_vline(
+                    #         x=last_timestamp_buy,
+                    #         line_width=1,
+                    #         name="Last Buy Price",
+                    #         line_color=plotly.colors.qualitative.Plotly[5],
+                    #         row=row,
+                    #         col=col,
+                    #     )
+
+                    timestamps_sell = [
+                        transaction["timestamp_sell"]
+                        for transaction in profit["profits"]
+                    ]
+
+                    prices_sell = [
+                        stock_price.loc[timestamp_sell]["Close"]
+                        for timestamp_sell in timestamps_sell
+                    ]
+                    for timestamp_sell, price_sell in zip(timestamps_sell, prices_sell):
+                        fig.add_trace(
+                            go.Scatter(
+                                x=[timestamp_sell],
+                                y=[price_sell],
+                                mode="markers",
+                                name="Sell Price",
+                                marker=dict(
+                                    size=6,
+                                    color=plotly.colors.qualitative.Plotly[1],
+                                ),
+                            ),
+                            row=row,
+                            col=col,
+                        )
 
                     fig.update_xaxes(
                         title_text="Time",
