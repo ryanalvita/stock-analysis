@@ -1,0 +1,247 @@
+/* Reset some default styles */
+body, h1, h2, h3, p, ol, ul {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Global styles */
+  body {
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .wrapper {
+    background-color: #F6F6F6;
+  }
+  
+  /* Header */
+  .header {
+    background-color: #448AFF;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .header-logo {
+    display: block;
+    border: 0;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+    max-width: 75px;
+  }
+  
+  .header-title {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .header-date {
+    color: #ffffff;
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  /* Content */
+  .content {
+    background-color: #FFFFFF;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .content h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333333;
+    line-height: 27px;
+  }
+  
+  .content ol {
+    text-align: left;
+  }
+  
+  .content li {
+    line-height: 27px;
+    color: #333333;
+    font-size: 18px;
+  }
+  
+  .content strong {
+    font-weight: bold;
+  }
+  
+  .content a {
+    text-decoration: underline;
+    color: #1376C8;
+    font-size: 18px;
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: #448AFF;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .footer p {
+    color: #FFFFFF;
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  .footer-logo {
+    display: block;
+    border: 0;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+    max-width: 40px;
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .social-icons a {
+    margin-right: 40px;
+  }
+  
+  .social-icons img {
+    display: block;
+    border: 0;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+    max-height: 32px;
+  }
+  /* Reset some default styles */
+body, h1, h2, h3, p, ol, ul {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Global styles */
+  body {
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .wrapper {
+    background-color: #F6F6F6;
+  }
+  
+  /* Header */
+  .header {
+    background-color: #448AFF;
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .header-logo {
+    display: block;
+    border: 0;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+    max-width: 75px;
+    margin: 0 auto;
+  }
+  
+  .header-title {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .header-date {
+    color: #ffffff;
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  /* Content */
+  .content {
+    background-color: #FFFFFF;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .content h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333333;
+    line-height: 27px;
+    margin-bottom: 20px;
+  }
+  
+  .content ol {
+    text-align: left;
+  }
+  
+  .content li {
+    line-height: 27px;
+    color: #333333;
+    font-size: 18px;
+  }
+  
+  .content strong {
+    font-weight: bold;
+  }
+  
+  .content a {
+    text-decoration: underline;
+    color: #1376C8;
+    font-size: 18px;
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: #448AFF;
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .footer p {
+    color: #FFFFFF;
+    font-size: 14px;
+    margin: 10px 0;
+  }
+  
+  .footer-logo {
+    display: block;
+    border: 0;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+    max-width: 40px;
+    margin: 0 auto;
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .social-icons a {
+    margin-right: 40px;
+  }
+  
+  .social-icons img {
+    display: block;
+    border: 0;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+    max-height: 32px;
+  }
+  

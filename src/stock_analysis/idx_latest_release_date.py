@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import Select
 from time import sleep
 from webdriver_manager.chrome import ChromeDriverManager
 from pymongo import MongoClient
+import pandas as pd
 from fake_useragent import UserAgent
 
 id_en_months_mapping = {
@@ -60,6 +61,7 @@ class LatestReleaseDate:
         # Initialize MongoDB
         self.cluster = MongoClient(os.environ["MONGODB_URI"])
         self.db = self.cluster["stockbit_data"]
+        self.collection = self.db["release_date"]
 
     def get_all_latest_releases(
         self,
@@ -68,8 +70,7 @@ class LatestReleaseDate:
         url = "https://www.idx.co.id/id/perusahaan-tercatat/laporan-keuangan-dan-tahunan"
         
         # Datetime now
-        datetime_now = dt.now()
-        datetime_now = datetime_now.replace(hour=0, minute=0, second=0, microsecond=0)
+        dt_now = dt.now().replace(hour=0, minute=0, second=0, microsecond=0)
 
         # Periode
         for p in range(1, 4+1):
@@ -109,15 +110,12 @@ class LatestReleaseDate:
                         year = year.text
                         quarter = quarter.text.replace("TW", "Q").replace("Audit", "Q4")
 
-                        # Store data to mongodb
-                        collection = self.db["release_date"]
-
                         # Define filters based on domain_id
                         filter = {"stock_code": f"{code}"}
 
                         # Determine values to be updated
                         json_structure = {}
-                        json_structure["last_update"] = datetime_now
+                        json_structure["last_update"] = dt_now
                         json_structure["latest"] = {}
                         json_structure["latest"]["release_date"] = release_date
                         json_structure["latest"]["quarter"] = quarter
@@ -125,7 +123,18 @@ class LatestReleaseDate:
                         data = {"$set": json_structure}
 
                         # Update values to database
-                        collection.update_one(filter=filter, update=data, upsert=True)
+                        self.collection.update_one(filter=filter, update=data, upsert=True)
+
+        # Get latest stocks list
+        dt_yesterday = dt_now - pd.DateOffset(days=1)
+        stocks_list = []
+        for element in self.collection.find({"latest.release_date": dt_yesterday}):   
+            stocks_list.append(element["stock_code"])
+
+        # Save the list to a text file named list.txt
+        with open('stocks_list.txt', 'w') as file:
+            for item in stocks_list:
+                file.write(str(item) + '\n')
 
 def main():
     """Get latest financial statement release date from IDX website"""

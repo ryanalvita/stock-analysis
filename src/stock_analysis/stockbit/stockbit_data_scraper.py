@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 from datetime import datetime
 from time import sleep
 from typing import Optional
@@ -95,8 +96,6 @@ class StockbitScraper:
                 except:
                     print(f"Cannot access fundamental data for stock: {stock}")
                     continue
-
-                json_structure = {"stock_code": f"{stock}"}
 
                 selection_report_type = Select(
                     self.driver.find_element(
@@ -197,6 +196,7 @@ class StockbitScraper:
                                 .replace(")", "")
                                 .replace("(", "-")
                             )
+
                         if report_type == "income-statement":
                             data = data.rename(
                                 index={
@@ -282,10 +282,11 @@ def main():
         "./src/stock_analysis/static/20230402_stocks_list.csv", index_col=0
     ).index.to_list()
 
+    # Get stocks list
+    stocks_list = [item for item in sys.argv[1:]]
+
     # Get fundamental data
-    stockbit_scraper.get_fundamental_data(
-        stock_filter=ALL[int(2 * len(ALL) / 7) : int(3 * len(ALL) / 7)]
-    )
+    stockbit_scraper.get_fundamental_data(stock_filter=stocks_list)
 
 
 if __name__ == "__main__":
