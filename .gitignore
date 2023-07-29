@@ -132,4 +132,5 @@ dmypy.json
 /.vscode
 
 # Folder
-/results
+src/stock_analysis/backtest_strategy/data
+src/stock_analysis/backtest_strategy/images
