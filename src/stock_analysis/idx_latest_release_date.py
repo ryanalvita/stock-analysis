@@ -11,22 +11,23 @@ import pandas as pd
 from fake_useragent import UserAgent
 
 id_en_months_mapping = {
-    'Januari': 'January',
-    'Februari': 'February',
-    'Maret': 'March',
-    'April': 'April',
-    'Mei': 'May',
-    'Juni': 'June',
-    'Juli': 'July',
-    'Agustus': 'August',
-    'September': 'September',
-    'Oktober': 'October',
-    'November': 'November',
-    'Desember': 'December'
+    "Januari": "January",
+    "Februari": "February",
+    "Maret": "March",
+    "April": "April",
+    "Mei": "May",
+    "Juni": "June",
+    "Juli": "July",
+    "Agustus": "August",
+    "September": "September",
+    "Oktober": "October",
+    "November": "November",
+    "Desember": "December",
 }
 
+
 def parse_input(input_string):
-    parts = input_string.split('\n')
+    parts = input_string.split("\n")
     code = parts[0]
     date_str = parts[1].split(" | ")[0]
     for indonesian_month, english_month in id_en_months_mapping.items():
@@ -34,9 +35,9 @@ def parse_input(input_string):
     release_date = dt.strptime(date_str, "%d %B %Y")
     return code, release_date
 
+
 class LatestReleaseDate:
     def __init__(self):
-
         chrome_options = webdriver.ChromeOptions()
         # open Browser in maximized mode
         chrome_options.add_argument("start-maximized")
@@ -54,9 +55,7 @@ class LatestReleaseDate:
         # add user agent
         chrome_options.add_argument(f"user-agent={UserAgent().random}")
 
-        self.driver = webdriver.Chrome(
-            ChromeDriverManager(version="114.0.5735.90").install(), chrome_options=chrome_options
-        )
+        self.driver = webdriver.Chrome(options=chrome_options)
 
         # Initialize MongoDB
         self.cluster = MongoClient(os.environ["MONGODB_URI"])
@@ -67,30 +66,54 @@ class LatestReleaseDate:
         self,
     ):
         # Define url
-        url = "https://www.idx.co.id/id/perusahaan-tercatat/laporan-keuangan-dan-tahunan"
-        
+        url = (
+            "https://www.idx.co.id/id/perusahaan-tercatat/laporan-keuangan-dan-tahunan"
+        )
+
         # Datetime now
         dt_now = dt.now().replace(hour=0, minute=0, second=0, microsecond=0)
 
         # Periode
-        for p in range(1, 4+1):
+        for p in range(1, 4 + 1):
             # Go to url
             self.driver.get(url)
             sleep(3)
 
             # Click periode
-            self.driver.find_element(By.XPATH, f'/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[2]/div[1]/div/div[4]/div[{p}]/label/input').click()
-            
+            self.driver.find_element(
+                By.XPATH,
+                f"/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[2]/div[1]/div/div[4]/div[{p}]/label/input",
+            ).click()
+
             # Click terapkan
-            self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[2]/div[2]/button[2]').click()
+            self.driver.find_element(
+                By.XPATH,
+                "/html/body/div[2]/div/div/div[2]/main/div/div[1]/div[2]/div[2]/button[2]",
+            ).click()
             sleep(2)
 
-            if len(self.driver.find_elements(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/div[2]/div/div/span')) == 0:
+            if (
+                len(
+                    self.driver.find_elements(
+                        By.XPATH,
+                        "/html/body/div[2]/div/div/div[2]/main/div/div[2]/div/div/span",
+                    )
+                )
+                == 0
+            ):
                 # Pages
-                pages = len(self.driver.find_elements(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/ul[2]/li/select/option'))
+                pages = len(
+                    self.driver.find_elements(
+                        By.XPATH,
+                        "/html/body/div[2]/div/div/div[2]/main/div/ul[2]/li/select/option",
+                    )
+                )
                 if pages != 0:
                     pages_select = Select(
-                        self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/main/div/ul[2]/li[1]/select')
+                        self.driver.find_element(
+                            By.XPATH,
+                            "/html/body/div[2]/div/div/div[2]/main/div/ul[2]/li[1]/select",
+                        )
                     )
                 else:
                     pages = 1
@@ -101,11 +124,18 @@ class LatestReleaseDate:
 
                     # Find elements
                     elements = self.driver.find_elements(
-                        By.XPATH, "/html/body/div[2]/div/div/div[2]/main/div/div[2]/div/div/div[1]"
+                        By.XPATH,
+                        "/html/body/div[2]/div/div/div[2]/main/div/div[2]/div/div/div[1]",
                     )
-                    years = self.driver.find_elements(By.XPATH, "/html/body/div[2]/div/div/div[2]/main/div/div[2]/div/div/table[1]/tbody/tr[2]/td[3]")
-                    quarters = self.driver.find_elements(By.XPATH, "/html/body/div[2]/div/div/div[2]/main/div/div[2]/div/div/table[1]/tbody/tr[3]/td[3]")
-                    for (element, year, quarter) in zip(elements, years, quarters):
+                    years = self.driver.find_elements(
+                        By.XPATH,
+                        "/html/body/div[2]/div/div/div[2]/main/div/div[2]/div/div/table[1]/tbody/tr[2]/td[3]",
+                    )
+                    quarters = self.driver.find_elements(
+                        By.XPATH,
+                        "/html/body/div[2]/div/div/div[2]/main/div/div[2]/div/div/table[1]/tbody/tr[3]/td[3]",
+                    )
+                    for element, year, quarter in zip(elements, years, quarters):
                         code, release_date = parse_input(element.text)
                         year = year.text
                         quarter = quarter.text.replace("TW", "Q").replace("Audit", "Q4")
@@ -123,18 +153,21 @@ class LatestReleaseDate:
                         data = {"$set": json_structure}
 
                         # Update values to database
-                        self.collection.update_one(filter=filter, update=data, upsert=True)
+                        self.collection.update_one(
+                            filter=filter, update=data, upsert=True
+                        )
 
         # Get latest stocks list
         dt_yesterday = dt_now - pd.DateOffset(days=1)
         stocks_list = []
-        for element in self.collection.find({"latest.release_date": dt_yesterday}):   
+        for element in self.collection.find({"latest.release_date": dt_yesterday}):
             stocks_list.append(element["stock_code"])
 
         # Save the list to a text file named list.txt
-        with open('stocks_list.txt', 'w') as file:
+        with open("stocks_list.txt", "w") as file:
             for item in stocks_list:
-                file.write(str(item) + '\n')
+                file.write(str(item) + "\n")
+
 
 def main():
     """Get latest financial statement release date from IDX website"""

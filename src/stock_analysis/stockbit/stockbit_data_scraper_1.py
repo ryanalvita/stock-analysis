@@ -33,7 +33,7 @@ class StockbitScraper:
         chrome_options.add_argument("--headless")
 
         self.driver = webdriver.Chrome(
-            ChromeDriverManager(version="114.0.5735.90").install(), chrome_options=chrome_options
+            options=chrome_options,
         )
 
         # Initialize MongoDB
@@ -58,7 +58,6 @@ class StockbitScraper:
         year_filter: Optional[list] = None,
         period_filter: Optional[list] = None,
     ):
-
         date = datetime.now().timestamp()
 
         # Filter
