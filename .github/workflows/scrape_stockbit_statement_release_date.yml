@@ -9,7 +9,6 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
           pip install -e .
       - name: Scrape statement release dates data from Stockbit website 1
         env:
@@ -29,7 +28,6 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
           pip install -e .
       - name: Scrape statement release dates data from Stockbit website 2
         env:
@@ -49,7 +47,6 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
           pip install -e .
       - name: Scrape statement release dates data from Stockbit website 3
         env:
@@ -69,7 +66,6 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
           pip install -e .
       - name: Scrape statement release dates data from Stockbit website 4
         env:
@@ -89,7 +85,6 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
           pip install -e .
       - name: Scrape statement release dates data from Stockbit website 5
         env:
@@ -109,7 +104,6 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
           pip install -e .
       - name: Scrape statement release dates data from Stockbit website 6
         env:
@@ -129,7 +123,6 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
           pip install -e .
       - name: Scrape statement release dates data from Stockbit website 7
         env:
