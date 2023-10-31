@@ -9,6 +9,7 @@ import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from pymongo import MongoClient
 
@@ -33,7 +34,8 @@ class StockbitScraper:
         chrome_options.add_argument("--headless")
 
         self.driver = webdriver.Chrome(
-            ChromeDriverManager().install(), chrome_options=chrome_options
+            service=Service(ChromeDriverManager().install()),
+            chrome_options=chrome_options,
         )
 
         # Initialize MongoDB
