@@ -35,7 +35,7 @@ class StockbitScraper:
 
         self.driver = webdriver.Chrome(
             service=Service(ChromeDriverManager().install()),
-            chrome_options=chrome_options,
+            options=chrome_options,
         )
 
         # Initialize MongoDB
